@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --primary: #005f37;
+      }
+    </style>
+    <title>Produk Batu</title>
+  </head>
+  <!-- Hapus Data-->
+   <div id="toastDelete"
+     class="hidden fixed top-5 right-5 bg-red-600 text-white px-4 py-2 rounded-lg shadow-md z-[999]">
+    Produk berhasil dihapus!
+</div>
+
+<script>
+function showDeleteToast() {
+    const t = document.getElementById("toastDelete");
+    t.classList.remove("hidden");
+    setTimeout(() => t.classList.add("hidden"), 2000);
+}
+</script>
+   <!-- BACKDROP EDIT -->
+<div id="editBackdrop" class="hidden fixed inset-0 bg-black/40 z-40"></div>
+
+<!-- MODAL IFRAME EDIT -->
+<div id="editFrame" 
+     class="hidden fixed inset-0 flex justify-center items-center z-50">
+    <iframe id="iframeEditProduk" src="" 
+            class="bg-white rounded-xl shadow-xl w-[700px] h-[500px] border-none">
+    </iframe>
+</div>
+
+<script>
+function openEditModal(url) {
+    document.getElementById("iframeEditProduk").src = url;
+    document.getElementById("editBackdrop").classList.remove("hidden");
+    document.getElementById("editFrame").classList.remove("hidden");
+}
+</script>
+<div id="toast-edit"
+     class="hidden fixed top-5 right-5 bg-blue-600 text-white px-4 py-2 rounded-lg shadow-lg z-[999]">
+    Produk berhasil diperbarui!
+</div>
+
+<script>
+function showEditToast() {
+    const toast = document.getElementById("toast-edit");
+    toast.classList.remove("hidden");
+    setTimeout(() => toast.classList.add("hidden"), 2000);
+}
+</script>
+  <!-- add data -->
+  <div
+    id="toast"
+    class="hidden fixed top-5 right-5 bg-green-600 text-white px-4 py-2 rounded-lg shadow-lg z-[999]"
+  >
+    Produk berhasil ditambahkan!
+  </div>
+
+  <script>
+    function showToast() {
+      const toast = document.getElementById("toast");
+      toast.classList.remove("hidden");
+
+      setTimeout(() => {
+        toast.classList.add("hidden");
+      }, 2000);
+    }
+  </script>
+  <body class="bg-gray-100">
+    <!-- SIDEBAR FIX -->
+    <iframe
+      id="sidebarFrame"
+      src="{{ route('admin.sidebar') }}"
+      class="fixed left-0 top-0 w-64 min-h-screen border-none"
+    ></iframe>
+
+    <!-- MAIN CONTENT FIX -->
+    <div id="mainContent" class="ml-64 flex-1 p-6 transition-all duration-300">
+      <h2 class="text-2xl font-bold text-[var(--primary)] mb-6">
+        Manajemen Produk Batu
+      </h2>
+      <!-- TOMBOL -->
+      <button
+        onclick="openModal()"
+        class="bg-[var(--primary)] text-white px-4 py-2 rounded mb-4"
+      >
+        + Tambah Produk
+      </button>
+
+      <!-- BACKDROP -->
+      <div id="backdrop" class="hidden fixed inset-0 bg-black/40 z-40"></div>
+
+      <!-- MODAL IFRAME -->
+      <div
+        id="modalFrame"
+        class="hidden fixed inset-0 flex justify-center items-center z-50"
+      >
+        <iframe
+          src="{{ route('admin.produk.create') }}"
+          class="bg-white rounded-xl shadow-xl w-[700px] h-[500px] border-none"
+        >
+        </iframe>
+      </div>
+
+      <script>
+        function openModal() {
+          document.getElementById("backdrop").classList.remove("hidden");
+          document.getElementById("modalFrame").classList.remove("hidden");
+        }
+      </script>
+
+      <div class="bg-white shadow rounded-lg p-6">
+        <table class="w-full">
+          <thead>
+            <tr class="text-left border-b">
+              <th class="py-3 w-40">Foto</th>
+              <th class="py-3">Nama</th>
+              <th class="py-3">Ukuran</th>
+              <th class="py-3">Harga / ton</th>
+              <th class="py-3 text-center w-32">Aksi</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            @forelse ($produks as $produk)
+            <tr class="border-b">
+              <!-- FOTO PRODUK, RASIO 3:4 -->
+              <td class="py-4">
+                <div class="w-32 aspect-[3/4] overflow-hidden rounded-lg">
+                  <img src="{{ $produk->foto ? asset('storage/' . $produk->foto) : asset('img/batu.jpg') }}" class="w-full h-full object-cover" />
+                </div>
+              </td>
+
+              <td class="text-gray-800 font-medium">{{ $produk->nama }}</td>
+              <td>{{ $produk->ukuran }}</td>
+              <td>Rp {{ number_format($produk->harga, 0, ',', '.') }}</td>
+              <td class="text-center">
+                <div class="flex items-center justify-center gap-3">
+                  <!-- EDIT -->
+                  <button
+                    onclick="openEditModal(`{{ route('admin.produk.edit', $produk->id) }}`)"
+                    class="flex items-center gap-1 px-3 py-1.5 rounded-md bg-blue-100 hover:bg-blue-200 text-blue-700 font-medium transition"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="w-4 h-4"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M15.232 5.232l3.536 3.536M9 11l6-6m-6 6v3H6v-3m3 0h3"
+                      />
+                    </svg>
+                    Edit
+                  </button>
+
+                  <!-- HAPUS -->
+                  <button onclick="askDelete(`{{ route('admin.produk.destroy', $produk->id) }}`)"
+  class="flex items-center gap-1 px-3 py-1.5 rounded-md 
+         bg-red-100 hover:bg-red-200 text-red-700 font-medium transition">
+
+  <svg xmlns="http://www.w3.org/2000/svg"
+       class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M6 7h12m-9 0V5h6v2m-7 4v6m4-6v6m5 0H5"/>
+  </svg>
+
+  Hapus
+</button>
+                </div>
+              </td>
+            </tr>
+            @empty
+            <tr>
+              <td colspan="5" class="py-4 text-center text-gray-500">Belum ada data produk.</td>
+            </tr>
+            @endforelse
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+<!-- MODAL DELETE -->
+<div id="deleteModal"
+     class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-50">
+
+  <div class="bg-white rounded-2xl shadow-xl p-7 w-[380px] text-center">
+
+    <!-- ICON WARNING -->
+    <div class="mx-auto mb-4">
+      <svg xmlns="http://www.w3.org/2000/svg"
+           class="w-10 h-10 text-red-500 mx-auto"
+           fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 9v2m0 4h.01M4.93 19h14.14c1.1 0 1.99-.9 1.99-2l-7.07-12.25c-.78-1.35-2.73-1.35-3.51 0L2.94 17c0 1.1.9 2 1.99 2z"/>
+      </svg>
+    </div>
+
+    <!-- TITLE -->
+    <h2 class="text-xl font-bold text-gray-800 mb-2">Hapus Produk?</h2>
+
+    <!-- SUBTEXT -->
+    <p class="text-gray-600 text-sm mb-6">
+      Produk ini akan dihapus secara permanen.  
+      Tindakan ini tidak bisa dibatalkan.
+    </p>
+
+    <!-- BUTTON GROUP -->
+    <div class="flex justify-center gap-3">
+
+      <button onclick="closeDeleteModal()"
+        class="px-4 py-2 rounded-lg bg-gray-200 hover:bg-gray-300 text-gray-700 font-medium w-32">
+        Batal
+      </button>
+
+      <button onclick="confirmDelete()"
+        class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold w-32">
+        Hapus
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+let deleteUrl = null;
+
+// buka modal dengan ID produk
+function askDelete(url) {
+  deleteUrl = url;
+  document.getElementById("deleteModal").classList.remove("hidden");
+}
+
+// tutup modal
+function closeDeleteModal() {
+  document.getElementById("deleteModal").classList.add("hidden");
+}
+
+// aksi hapus final
+function confirmDelete() {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = deleteUrl;
+
+  const csrfToken = document.createElement('input');
+  csrfToken.type = 'hidden';
+  csrfToken.name = '_token';
+  csrfToken.value = '{{ csrf_token() }}';
+  form.appendChild(csrfToken);
+
+  const methodField = document.createElement('input');
+  methodField.type = 'hidden';
+  methodField.name = '_method';
+  methodField.value = 'DELETE';
+  form.appendChild(methodField);
+
+  document.body.appendChild(form);
+  form.submit();
+  
+  // tampilkan notifikasi (tapi karena ke-reload, opsional via session flash)
+  showDeleteToast();
+}
+</script>
+</html>
