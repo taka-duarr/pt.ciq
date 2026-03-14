@@ -4,65 +4,144 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-
-use App\Models\Pesanan;
+use App\Models\FinancialYear;
 use Carbon\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class AdminDashboardController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Get total valid orders
-        $validStatuses = ['Selesai', 'Telah Sampai', 'Dikirim', 'Diproses'];
-        $baseQuery = Pesanan::whereIn('status', $validStatuses);
-
-        $totalPendapatan = $baseQuery->sum('harga_total');
-        $totalPesanan = $baseQuery->count();
-        $totalTonase = $baseQuery->sum('qty');
+        $years = FinancialYear::orderBy('year', 'asc')->get();
         
-        // Simple profit calculation (assuming 30% margin for example purposes, as cost is not in DB)
-        $profit = $totalPendapatan * 0.30;
+        // Try to get from request, fallback to session, default to 'all'
+        $selectedYearParam = $request->get('year_filter');
+        
+        if ($selectedYearParam) {
+            session(['dashboard_year_filter' => $selectedYearParam]);
+        } else {
+            $selectedYearParam = session('dashboard_year_filter', 'all');
+        }
 
-        // Growth calculation (this month vs last month)
-        $thisMonth = Carbon::now()->month;
-        $lastMonth = Carbon::now()->subMonth()->month;
+        $totalPendapatan = 0;
+        $produksiCrusher = 0;
+        $benefitCrusher = 0;
+        $benefitSewa = 0;
 
-        $revThisMonth = Pesanan::whereIn('status', $validStatuses)->whereMonth('created_at', $thisMonth)->sum('harga_total');
-        $revLastMonth = Pesanan::whereIn('status', $validStatuses)->whereMonth('created_at', $lastMonth)->sum('harga_total');
-        $growthRev = $revLastMonth > 0 ? (($revThisMonth - $revLastMonth) / $revLastMonth) * 100 : 100;
+        $chartLabels = [];
+        $chartProd = [];
+        $chartBenCrush = [];
+        $chartBenSewa = [];
+        
+        $tableData = []; 
 
-        $ordThisMonth = Pesanan::whereIn('status', $validStatuses)->whereMonth('created_at', $thisMonth)->count();
-        $ordLastMonth = Pesanan::whereIn('status', $validStatuses)->whereMonth('created_at', $lastMonth)->count();
-        $growthOrd = $ordLastMonth > 0 ? (($ordThisMonth - $ordLastMonth) / $ordLastMonth) * 100 : 100;
+        $growthRev = 0;
+        $growthProd = 0;
+        
+        $hasData = true;
 
-        $tonThisMonth = Pesanan::whereIn('status', $validStatuses)->whereMonth('created_at', $thisMonth)->sum('qty');
-        $tonLastMonth = Pesanan::whereIn('status', $validStatuses)->whereMonth('created_at', $lastMonth)->sum('qty');
-        $growthTon = $tonLastMonth > 0 ? (($tonThisMonth - $tonLastMonth) / $tonLastMonth) * 100 : 100;
+        if ($years->isEmpty()) {
+            $hasData = false;
+            $yearLabel = 'Semua Tahun';
+            return view('admin.dashboard', compact(
+                'years', 'selectedYearParam', 'totalPendapatan', 'produksiCrusher', 'benefitCrusher', 'benefitSewa',
+                'chartLabels', 'chartProd', 'chartBenCrush', 'chartBenSewa', 'tableData', 'growthRev', 'growthProd',
+                'hasData', 'yearLabel'
+            ));
+        }
 
-        // Chart Data (Last 30 Days)
-        $thirtyDaysAgo = Carbon::now()->subDays(30);
-        $chartData = Pesanan::whereIn('status', $validStatuses)
-            ->where('created_at', '>=', $thirtyDaysAgo)
-            ->select(DB::raw('DATE(created_at) as date'), DB::raw('SUM(harga_total) as total_revenue'), DB::raw('COUNT(id) as total_orders'))
-            ->groupBy('date')
-            ->orderBy('date', 'ASC')
-            ->get();
+        if ($selectedYearParam === 'all') {
+            $yearLabel = 'Akumulasi Semua Tahun';
+            
+            // Loop through all years and aggregate
+            // Sort ascending for charts
+            $yearsData = FinancialYear::with('monthlySales')->orderBy('year', 'asc')->get();
+            
+            $tempTableData = [];
 
-        $dates = $chartData->pluck('date')->map(function($date) {
-            return Carbon::parse($date)->format('d M');
-        })->toArray();
-        $revenues = $chartData->pluck('total_revenue')->toArray();
-        $orders = $chartData->pluck('total_orders')->toArray();
+            foreach($yearsData as $fy) {
+                $y_pendapatan = $fy->monthlySales->sum('total_revenue');
+                $y_produksi = $fy->monthlySales->sum('crusher_production');
+                $y_ben_crush = $fy->monthlySales->sum('benefit_crusher');
+                $y_ben_sewa = $fy->monthlySales->sum('benefit_sewa');
 
-        // Recent Transactions
-        $recentTransactions = Pesanan::with('produk')->latest()->take(5)->get();
+                $totalPendapatan += $y_pendapatan;
+                $produksiCrusher += $y_produksi;
+                $benefitCrusher += $y_ben_crush;
+                $benefitSewa += $y_ben_sewa;
+
+                $chartLabels[] = $fy->year;
+                $chartProd[] = $y_produksi;
+                $chartBenCrush[] = $y_ben_crush;
+                $chartBenSewa[] = $y_ben_sewa;
+
+                $tempTableData[] = (object)[
+                    'label' => 'Tahun ' . $fy->year,
+                    'crusher_production' => $y_produksi,
+                    'benefit_crusher' => $y_ben_crush,
+                    'benefit_sewa' => $y_ben_sewa,
+                    'total_revenue' => $y_pendapatan
+                ];
+            }
+            
+            // For table, let's reverse to show latest year top
+            $tableData = array_reverse($tempTableData);
+
+        } else {
+            $targetYear = FinancialYear::with('monthlySales')->where('year', $selectedYearParam)->first();
+            if (!$targetYear) {
+                $targetYear = $years->first();
+                $selectedYearParam = $targetYear->year;
+            }
+            
+            $yearLabel = 'Tahun ' . $targetYear->year;
+            $monthlySales = $targetYear->monthlySales->sortBy('month');
+
+            $totalPendapatan = $monthlySales->sum('total_revenue');
+            $produksiCrusher = $monthlySales->sum('crusher_production');
+            $benefitCrusher = $monthlySales->sum('benefit_crusher');
+            $benefitSewa = $monthlySales->sum('benefit_sewa');
+
+            // Growth vs Prev Year
+            $prevYear = FinancialYear::where('year', $targetYear->year - 1)->first();
+            if ($prevYear) {
+                $prevSales = $prevYear->monthlySales;
+                $prevTotalRev = $prevSales->sum('total_revenue');
+                $prevTotalProd = $prevSales->sum('crusher_production');
+
+                if ($prevTotalRev > 0) {
+                    $growthRev = (($totalPendapatan - $prevTotalRev) / $prevTotalRev) * 100;
+                } else {
+                    $growthRev = $totalPendapatan > 0 ? 100 : 0;
+                }
+
+                if ($prevTotalProd > 0) {
+                    $growthProd = (($produksiCrusher - $prevTotalProd) / $prevTotalProd) * 100;
+                } else {
+                    $growthProd = $produksiCrusher > 0 ? 100 : 0;
+                }
+            }
+
+            foreach ($monthlySales as $sale) {
+                $chartLabels[] = $sale->month_name;
+                $chartProd[] = $sale->crusher_production;
+                $chartBenCrush[] = $sale->benefit_crusher;
+                $chartBenSewa[] = $sale->benefit_sewa;
+                
+                $tableData[] = (object)[
+                    'label' => $sale->month_name,
+                    'crusher_production' => $sale->crusher_production,
+                    'benefit_crusher' => $sale->benefit_crusher,
+                    'benefit_sewa' => $sale->benefit_sewa,
+                    'total_revenue' => $sale->total_revenue
+                ];
+            }
+        }
 
         return view('admin.dashboard', compact(
-            'totalPendapatan', 'totalPesanan', 'totalTonase', 'profit',
-            'growthRev', 'growthOrd', 'growthTon',
-            'dates', 'revenues', 'orders',
-            'recentTransactions'
+            'years', 'selectedYearParam', 'hasData', 'yearLabel',
+            'totalPendapatan', 'produksiCrusher', 'benefitCrusher', 'benefitSewa',
+            'chartLabels', 'chartProd', 'chartBenCrush', 'chartBenSewa',
+            'tableData', 'growthRev', 'growthProd'
         ));
     }
 }
