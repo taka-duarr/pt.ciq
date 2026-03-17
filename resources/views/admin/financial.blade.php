@@ -56,6 +56,25 @@
             background: #fff;
             box-shadow: 0 0 0 2px rgba(192, 0, 0, 0.2);
         }
+        .bg-editable { 
+            background-color: #f0f9ff !important; /* Light blue for inputs */
+        }
+        .bg-calculated {
+            background-color: #ffffff !important;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        .legend-box {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen text-gray-700">
@@ -65,7 +84,19 @@
     <div id="mainContent" class="ml-64 p-8 flex-1 transition-all duration-300">
         
         <div class="flex justify-between items-center mb-6">
-            <h2 class="text-2xl font-bold text-red-700">Laporan Keuangan Stone Crusher</h2>
+            <div>
+                <h2 class="text-2xl font-bold text-red-700">Laporan Keuangan Stone Crusher</h2>
+                <div class="flex gap-4 mt-2">
+                    <div class="legend-item text-blue-700">
+                        <div class="legend-box bg-blue-50 border-blue-200"></div>
+                        <span>Kolom Input Data</span>
+                    </div>
+                    <div class="legend-item text-gray-500">
+                        <div class="legend-box bg-white border-gray-200"></div>
+                        <span>Kolom Rumus Automatis</span>
+                    </div>
+                </div>
+            </div>
             
             <div class="flex items-center gap-4">
                     <form action="{{ route('admin.financial.index') }}" method="GET" class="flex items-center gap-3">
@@ -159,15 +190,15 @@
                     @foreach($monthlySales as $sale)
                     <tr data-sale-id="{{ $sale->id }}" class="crusher-row">
                         <td class="text-center bg-red-700 text-white font-bold text-[10px]">{{ $sale->month_name }}-{{ substr($selectedYear->year, 2) }}</td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->crusher_price + 0 }}" class="edit-input font-medium" name="crusher_price"></td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->crusher_production + 0 }}" class="edit-input font-medium" name="crusher_production"></td>
-                        <td class="text-right font-bold" id="sewa-{{ $sale->id }}">{{ number_format($sale->pendapatan_sewa, 0, ',', '.') }}</td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->produksi_ppn + 0 }}" class="edit-input font-medium" name="produksi_ppn"></td>
-                        <td class="text-right" id="totalppn-{{ $sale->id }}">{{ number_format($sale->total_crusher_ppn, 0, ',', '.') }}</td>
-                        <td class="text-right" id="ppn-{{ $sale->id }}">{{ number_format($sale->ppn_11, 0, ',', '.') }}</td>
-                        <td class="text-right" id="pph-{{ $sale->id }}">{{ number_format($sale->pph_2, 0, ',', '.') }}</td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->crusher_price + 0 }}" class="edit-input font-medium" name="crusher_price"></td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->crusher_production + 0 }}" class="edit-input font-medium" name="crusher_production"></td>
+                        <td class="text-right font-bold bg-calculated" id="sewa-{{ $sale->id }}">{{ number_format($sale->pendapatan_sewa, 0, ',', '.') }}</td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->produksi_ppn + 0 }}" class="edit-input font-medium" name="produksi_ppn"></td>
+                        <td class="text-right bg-calculated" id="totalppn-{{ $sale->id }}">{{ number_format($sale->total_crusher_ppn, 0, ',', '.') }}</td>
+                        <td class="text-right bg-calculated" id="ppn-{{ $sale->id }}">{{ number_format($sale->ppn_11, 0, ',', '.') }}</td>
+                        <td class="text-right bg-calculated" id="pph-{{ $sale->id }}">{{ number_format($sale->pph_2, 0, ',', '.') }}</td>
                         <td class="text-right bg-green-highlight" id="totalakhir-{{ $sale->id }}">{{ number_format($sale->total_crusher_akhir, 0, ',', '.') }}</td>
-                        <td class="text-right font-bold" id="benefit-{{ $sale->id }}">{{ number_format($sale->benefit_crusher, 0, ',', '.') }}</td>
+                        <td class="text-right font-bold bg-calculated" id="benefit-{{ $sale->id }}">{{ number_format($sale->benefit_crusher, 0, ',', '.') }}</td>
                     </tr>
                     @php
                         $grandTotalCrusher['produksi'] += $sale->crusher_production;
@@ -228,12 +259,12 @@
                     @foreach($monthlySales as $sale)
                     <tr data-sale-id="{{ $sale->id }}" class="sewa-row">
                         <td class="text-center bg-red-700 text-white font-bold text-[10px]">{{ $sale->month_name }}-{{ substr($selectedYear->year, 2) }}</td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->sewa_loader + 0 }}" class="edit-input font-medium" name="sewa_loader"></td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->sewa_dump_truck + 0 }}" class="edit-input font-medium" name="sewa_dump_truck"></td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->sewa_sany + 0 }}" class="edit-input font-medium" name="sewa_sany"></td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->sewa_hyundai_220 + 0 }}" class="edit-input font-medium" name="sewa_hyundai_220"></td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->sewa_hyundai_330 + 0 }}" class="edit-input font-medium" name="sewa_hyundai_330"></td>
-                        <td class="bg-white"><input type="number" step="any" value="{{ $sale->spare_part + 0 }}" class="edit-input font-medium bg-red-50" name="spare_part"></td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->sewa_loader + 0 }}" class="edit-input font-medium" name="sewa_loader"></td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->sewa_dump_truck + 0 }}" class="edit-input font-medium" name="sewa_dump_truck"></td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->sewa_sany + 0 }}" class="edit-input font-medium" name="sewa_sany"></td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->sewa_hyundai_220 + 0 }}" class="edit-input font-medium" name="sewa_hyundai_220"></td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->sewa_hyundai_330 + 0 }}" class="edit-input font-medium" name="sewa_hyundai_330"></td>
+                        <td class="bg-editable"><input type="number" step="any" value="{{ $sale->spare_part + 0 }}" class="edit-input font-medium shadow-inner" name="spare_part"></td>
                         <td class="text-right font-bold bg-green-highlight" id="sewa-benefit-{{ $sale->id }}">{{ number_format($sale->benefit_sewa, 0, ',', '.') }}</td>
                     </tr>
                     @php

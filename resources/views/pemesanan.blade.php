@@ -213,23 +213,51 @@
                             <input type="text" id="inputProyek" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl" placeholder="Nama Proyek">
                         </div>
                         
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-gray-500 uppercase flex justify-between items-center">
-                                <span>Pilih Lokasi di Peta</span>
-                                <div class="flex items-center gap-3">
-                                    <button onclick="getUserLocation()" type="button" class="flex items-center gap-1 text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-lg hover:bg-primary/20 transition">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <label class="text-xs font-bold text-gray-500 uppercase flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-1.5 h-4 bg-primary rounded-full"></span>
+                                    <span>Pilih Lokasi di Peta</span>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-primary font-black bg-primary/5 px-3 py-1.5 rounded-lg text-[11px] border border-primary/10" id="distanceLabel">Jarak: 0 km</span>
+                                    <button onclick="getUserLocation()" type="button" class="group flex items-center gap-2 bg-primary text-white px-4 py-2 rounded-xl hover:bg-black transition-all shadow-md active:scale-95">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                         </svg>
-                                        Gunakan Lokasi Saat Ini
+                                        <span class="text-[11px] font-extrabold uppercase tracking-tight">Gunakan Lokasi Saat Ini</span>
                                     </button>
-                                    <span class="text-primary" id="distanceLabel">Jarak: 0 km</span>
                                 </div>
                             </label>
-                            <div id="map" class="w-full h-80 rounded-2xl border-2 border-primary/20 shadow-inner z-[10]"></div>
+
+                            <div class="relative group mt-4">
+                                <div class="absolute top-4 left-4 right-4 z-[20] flex flex-col gap-1">
+                                    <div class="flex gap-2">
+                                        <input type="text" id="mapSearchInput" 
+                                               class="flex-1 px-4 py-3 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-xl shadow-2xl outline-none focus:border-primary text-sm placeholder:text-gray-400" 
+                                               placeholder="Cari lokasi desa/kecamatan/jalan..."
+                                               oninput="onSearchInput(this.value)"
+                                               onkeypress="if(event.key === 'Enter') { event.preventDefault(); searchLocation(); }">
+                                        <button type="button" onclick="searchLocation()" class="bg-primary text-white p-3 rounded-xl shadow-lg hover:bg-black transition-colors">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                            </svg>
+                                        </button>
+                                    </div>
+                                    <!-- Suggestions Dropdown -->
+                                    <div id="searchResults" class="hidden bg-white/95 backdrop-blur-sm border border-gray-100 rounded-xl shadow-2xl overflow-hidden animate-fade-in translate-y-1">
+                                        <!-- Suggestions will be injected here -->
+                                    </div>
+                                </div>
+                                <div id="map" class="w-full h-[450px] rounded-[2rem] border-4 border-white shadow-2xl z-[10]"></div>
+                                <div id="search-spinner" class="hidden absolute inset-0 bg-white/50 backdrop-blur-[1px] z-[25] flex items-center justify-center rounded-[2rem]">
+                                    <div class="px-6 py-3 bg-white rounded-2xl shadow-xl flex items-center gap-3 border border-gray-100">
+                                        <div class="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+                                        <span class="text-xs font-bold text-gray-700">Mencari lokasi...</span>
+                                    </div>
+                                </div>
+                            </div>
                             <input type="hidden" id="inputDistance" value="0">
-                        </div>
 
                         <div class="space-y-2">
                             <label class="text-xs font-bold text-gray-500 uppercase">Wilayah Terdeteksi (Otomatis)</label>
@@ -237,7 +265,7 @@
                         </div>
 
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-gray-500 uppercase">Alamat Lengkap Pengiriman (Input Manual)</label>
+                            <label class="text-xs font-bold text-gray-500 uppercase">Alamat Lengkap Pengiriman</label>
                             <textarea id="inputAlamat" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl h-24 outline-none" placeholder="Contoh: Jl. Raya No. 123, Depan Masjid..."></textarea>
                         </div>
                     </div>
@@ -636,6 +664,88 @@
                 autoAddressField.value = "Gagal menghubungi server alamat.";
             }
         }
+
+        async function searchLocation() {
+            const query = document.getElementById('mapSearchInput').value;
+            if (!query) return;
+
+            const resultsContainer = document.getElementById('searchResults');
+            resultsContainer.classList.add('hidden'); // Close suggestions
+
+            const spinner = document.getElementById('search-spinner');
+            spinner.classList.remove('hidden');
+
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`);
+                const data = await response.json();
+
+                if (data && data.length > 0) {
+                    // If multiple results, show them in live search list
+                    renderSearchResults(data);
+                    // Also center on first one
+                    const first = data[0];
+                    selectSuggestedLocation(first.lat, first.lon, first.display_name);
+                } else {
+                    alert("Lokasi tidak ditemukan. Coba masukkan nama daerah yang lebih spesifik.");
+                }
+            } catch (error) {
+                console.error("Search error:", error);
+                alert("Terjadi kesalahan saat mencari lokasi.");
+            } finally {
+                spinner.classList.add('hidden');
+            }
+        }
+
+        let searchDebounceTimer;
+        function onSearchInput(query) {
+            clearTimeout(searchDebounceTimer);
+            if (!query || query.length < 3) {
+                document.getElementById('searchResults').classList.add('hidden');
+                return;
+            }
+            searchDebounceTimer = setTimeout(() => fetchSuggestions(query), 600);
+        }
+
+        async function fetchSuggestions(query) {
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}&limit=5&addressdetails=1`);
+                const data = await response.json();
+                renderSearchResults(data);
+            } catch (error) {
+                console.error("Suggestions fetch error:", error);
+            }
+        }
+
+        function renderSearchResults(data) {
+            const container = document.getElementById('searchResults');
+            if (!data || data.length === 0) {
+                container.classList.add('hidden');
+                return;
+            }
+
+            container.innerHTML = data.map(result => `
+                <div class="px-4 py-3 hover:bg-primary/10 cursor-pointer border-b last:border-none border-gray-100 transition"
+                     onclick="selectSuggestedLocation('${result.lat}', '${result.lon}', '${result.display_name.replace(/'/g, "\\'")}')">
+                    <p class="text-xs font-bold text-gray-800 line-clamp-1">${result.display_name}</p>
+                    <p class="text-[10px] text-gray-400">Pilih lokasi ini</p>
+                </div>
+            `).join('');
+            
+            container.classList.remove('hidden');
+        }
+
+        function selectSuggestedLocation(lat, lon, displayName) {
+            const latlng = { lat: parseFloat(lat), lng: parseFloat(lon) };
+            map.setView(latlng, 15);
+            setDestination(latlng);
+            
+            // Set autoAddress directly from display name or re-reverse geocode for cleaner format
+            // Let's re-reverse geocode to keep the "Provinsi: ..." format consistent
+            reverseGeocode(lat, lon);
+            
+            document.getElementById('searchResults').classList.add('hidden');
+            document.getElementById('mapSearchInput').value = displayName;
+        }
         function setDestination(latlng) {
             if(marker) map.removeLayer(marker);
             marker = L.marker(latlng).addTo(map);
@@ -704,6 +814,15 @@
             @else
                 selectArmada({nama: 'Dump Truck Standard', maksimal_ton: 8, tarif_per_km: 35000});
             @endif
+
+            // Close search results when clicking outside
+            document.addEventListener('click', function(e) {
+                const searchResults = document.getElementById('searchResults');
+                const searchInput = document.getElementById('mapSearchInput');
+                if (searchResults && !searchResults.contains(e.target) && e.target !== searchInput) {
+                    searchResults.classList.add('hidden');
+                }
+            });
         });
     </script>
 

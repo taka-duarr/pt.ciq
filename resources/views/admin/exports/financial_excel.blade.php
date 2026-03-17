@@ -3,11 +3,27 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <style>
-        .header-stone { background-color: #c53030; color: #ffffff; font-weight: bold; text-align: center; border: 1px solid #000000; }
-        .header-sewa { background-color: #742a2a; color: #ffffff; font-weight: bold; text-align: center; border: 1px solid #000000; }
-        .header-summary { background-color: #fefcbf; color: #000000; font-weight: bold; text-align: center; border: 1px solid #000000; }
-        .summary-row { background-color: #fefcbf; font-weight: bold; border: 1px solid #000000; }
-        .grand-total { background-color: #276749; color: #ffffff; font-weight: bold; border: 1px solid #000000; }
+        table { border-collapse: collapse; }
+        th, td { border: 1px solid #000000; padding: 5px; }
+        
+        .header-stone { 
+            background-color: #c53030; color: #ffffff; font-weight: bold; text-align: center; 
+            border: 1px solid #000000;
+        }
+        .header-sewa { 
+            background-color: #742a2a; color: #ffffff; font-weight: bold; text-align: center; 
+            border: 1px solid #000000;
+        }
+        .header-summary { 
+            background-color: #fefcbf; color: #000000; font-weight: bold; text-align: center; 
+            border: 1px solid #000000;
+        }
+        .summary-row td { 
+            background-color: #fefcbf; font-weight: bold; border: 1px solid #000000; 
+        }
+        .grand-total td { 
+            background-color: #276749; color: #ffffff; font-weight: bold; border: 1px solid #000000; 
+        }
         .td-data { border: 1px solid #000000; text-align: right; }
         .td-center { border: 1px solid #000000; text-align: center; }
         .bg-highlight { background-color: #f0fff4; }
@@ -18,7 +34,7 @@
     <br>
 
     <!-- Stone Crusher Table -->
-    <table>
+    <table border="1">
         <thead>
             <tr>
                 <th colspan="10" class="header-stone" style="font-size: 14pt;">STONE CRUSHER</th>
@@ -86,7 +102,7 @@
     <br><br>
 
     <!-- Sewa Table -->
-    <table>
+    <table border="1">
         <thead>
             <tr>
                 <th colspan="8" class="header-sewa" style="font-size: 14pt;">LAPORAN SEWA</th>
@@ -145,7 +161,7 @@
     <br><br>
 
     <!-- Grand Summary -->
-    <table>
+    <table border="1">
         <thead>
             <tr>
                 <th colspan="4" class="header-summary" style="font-size: 14pt;">RINGKASAN LAPORAN</th>
@@ -172,9 +188,9 @@
         <tfoot>
             <tr class="grand-total">
                 <td class="td-center">GRAND TOTAL</td>
-                <td class="td-data text-right">{{ number_format($totals['benefit'], 2, ',', '.') }}</td>
-                <td class="td-data text-right">{{ number_format($sTotals['b'], 2, ',', '.') }}</td>
-                <td class="td-data text-right">{{ number_format($gTotal, 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($totals['benefit'], 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['b'], 2, ',', '.') }}</td>
+                <td class="td-data" style="text-align: right;">{{ number_format($gTotal, 2, ',', '.') }}</td>
             </tr>
         </tfoot>
     </table>
