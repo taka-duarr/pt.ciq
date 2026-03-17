@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class Armada extends Model
 {
-    protected $fillable = ['nama', 'minimal_ton', 'maksimal_ton'];
+    protected $fillable = ['nama', 'minimal_ton', 'maksimal_ton', 'tarif_per_km'];
 }

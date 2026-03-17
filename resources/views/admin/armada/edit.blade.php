@@ -26,6 +26,11 @@
             </div>
         </div>
 
+        <div>
+            <label class="block text-sm font-semibold mb-1">Tarif per KM (Rp)</label>
+            <input type="number" name="tarif_per_km" value="{{ old('tarif_per_km', $armada->tarif_per_km) }}" class="w-full border rounded px-3 py-2 outline-none focus:border-green-600" required>
+        </div>
+
         <div class="pt-4 flex justify-end gap-3">
             <button type="button" onclick="window.parent.closeModal()" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg">Batal</button>
             <button type="submit" class="px-4 py-2 bg-[#005f37] text-white rounded-lg">Simpan Perubahan</button>

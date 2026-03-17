@@ -64,7 +64,7 @@
                 @endif
 
                 <div class="flex flex-wrap items-center gap-6 pt-4">
-                    <a href="{{ route('pemesanan') }}" class="flex-1 md:flex-none bg-primary text-white px-12 py-4 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-green-900/20 hover:bg-[#004c2c] hover:scale-105 transition-all flex items-center justify-center gap-3">
+                    <a href="{{ route('pemesanan', ['produk_id' => $produk->id]) }}" class="flex-1 md:flex-none bg-primary text-white px-12 py-4 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-green-900/20 hover:bg-[#004c2c] hover:scale-105 transition-all flex items-center justify-center gap-3">
                         Pesan Sekarang
                     </a>
                 </div>

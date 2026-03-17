@@ -10,11 +10,12 @@ class Pesanan extends Model
         'nama_pemesan',
         'instansi',
         'alamat',
+        'wilayah',
         'telp',
+        'proyek',
         'produk_id',
         'qty',
         'harga_total',
-        'status',
     ];
 
     public function produk()

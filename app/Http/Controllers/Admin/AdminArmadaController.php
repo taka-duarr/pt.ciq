@@ -25,6 +25,7 @@ class AdminArmadaController extends Controller
             'nama' => 'required|string|max:255',
             'minimal_ton' => 'required|integer|min:0',
             'maksimal_ton' => 'required|integer|min:0|gte:minimal_ton',
+            'tarif_per_km' => 'required|numeric|min:0',
         ]);
 
         Armada::create($validated);
@@ -44,6 +45,7 @@ class AdminArmadaController extends Controller
             'nama' => 'required|string|max:255',
             'minimal_ton' => 'required|integer|min:0',
             'maksimal_ton' => 'required|integer|min:0|gte:minimal_ton',
+            'tarif_per_km' => 'required|numeric|min:0',
         ]);
 
         $armada = Armada::findOrFail($id);

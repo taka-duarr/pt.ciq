@@ -18,11 +18,15 @@ class PesananController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
         $produks = \App\Models\Produk::all();
         $armadas = \App\Models\Armada::all();
-        return view('pemesanan', compact('produks', 'armadas'));
+        
+        $selectedProdukId = $request->query('produk_id');
+        $selectedProduk = $selectedProdukId ? \App\Models\Produk::find($selectedProdukId) : null;
+
+        return view('pemesanan', compact('produks', 'armadas', 'selectedProduk'));
     }
 
     /**
@@ -34,25 +38,25 @@ class PesananController extends Controller
             'nama_pemesan' => 'required|string|max:255',
             'instansi' => 'nullable|string|max:255',
             'alamat' => 'required|string',
+            'wilayah' => 'nullable|string',
             'telp' => 'required|string|max:20',
-            'items' => 'required|array',
-            'items.*.produk_id' => 'required|exists:produks,id',
-            'items.*.qty' => 'required|numeric|min:0.1',
-            'items.*.harga_total' => 'required|numeric',
+            'proyek' => 'nullable|string|max:255',
+            'produk_id' => 'required|exists:produks,id',
+            'qty' => 'required|numeric|min:0.1',
+            'harga_total' => 'required|numeric',
         ]);
 
-        foreach ($request->items as $item) {
-            \App\Models\Pesanan::create([
-                'nama_pemesan' => $request->nama_pemesan,
-                'instansi' => $request->instansi,
-                'alamat' => $request->alamat,
-                'telp' => $request->telp,
-                'produk_id' => $item['produk_id'],
-                'qty' => $item['qty'],
-                'harga_total' => $item['harga_total'],
-                'status' => 'Pending', // default status
-            ]);
-        }
+        \App\Models\Pesanan::create([
+            'nama_pemesan' => $request->nama_pemesan,
+            'instansi' => $request->instansi,
+            'alamat' => $request->alamat,
+            'wilayah' => $request->wilayah,
+            'telp' => $request->telp,
+            'proyek' => $request->proyek,
+            'produk_id' => $request->produk_id,
+            'qty' => $request->qty,
+            'harga_total' => $request->harga_total,
+        ]);
 
         return response()->json(['success' => true, 'message' => 'Pesanan berhasil disimpan.']);
     }

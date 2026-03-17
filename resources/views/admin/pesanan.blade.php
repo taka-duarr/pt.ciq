@@ -96,11 +96,11 @@
         <thead>
           <tr class="border-b text-left text-gray-500">
             <th class="pb-3 px-2">Nama Pemesan</th>
+            <th class="pb-3 px-2">Nama Proyek</th>
             <th class="pb-3 px-2">Produk</th>
             <th class="pb-3 px-2 text-center">Qty</th>
             <th class="pb-3 px-2">Harga</th>
             <th class="pb-3 px-2 text-center">Detail Pemesan</th>
-            <th class="pb-3 px-2">Status</th>
             <th class="pb-3 px-2 text-center">Aksi</th>
           </tr>
         </thead>
@@ -109,35 +109,35 @@
           @forelse ($pesanans as $pesanan)
           <tr class="row-pesanan" data-id="{{ $pesanan->id }}">
             <td class="py-4 px-2 font-medium item-nama">{{ $pesanan->nama_pemesan }}</td>
+            <td class="py-4 px-2 text-gray-600 item-proyek">{{ $pesanan->proyek ?? '-' }}</td>
             <td class="py-4 px-2 text-gray-600 item-produk">{{ $pesanan->produk->nama ?? '-' }}</td>
             <td class="py-4 px-2 text-center text-gray-600 item-qty">{{ $pesanan->qty }} ton</td>
             <td class="py-4 px-2 font-semibold item-harga">Rp {{ number_format($pesanan->harga_total, 0, ',', '.') }}</td>
             <td class="py-4 px-2 text-center">
-              <button onclick="showDetail('{{ $pesanan->nama_pemesan }}', '{{ $pesanan->instansi ?? '-' }}', '{{ $pesanan->alamat }}', '{{ $pesanan->telp }}')"
-                class="text-[var(--primary)] hover:underline font-medium no-print">
+              <button 
+                onclick="showDetail(this)"
+                data-nama="{{ $pesanan->nama_pemesan }}"
+                data-proyek="{{ $pesanan->proyek ?? '-' }}"
+                data-pt="{{ $pesanan->instansi ?? '-' }}"
+                data-wilayah="{{ $pesanan->wilayah }}"
+                data-alamat="{{ $pesanan->alamat }}"
+                data-telp="{{ $pesanan->telp }}"
+                class="text-[var(--primary)] hover:underline font-medium no-print"
+              >
                 Lihat Detail
               </button>
             </td>
-            <td>
-              <div class="relative inline-block">
-                <select onchange="updateStatusColor(this, '{{ $pesanan->id }}')"
-                  @class([
-                      'badge-select px-3 py-1 rounded-full text-xs font-semibold border-none focus:ring-2 focus:ring-[var(--primary)] transition-all',
-                      'bg-green-100 text-green-700' => $pesanan->status === 'Selesai' || $pesanan->status === 'Telah Sampai',
-                      'bg-yellow-100 text-yellow-700' => $pesanan->status === 'Diproses',
-                      'bg-blue-100 text-blue-700' => $pesanan->status === 'Dikirim',
-                      'bg-red-100 text-red-700' => $pesanan->status === 'Dibatalkan',
-                  ])>
-                  <option value="Selesai" {{ $pesanan->status == 'Selesai' ? 'selected' : '' }}>Selesai</option>
-                  <option value="Diproses" {{ $pesanan->status == 'Diproses' ? 'selected' : '' }}>Diproses</option>
-                  <option value="Dikirim" {{ $pesanan->status == 'Dikirim' ? 'selected' : '' }}>Dikirim</option>
-                  <option value="Telah Sampai" {{ $pesanan->status == 'Telah Sampai' ? 'selected' : '' }}>Telah Sampai</option>
-                  <option value="Dibatalkan" {{ $pesanan->status == 'Dibatalkan' ? 'selected' : '' }}>Dibatalkan</option>
-                </select>
-              </div>
-            </td>
             <td class="text-center">
-              <button onclick="printRow(this)" class="px-4 py-1.5 rounded-lg bg-[var(--primary)] text-white hover:bg-[#004c2c] text-xs transition no-print">
+              <button 
+                onclick="printRow(this)" 
+                data-nama="{{ $pesanan->nama_pemesan }}"
+                data-produk="{{ $pesanan->produk->nama ?? '-' }}"
+                data-qty="{{ $pesanan->qty }}"
+                data-harga="{{ $pesanan->harga_total }}"
+                data-proyek="{{ $pesanan->proyek ?? '-' }}"
+                data-telp="{{ $pesanan->telp }}"
+                class="px-4 py-1.5 rounded-lg bg-[var(--primary)] text-white hover:bg-[#004c2c] text-xs transition no-print"
+              >
                 Print
               </button>
             </td>
@@ -149,6 +149,16 @@
           @endforelse
         </tbody>
       </table>
+    </div>
+
+    <!-- PAGINATION UI -->
+    <div class="mt-6 flex justify-between items-center no-print">
+        <p class="text-sm text-gray-500">Menampilkan <span id="pageStart">0</span> - <span id="pageEnd">0</span> dari <span id="totalItems">0</span> data</p>
+        <div class="flex gap-2">
+            <button onclick="prevPage()" id="prevBtn" class="px-3 py-1 bg-white border rounded-lg text-sm disabled:opacity-50">Sebelumnya</button>
+            <div id="pageNumbers" class="flex gap-1"></div>
+            <button onclick="nextPage()" id="nextBtn" class="px-3 py-1 bg-white border rounded-lg text-sm disabled:opacity-50">Berikutnya</button>
+        </div>
     </div>
   </div>
 
@@ -163,6 +173,10 @@
           <label class="text-xs text-gray-400 uppercase tracking-wider">Nama Lengkap</label>
           <p id="det-nama" class="font-semibold text-gray-800 text-lg">-</p>
         </div>
+        <div>
+          <label class="text-xs text-gray-400 uppercase tracking-wider">Nama Proyek</label>
+          <p id="det-proyek" class="font-semibold text-gray-800 text-lg">-</p>
+        </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
             <label class="text-xs text-gray-400 uppercase tracking-wider">Instansi</label>
@@ -174,7 +188,11 @@
           </div>
         </div>
         <div>
-          <label class="text-xs text-gray-400 uppercase tracking-wider">Alamat Pengiriman</label>
+          <label class="text-xs text-gray-400 uppercase tracking-wider">lokasi</label>
+          <p id="det-wilayah" class="text-gray-700 whitespace-pre-line bg-gray-50 p-2 rounded-lg text-sm">-</p>
+        </div>
+        <div>
+          <label class="text-xs text-gray-400 uppercase tracking-wider">Alamat Detail</label>
           <p id="det-alamat" class="text-gray-700">-</p>
         </div>
         <button onclick="closeDetail()" class="w-full mt-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-xl font-medium transition no-print">
@@ -185,60 +203,68 @@
   </div>
 
   <script>
-    // 1. Update Warna Status Saat Dipilih
-    function updateStatusColor(select, id) {
-      const val = select.value;
-      select.classList.remove('bg-green-100', 'text-green-700', 'bg-yellow-100', 'text-yellow-700', 'bg-blue-100', 'text-blue-700', 'bg-red-100', 'text-red-700');
+    // PAGINATION LOGIC
+    let currentPage = 1;
+    const itemsPerPage = 10;
+    const rows = Array.from(document.querySelectorAll('.row-pesanan'));
 
-      if (val === 'Selesai' || val === 'Telah Sampai') {
-        select.classList.add('bg-green-100', 'text-green-700');
-      } else if (val === 'Diproses') {
-        select.classList.add('bg-yellow-100', 'text-yellow-700');
-      } else if (val === 'Dikirim') {
-        select.classList.add('bg-blue-100', 'text-blue-700');
-      } else if (val === 'Dibatalkan') {
-        select.classList.add('bg-red-100', 'text-red-700');
-      }
+    function renderTable() {
+        const totalItems = rows.length;
+        const totalPages = Math.ceil(totalItems / itemsPerPage);
+        
+        if (currentPage < 1) currentPage = 1;
+        if (currentPage > totalPages) currentPage = totalPages;
 
-      // Save to database via AJAX
-      if (id) {
-          fetch(`/admin/pesanan/${id}/status`, {
-              method: 'PATCH',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRF-TOKEN': '{{ csrf_token() }}'
-              },
-              body: JSON.stringify({ status: val })
-          }).then(res => res.json()).then(data => {
-              if(!data.success) {
-                  alert('Gagal mengupdate status di database!');
-              }
-          }).catch(err => {
-              console.error(err);
-              alert('Terjadi kesalahan jaringan.');
-          });
-      }
+        const start = (currentPage - 1) * itemsPerPage;
+        const end = Math.min(start + itemsPerPage, totalItems);
+
+        rows.forEach((row, index) => {
+            row.style.display = (index >= start && index < end) ? '' : 'none';
+        });
+
+        document.getElementById('pageStart').innerText = totalItems > 0 ? start + 1 : 0;
+        document.getElementById('pageEnd').innerText = end;
+        document.getElementById('totalItems').innerText = totalItems;
+
+        document.getElementById('prevBtn').disabled = currentPage === 1;
+        document.getElementById('nextBtn').disabled = currentPage === totalPages || totalPages === 0;
+
+        renderPageNumbers(totalPages);
     }
+
+    function renderPageNumbers(totalPages) {
+        const container = document.getElementById('pageNumbers');
+        container.innerHTML = '';
+        
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement('button');
+            btn.innerText = i;
+            btn.className = `px-3 py-1 rounded-lg text-sm ${i === currentPage ? 'bg-[var(--primary)] text-white' : 'bg-white border text-gray-600'}`;
+            btn.onclick = () => { currentPage = i; renderTable(); };
+            container.appendChild(btn);
+        }
+    }
+
+    function prevPage() { if (currentPage > 1) { currentPage--; renderTable(); } }
+    function nextPage() { if (currentPage * itemsPerPage < rows.length) { currentPage++; renderTable(); } }
+
+    window.addEventListener('DOMContentLoaded', renderTable);
 
     // 2. Fungsi Print Baris Tabel (Invois Ringkas)
    function printRow(btn) {
-    const row = btn.closest('.row-pesanan');
-    const nama = row.querySelector('.item-nama').innerText;
-    const produk = row.querySelector('.item-produk').innerText;
-    const qty = row.querySelector('.item-qty').innerText;
-    const harga = row.querySelector('.item-harga').innerText;
-
     // Susun parameter URL
     const params = new URLSearchParams({
-        nama: nama,
-        produk: produk,
-        qty: qty,
-        harga: harga,
-        mode: 'autoprint' // Trigger khusus untuk cetak otomatis
+        nama: btn.dataset.nama,
+        produk: btn.dataset.produk,
+        qty: btn.dataset.qty,
+        harga: btn.dataset.harga,
+        proyek: btn.dataset.proyek,
+        telp: btn.dataset.telp,
+        mode: 'autoprint'
     });
 
     // Buka invoice.blade.php di tab/jendela baru
-    const printWindow = window.open("{{ route('admin.invoice.show') }}?" + params.toString(), "_blank");
+    window.open("{{ route('admin.invoice.show') }}?" + params.toString(), "_blank");
 }
 
     // 3. Fungsi Print dari Modal
@@ -246,11 +272,13 @@
       window.print();
     }
 
-    function showDetail(nama, pt, alamat, telp) {
-      document.getElementById('det-nama').innerText = nama;
-      document.getElementById('det-pt').innerText = pt;
-      document.getElementById('det-alamat').innerText = alamat;
-      document.getElementById('det-telp').innerText = telp;
+    function showDetail(btn) {
+      document.getElementById('det-nama').innerText = btn.dataset.nama;
+      document.getElementById('det-proyek').innerText = btn.dataset.proyek;
+      document.getElementById('det-pt').innerText = btn.dataset.pt;
+      document.getElementById('det-wilayah').innerText = btn.dataset.wilayah;
+      document.getElementById('det-alamat').innerText = btn.dataset.alamat;
+      document.getElementById('det-telp').innerText = btn.dataset.telp;
       document.getElementById('modalDetail').classList.remove('hidden');
     }
 

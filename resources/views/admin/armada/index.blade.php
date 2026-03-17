@@ -45,6 +45,7 @@
                         <th class="py-3">Nama Armada</th>
                         <th class="py-3">Min. Tonase</th>
                         <th class="py-3">Max. Tonase</th>
+                        <th class="py-3">Tarif / KM</th>
                         <th class="py-3 text-center w-32">Aksi</th>
                     </tr>
                 </thead>
@@ -54,6 +55,7 @@
                         <td class="py-4 text-gray-800 font-medium">{{ $armada->nama }}</td>
                         <td>{{ $armada->minimal_ton }} Ton</td>
                         <td>{{ $armada->maksimal_ton }} Ton</td>
+                        <td class="text-green-600 font-bold">Rp {{ number_format($armada->tarif_per_km, 0, ',', '.') }}</td>
                         <td class="text-center">
                             <div class="flex items-center justify-center gap-2">
                                 <button onclick="openEditModal('{{ route('admin.armada.edit', $armada->id) }}')" class="p-2 rounded-md bg-blue-100 hover:bg-blue-200 text-blue-700 transition">

@@ -10,6 +10,8 @@
     <link rel="icon" type="img/logo.png" href="img/logo.png">
     <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     <style>
         :root {
             --primary: #005f37;
@@ -52,7 +54,7 @@
 
         <div class="text-center">
             <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-gray-900 uppercase">
-                Pemesanan Material Batu
+                Simulasi Harga Loco / Franco
             </h1>
         </div>
 
@@ -72,9 +74,9 @@
     <main class="max-w-7xl mx-auto px-6 mt-10">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
 
-            <div class="lg:col-span-8 space-y-8 no-print">
+            <div class="lg:col-span-8 space-y-8">
 
-                <section class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
+                <section class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 no-print">
                     <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
                         <span class="w-1.5 h-6 bg-primary rounded-full"></span> 1. Informasi Pemesan
                     </h3>
@@ -98,17 +100,61 @@
                     </div>
                 </section>
 
-                <section class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
+                <section class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 no-print">
                     <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
                         <span class="w-1.5 h-6 bg-primary rounded-full"></span> 2. Detail Material
                     </h3>
 
-                    <div id="materialContainer" class="space-y-4">
+                    @if($selectedProduk)
+                        <div class="p-6 bg-primary/5 rounded-[1.5rem] border-2 border-primary/20 flex items-center justify-between group">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 bg-primary rounded-xl flex items-center justify-center text-white font-black">
+                                    {{ substr($selectedProduk->nama, 0, 1) }}
+                                </div>
+                                <div>
+                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Material Terpilih</p>
+                                    <p class="font-black text-gray-800 text-lg sm:text-xl">{{ $selectedProduk->nama }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <input type="hidden" id="selectedProductId" value="{{ $selectedProduk->id }}">
+                        <input type="hidden" id="selectedProductName" value="{{ $selectedProduk->nama }}">
+                    @else
+                        <div id="productGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                            @foreach($produks as $produk)
+                                <div onclick="selectProduct(this, {{ json_encode($produk) }})" 
+                                    class="product-card p-4 rounded-2xl border-2 border-gray-100 bg-gray-50 cursor-pointer hover:border-primary/30 transition-all text-center group">
+                                    <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">Material</p>
+                                    <p class="font-bold text-gray-800 text-xs sm:text-sm leading-tight">{{ $produk->nama }}</p>
+                                </div>
+                            @endforeach
+                        </div>
+                        <input type="hidden" id="selectedProductId" value="">
+                        <input type="hidden" id="selectedProductName" value="">
+                    @endif
+
+                    <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-500 uppercase">Harga Per Ton</label>
+                            <div class="relative">
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 font-bold text-gray-400 text-sm">Rp</div>
+                                <input type="number" id="inputPrice" value="0" step="500" min="0" 
+                                       class="w-full pl-12 pr-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-primary text-xl font-black text-gray-800" 
+                                       oninput="calculateOrder()">
+                            </div>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-500 uppercase">Jumlah Pesanan (Ton)</label>
+                            <div class="relative">
+                                <input type="number" id="inputQty" value="0" step="0.1" min="0.1" 
+                                       class="w-full px-4 py-4 bg-gray-50 border-2 border-gray-200 rounded-2xl outline-none focus:border-primary text-xl font-black text-gray-800 pr-16" 
+                                       oninput="calculateOrder()">
+                                <div class="absolute right-4 top-1/2 -translate-y-1/2 font-bold text-gray-400 uppercase tracking-widest text-xs">Ton</div>
+                            </div>
+                        </div>
                     </div>
 
-                    <button onclick="addMaterialRow()" class="mt-6 w-full py-3 border-2 border-dashed border-primary/30 text-primary font-bold rounded-xl hover:bg-primary/5 transition flex items-center justify-center gap-2">
-                        <span>+</span> Tambah Jenis Batu Lain
-                    </button>
 
                     <div class="mt-8 p-6 bg-primary/5 rounded-2xl border border-primary/10 flex items-center justify-between">
                         <div class="flex items-center gap-4 text-primary font-bold">
@@ -147,6 +193,7 @@
                                 </div>
                                 <input type="hidden" id="selectedArmadaVal" value="">
                                 <input type="hidden" id="selectedArmadaNama" value="">
+                                <input type="hidden" id="selectedArmadaTarif" value="0">
                             </div>
                         </div>
                         <div class="text-right">
@@ -156,24 +203,43 @@
                     </div>
                 </section>
 
-                <section class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100">
+                <section class="bg-white p-8 rounded-[2rem] shadow-sm border border-gray-100 no-print">
                     <h3 class="text-lg font-bold mb-6 flex items-center gap-2">
                         <span class="w-1.5 h-6 bg-primary rounded-full"></span> 3. Lokasi Pengiriman
                     </h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div class="space-y-4 mb-6">
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-gray-500 uppercase">Nama Proyek</label>
+                            <label class="text-xs font-bold text-gray-500 uppercase">Input Nama Proyek</label>
                             <input type="text" id="inputProyek" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl" placeholder="Nama Proyek">
                         </div>
+                        
                         <div class="space-y-2">
-                            <label class="text-xs font-bold text-gray-500 uppercase">Kota / Kabupaten</label>
-                            <select id="selectKota" onchange="calculateOrder()" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl outline-none">
-                                <option value="40">Gresik (40 km)</option>
-                                <option value="15">Surabaya (15 km)</option>
-                                <option value="60">Sidoarjo (60 km)</option>
-                            </select>
+                            <label class="text-xs font-bold text-gray-500 uppercase flex justify-between items-center">
+                                <span>Pilih Lokasi di Peta</span>
+                                <div class="flex items-center gap-3">
+                                    <button onclick="getUserLocation()" type="button" class="flex items-center gap-1 text-[10px] bg-primary/10 text-primary px-2 py-1 rounded-lg hover:bg-primary/20 transition">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        </svg>
+                                        Gunakan Lokasi Saat Ini
+                                    </button>
+                                    <span class="text-primary" id="distanceLabel">Jarak: 0 km</span>
+                                </div>
+                            </label>
+                            <div id="map" class="w-full h-80 rounded-2xl border-2 border-primary/20 shadow-inner z-[10]"></div>
+                            <input type="hidden" id="inputDistance" value="0">
                         </div>
-                        <textarea id="inputAlamat" class="md:col-span-2 w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl h-24 outline-none" placeholder="Alamat Lengkap Pengiriman..."></textarea>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-500 uppercase">Wilayah Terdeteksi (Otomatis)</label>
+                            <textarea id="autoAddress" readonly class="w-full px-4 py-3 bg-gray-100 border border-gray-200 rounded-xl h-20 outline-none text-sm font-medium text-gray-600" placeholder="Pilih lokasi di peta untuk mendeteksi wilayah..."></textarea>
+                        </div>
+
+                        <div class="space-y-2">
+                            <label class="text-xs font-bold text-gray-500 uppercase">Alamat Lengkap Pengiriman (Input Manual)</label>
+                            <textarea id="inputAlamat" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl h-24 outline-none" placeholder="Contoh: Jl. Raya No. 123, Depan Masjid..."></textarea>
+                        </div>
                     </div>
                 </section>
 
@@ -199,6 +265,7 @@
                             <div class="text-right">
                                 <p class="text-gray-400 font-bold mb-1">Tujuan Proyek:</p>
                                 <p id="invProyek" class="font-bold text-gray-800 text-sm"></p>
+                                <p id="invAutoAddress" class="text-gray-600 text-[10px] leading-tight mb-1 whitespace-pre-line"></p>
                                 <p id="invAlamat" class="text-gray-600 italic"></p>
                             </div>
                         </div>
@@ -217,7 +284,7 @@
 
                         <div class="space-y-2 text-right pt-4 border-t border-gray-100">
                             <p class="text-xs text-gray-500">Total Berat: <span id="invTotalWeight" class="font-bold text-gray-800">0</span> Ton</p>
-                            <p class="text-xs text-gray-500">Biaya Kirim (<span id="invTrips">0</span> Unit): <span id="invShippingCost" class="font-bold text-gray-800"></span></p>
+                            <p class="text-xs text-gray-500">Biaya Kirim: <span id="invShippingCost" class="font-bold text-gray-800"></span> (<span id="invTrips">0</span> Unit <span id="invArmadaName"></span>)</p>
                             <p class="text-xs text-gray-500">PPN (11%): <span id="invPPN" class="font-bold text-gray-800"></span></p>
                             <div class="bg-primary text-white p-4 rounded-xl inline-block mt-4 shadow-lg">
                                 <p class="text-[10px] uppercase opacity-70 mb-1">Total Tagihan Estimasi</p>
@@ -243,6 +310,10 @@
                         <div class="flex justify-between border-b border-white/10 pb-4">
                             <span class="opacity-70 text-[10px] uppercase">Biaya Kirim</span>
                             <span class="font-bold" id="resShipping">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-4">
+                            <span class="opacity-70 text-[10px] uppercase">Jarak Estimasi</span>
+                            <span class="font-bold"><span id="resDistance">0</span> KM</span>
                         </div>
                         <div class="flex justify-between border-b border-white/10 pb-4">
                             <span class="opacity-70 text-[10px] uppercase">PPN (11%)</span>
@@ -282,40 +353,35 @@
         const materialOptions = JSON.parse(document.getElementById('material-options-data').textContent);
 
         // Jalankan baris material pertama saat load
-        window.onload = () => addMaterialRow();
-
-        function addMaterialRow() {
-            const container = document.getElementById('materialContainer');
-            const rowId = Date.now();
-            const html = `
-                <div id="row-${rowId}" class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 relative group animate-fade-in">
-                    <div class="md:col-span-4 space-y-2">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase">Produk</label>
-                        <select onchange="calculateOrder()" class="material-select w-full px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-primary">
-                            ${materialOptions.map(m => `<option value="${m.name}" data-id="${m.id}">${m.name}</option>`).join('')}
-                        </select>
-                    </div>
-                    <div class="md:col-span-3 space-y-2">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase">Harga / Ton (Rp)</label>
-                        <input type="number" oninput="calculateOrder()" class="material-price w-full px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-primary" placeholder="Masukkan harga...">
-                    </div>
-                    <div class="md:col-span-4 space-y-2">
-                        <label class="text-[10px] font-bold text-gray-400 uppercase">Jumlah (Ton)</label>
-                        <input type="number" oninput="calculateOrder()" class="material-qty w-full px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-primary" value="0">
-                    </div>
-                    <div class="md:col-span-1 flex items-end justify-center pb-2">
-                        <button onclick="removeRow(${rowId})" class="text-red-400 hover:text-red-600 text-2xl font-bold transition">×</button>
-                    </div>
-                </div>`;
-            container.insertAdjacentHTML('beforeend', html);
-        }
-
-        function removeRow(id) {
-            const rows = document.querySelectorAll('[id^="row-"]');
-            if (rows.length > 1) {
-                document.getElementById(`row-${id}`).remove();
-                calculateOrder();
+        @if($selectedProduk)
+        window.addEventListener('DOMContentLoaded', () => {
+            calculateOrder(); 
+        });
+        @else
+        window.onload = () => {
+            const firstProductCard = document.querySelector('.product-card');
+            if (firstProductCard) {
+                const produkData = JSON.parse(firstProductCard.dataset.produk);
+                selectProduct(firstProductCard, produkData);
             }
+        };
+        @endif
+
+        function selectProduct(el, produk) {
+            // Unselect all
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.classList.remove('border-primary', 'bg-primary/5', 'ring-4', 'ring-primary/10');
+                card.classList.add('border-gray-100', 'bg-gray-50');
+            });
+
+            // Select active
+            el.classList.remove('border-gray-100', 'bg-gray-50');
+            el.classList.add('border-primary', 'bg-primary/5', 'ring-4', 'ring-primary/10');
+
+            document.getElementById('selectedProductId').value = produk.id;
+            document.getElementById('selectedProductName').value = produk.nama;
+
+            calculateOrder();
         }
 
         function formatRupiah(num) {
@@ -327,27 +393,19 @@
         }
 
         function calculateOrder() {
-            let totalMaterialCost = 0;
-            let totalWeight = 0;
+            const price = parseInt(document.getElementById('inputPrice').value || 0);
+            const qty = parseFloat(document.getElementById('inputQty').value || 0);
+            const totalMaterialCost = price * qty;
+            const totalWeight = qty;
 
-            const selects = document.querySelectorAll('.material-select');
-            const prices = document.querySelectorAll('.material-price');
-            const qtys = document.querySelectorAll('.material-qty');
-
-            selects.forEach((select, i) => {
-                const price = parseInt(prices[i].value || 0);
-                const qty = parseFloat(qtys[i].value || 0);
-                totalMaterialCost += (price * qty);
-                totalWeight += qty;
-            });
-
-            const distance = parseInt(document.getElementById('selectKota').value);
+            const distance = parseFloat(document.getElementById('inputDistance').value) || 0;
             
             const armadaCapacity = parseFloat(document.getElementById('selectedArmadaVal').value) || 8;
             const armadaNama = document.getElementById('selectedArmadaNama').value || "Dump Truck";
+            const armadaTarif = parseFloat(document.getElementById('selectedArmadaTarif').value) || 0;
 
             const trips = Math.ceil(totalWeight / armadaCapacity) || 0;
-            const shippingCost = distance * 5000 * trips;
+            const shippingCost = distance * armadaTarif * trips;
             
             const totalBeforePPN = totalMaterialCost + shippingCost;
             const ppn = totalBeforePPN * 0.11;
@@ -357,6 +415,7 @@
             document.getElementById('displayTrips').innerText = trips;
             document.getElementById('resTotalWeight').innerText = totalWeight;
             document.getElementById('resShipping').innerText = formatRupiah(shippingCost);
+            document.getElementById('resDistance').innerText = distance.toFixed(1);
             document.getElementById('resPPN').innerText = formatRupiah(ppn);
             document.getElementById('resTotal').innerText = formatRupiah(grandTotal);
 
@@ -367,7 +426,8 @@
                 grandTotal,
                 totalWeight,
                 trips,
-                armadaNama
+                armadaNama,
+                distance
             };
         }
 
@@ -379,16 +439,15 @@
             document.getElementById('invNama').innerText = document.getElementById('inputNama').value || "Pelanggan";
             document.getElementById('invPerusahaan').innerText = document.getElementById('inputPerusahaan').value || "Umum";
             document.getElementById('invProyek').innerText = document.getElementById('inputProyek').value || "-";
+            document.getElementById('invAutoAddress').innerText = document.getElementById('autoAddress').value || "";
             document.getElementById('invAlamat').innerText = document.getElementById('inputAlamat').value || "-";
 
             document.getElementById('invTotalWeight').innerText = data.totalWeight;
             document.getElementById('invTrips').innerText = data.trips;
+            document.getElementById('invArmadaName').innerText = data.armadaNama;
             document.getElementById('invShippingCost').innerText = formatRupiah(data.shippingCost);
             document.getElementById('invPPN').innerText = formatRupiah(data.ppn);
             
-            // Tambahkan info armada di invoice (opsional, tapi bagus untuk verifikasi)
-            document.getElementById('invTrips').parentElement.innerHTML = `Biaya Kirim (${data.trips} Unit ${data.armadaNama}): <span id="invShippingCost" class="font-bold text-gray-800">${formatRupiah(data.shippingCost)}</span>`;
-
             document.getElementById('invTotalCost').innerText = formatRupiah(data.grandTotal);
             document.getElementById('invDate').innerText = new Date().toLocaleDateString('id-ID');
             document.getElementById('invId').innerText = "#CIQ-" + Math.floor(Math.random() * 90000 + 10000);
@@ -396,22 +455,19 @@
             // Dinamis tabel material
             const tbody = document.getElementById('invTableBody');
             tbody.innerHTML = '';
-            const selects = document.querySelectorAll('.material-select');
-            const prices = document.querySelectorAll('.material-price');
-            const qtys = document.querySelectorAll('.material-qty');
+            
+            const productName = document.getElementById('selectedProductName').value;
+            const weight = parseFloat(document.getElementById('inputQty').value || 0);
+            const price = parseInt(document.getElementById('inputPrice').value || 0);
 
-            selects.forEach((s, i) => {
-                const q = parseFloat(qtys[i].value || 0);
-                if (q > 0) {
-                    const p = parseInt(prices[i].value || 0);
-                    tbody.innerHTML += `
-                        <tr>
-                            <td class="p-4 font-bold text-gray-800">${s.value}</td>
-                            <td class="p-4 text-center text-gray-600">${q} Ton</td>
-                            <td class="p-4 text-right font-black">${formatRupiah(p * q)}</td>
-                        </tr>`;
-                }
-            });
+            if (weight > 0 && productName) {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="p-4 font-bold text-gray-800">${productName}</td>
+                        <td class="p-4 text-center text-gray-600">${weight} Ton</td>
+                        <td class="p-4 text-right font-black">${formatRupiah(price * weight)}</td>
+                    </tr>`;
+            }
 
             section.scrollIntoView({
                 behavior: 'smooth'
@@ -428,27 +484,18 @@
             const proyek = document.getElementById('inputProyek').value || "-";
             const totalHargaText = document.getElementById('resTotal').innerText;
 
-            let detailProduk = "";
-            let items = [];
-            const selects = document.querySelectorAll('.material-select');
-            const prices = document.querySelectorAll('.material-price');
-            const qtys = document.querySelectorAll('.material-qty');
+            const productName = document.getElementById('selectedProductName').value;
+            const productPrice = document.getElementById('inputPrice').value;
+            const productId = document.getElementById('selectedProductId').value;
+            const qty = document.getElementById('inputQty').value;
 
-            selects.forEach((s, i) => {
-                const q = parseFloat(qtys[i].value || 0);
-                if (q > 0) {
-                    const price = parseInt(prices[i].value || 0);
-                    detailProduk += `   - ${s.value}: ${q} Ton (@${formatRupiah(price)})\n`;
-                    items.push({
-                        produk_id: s.options[s.selectedIndex].dataset.id,
-                        qty: q,
-                        harga_total: (price * q)
-                    });
-                }
-            });
+            if (!productName) {
+                alert("Pilih jenis material terlebih dahulu.");
+                return;
+            }
 
-            if (items.length === 0) {
-                alert("Harap pilih minimal satu produk dan masukkan jumlahnya.");
+            if (qty <= 0) {
+                alert("Masukkan jumlah (Ton) material yang valid.");
                 return;
             }
 
@@ -469,8 +516,12 @@
                         nama_pemesan: nama,
                         instansi: perusahaan,
                         alamat: alamat,
+                        wilayah: document.getElementById('autoAddress').value,
                         telp: nomorWA,
-                        items: items
+                        proyek: proyek,
+                        produk_id: productId,
+                        qty: qty,
+                        harga_total: data.grandTotal
                     })
                 });
 
@@ -497,36 +548,20 @@
     `WhatsApp    : ${nomorWA}\n\n` +
 
     `DETAIL PESANAN\n` +
-    `${detailProduk}` +
+    `• ${productName} (${qty} Ton): ${formatRupiah(data.totalMaterialCost)}\n` +
     `Total Berat : ${data.totalWeight} Ton\n` +
+    `Jarak       : ${data.distance.toFixed(1)} KM\n` +
     `Estimasi Unit: ${data.trips} Unit (${data.armadaNama})\n\n` +
 
     `*LOKASI PENGIRIMAN*\n` +
     `Nama Proyek : ${proyek}\n` +
-    `Alamat      : ${alamat}\n\n` +
+    `Alamat Detail: ${alamat}\n\n` +
 
     `*ESTIMASI TAGIHAN*\n` +
     `Total Estimasi : ${formatRupiah(data.grandTotal - data.ppn)}\n` +
     `PPN (11%)      : ${formatRupiah(data.ppn)}\n` +
     `Total Akhir    : ${totalHargaText}\n\n` +
-
     `────────────────────────\n` +
-    `*PEMBAYARAN TRANSFER*\n\n` +
-
-    `Bank BCA\n` +
-    `No Rekening : 1234567890\n` +
-    `Atas Nama   : PT Conbloc Indotama\n\n` +
-
-    `Bank Mandiri\n` +
-    `No Rekening : 9876543210\n` +
-    `Atas Nama   : PT Conbloc Indotama\n\n` +
-
-    `────────────────────────\n` +
-    `*CATATAN*\n` +
-    `• Harga dapat berubah sesuai jarak pengiriman\n` +
-    `• Pengiriman dilakukan setelah pembayaran dikonfirmasi\n` +
-    `• Mohon kirim bukti transfer ke admin\n\n` +
-
     `_Mohon konfirmasi jadwal pengiriman dan ketersediaan stok._`;
 
             // Membuka WhatsApp di tab baru
@@ -544,25 +579,130 @@
             document.getElementById('selectedArmadaLabel').innerText = `${armada.nama} (${armada.maksimal_ton}T)`;
             document.getElementById('selectedArmadaVal').value = armada.maksimal_ton;
             document.getElementById('selectedArmadaNama').value = armada.nama;
+            document.getElementById('selectedArmadaTarif').value = armada.tarif_per_km;
             document.getElementById('armadaOptions').classList.add('hidden');
             calculateOrder();
         }
 
-        // Close dropdown when click outside
-        window.addEventListener('click', function(e) {
-            const dropdown = document.getElementById('armadaOptions');
-            const btn = document.getElementById('armadaDropdownBtn');
-            if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
-                dropdown.classList.add('hidden');
-            }
-        });
+        // Leaflet Maps Integration
+        let map, marker, quarryMarker;
+        const quarryCoords = [-7.755892249549022, 112.97445744563642]; // Titik Lokasi Pabrik/Quarry
 
-        // Set default armada pada load
+        function initMap() {
+            map = L.map('map').setView(quarryCoords, 11);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; OpenStreetMap contributors'
+            }).addTo(map);
+
+            const quarryIcon = L.icon({
+                iconUrl: 'https://cdn-icons-png.flaticon.com/512/4320/4320350.png',
+                iconSize: [32, 32],
+                iconAnchor: [16, 32]
+            });
+
+            quarryMarker = L.marker(quarryCoords, {icon: quarryIcon}).addTo(map)
+                .bindPopup("<b>Conbloc Indotama Quarry</b><br>Titik Muat Material")
+                .openPopup();
+
+            map.on('click', function(e) {
+                setDestination(e.latlng);
+                reverseGeocode(e.latlng.lat, e.latlng.lng);
+                calculateOrder();
+            });
+        }
+
+        async function reverseGeocode(lat, lng) {
+            const autoAddressField = document.getElementById('autoAddress');
+            autoAddressField.value = "Mendeteksi wilayah...";
+            
+            try {
+                const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
+                const data = await response.json();
+                
+                if (data && data.address) {
+                    const addr = data.address;
+                    // Fallback keys for Indonesia address structure
+                    const province = addr.state || addr.region || addr.province || "";
+                    const regency = addr.city || addr.town || addr.municipality || addr.county || addr.city_district || "";
+                    const district = addr.suburb || addr.village || addr.neighbourhood || addr.city_district || addr.district || "";
+                    
+                    const formatted = `Provinsi: ${province}\nKab/Kota: ${regency}\nKecamatan: ${district}`;
+                    autoAddressField.value = formatted;
+                } else {
+                    autoAddressField.value = "Gagal mendeteksi wilayah.";
+                }
+            } catch (error) {
+                console.error("Reverse geocoding error:", error);
+                autoAddressField.value = "Gagal menghubungi server alamat.";
+            }
+        }
+        function setDestination(latlng) {
+            if(marker) map.removeLayer(marker);
+            marker = L.marker(latlng).addTo(map);
+            
+            // Hitung Jarak (Earth Radius ~6371km)
+            const distance = calculateDistance(quarryCoords[0], quarryCoords[1], latlng.lat, latlng.lng);
+            
+            document.getElementById('inputDistance').value = distance.toFixed(1);
+            document.getElementById('distanceLabel').innerText = `Jarak: ${distance.toFixed(1)} km`;
+            
+            calculateOrder();
+        }
+
+        function getUserLocation() {
+            if (!navigator.geolocation) {
+                alert("Geolocation tidak didukung oleh browser Anda.");
+                return;
+            }
+
+            const btn = event.currentTarget;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = "Mencari Lokasi...";
+            btn.disabled = true;
+
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const latlng = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+                    map.setView(latlng, 15);
+                    setDestination(latlng);
+                    reverseGeocode(latlng.lat, latlng.lng);
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                },
+                (error) => {
+                    console.error("Error getting location:", error);
+                    alert("Gagal mengambil lokasi. Pastikan izin lokasi aktif.");
+                    btn.innerHTML = originalText;
+                    btn.disabled = false;
+                }
+            );
+        }
+
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const p = 0.017453292519943295; // Math.PI / 180
+            const c = Math.cos;
+            const a = 0.5 - c((lat2 - lat1) * p)/2 + 
+                    c(lat1 * p) * c(lat2 * p) * 
+                    (1 - c((lon2 - lon1) * p))/2;
+            return 12742 * Math.asin(Math.sqrt(a)); // 2 * R; R = 6371 km
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            initMap();
+            
+            // Auto select first product
+            const firstProductCard = document.querySelector('.product-card');
+            if (firstProductCard) {
+                firstProductCard.click();
+            }
+
             @if(count($armadas) > 0)
                 selectArmada({!! json_encode($armadas[0]) !!});
             @else
-                selectArmada({nama: 'Dump Truck Standard', maksimal_ton: 8});
+                selectArmada({nama: 'Dump Truck Standard', maksimal_ton: 8, tarif_per_km: 35000});
             @endif
         });
     </script>

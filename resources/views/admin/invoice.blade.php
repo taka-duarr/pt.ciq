@@ -5,7 +5,6 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <title>Struk Pembayaran - PT CIQ</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         @media print {
             body { background: white; }
@@ -27,29 +26,27 @@
                 </div>
             </div>
             <div class="text-right">
-                <h2 class="text-5xl font-black text-gray-800 tracking-tighter mb-1">STRUK</h2>
-                <p class="text-sm font-bold text-gray-600 uppercase">Tanggal. 03.20.2026</p>
+                <h2 class="text-5xl font-black text-gray-800 tracking-tighter mb-1 uppercase">Struk</h2>
+                <p class="text-sm font-bold text-gray-600 uppercase">Tanggal. {{ date('m.d.Y') }}</p>
             </div>
         </div>
 
         <div class="grid grid-cols-2 gap-8 mb-12 bg-gray-50 p-6 rounded-sm border border-gray-100">
             <div>
                 <h3 class="font-black text-xs uppercase mb-3 tracking-widest text-gray-400">Tagihan Untuk</h3>
-                <p class="font-bold text-gray-800 mb-1" id="inv-nama">Andi Saputra</p>
-                <p class="text-sm text-gray-600 leading-relaxed" id="inv-alamat">PT Sumber Jaya<br>Gresik, Jawa Timur</p>
-                <p class="text-sm font-bold text-gray-800 mt-2" id="inv-telp">0812-3456-7890</p>
+                <p class="font-bold text-gray-800 mb-1" id="inv-nama">{{ $nama ?? '-' }}</p>
+                <p class="text-sm font-bold text-gray-800 mt-2" id="inv-telp">{{ $telp ?? '-' }}</p>
             </div>
             <div>
                 <h3 class="font-black text-xs uppercase mb-3 tracking-widest text-gray-400">Tujuan Pengiriman</h3>
-                <p class="font-bold text-gray-400 mb-1 uppercase text-[10px]">Alamat Kantor</p>
-                <p class="text-sm text-gray-600 leading-relaxed">Gresik, Jawa Timur<br>Indonesia</p>
-                <p class="text-sm font-bold text-gray-800 mt-2">0812-3456-7890</p>
+                <p class="font-bold text-gray-400 mb-1 uppercase text-[10px]">Nama Proyek</p>
+                <p class="text-sm text-gray-800 font-bold tracking-tight leading-relaxed uppercase">{{ $proyek ?? '-' }}</p>
             </div>
         </div>
 
         <div class="flex justify-between border-b-2 border-black pb-2 mb-4">
-            <p class="text-xs font-bold uppercase tracking-widest">Tanggal: <span id="current-date">03 Maret 2026</span></p>
-            <p class="text-xs font-bold uppercase tracking-widest">No. Struk: <span id="inv-id">BTOIUQGW21</span></p>
+            <p class="text-xs font-bold uppercase tracking-widest">Tanggal: <span id="current-date">{{ date('d F Y') }}</span></p>
+            <p class="text-xs font-bold uppercase tracking-widest">No. Struk: <span id="inv-id">#CIQ-{{ rand(100000, 990000) }}</span></p>
         </div>
 
         <table class="w-full text-left mb-8">
@@ -63,15 +60,21 @@
                 </tr>
             </thead>
             <tbody class="text-sm divide-y divide-gray-100">
+                @php
+                    $h = (int)$harga;
+                    $q = (float)$qty;
+                    $total = $h; // Since $harga is already total in some context, but here let's assume $harga is total as passed from pesanan.blade.php row
+                    // Actually in pesanan.blade.php: harga_total is stored.
+                @endphp
                 <tr>
                     <td class="py-4 font-bold text-gray-400">1.</td>
                     <td class="py-4">
-                        <p class="font-bold text-gray-800" id="inv-produk">Batu Pecah 5-10 mm</p>
+                        <p class="font-bold text-gray-800" id="inv-produk">{{ $produk ?? '-' }}</p>
                         <p class="text-xs text-gray-400 italic">Bahan bangunan berkualitas tinggi</p>
                     </td>
-                    <td class="py-4 text-right font-medium">Rp 150.000</td>
-                    <td class="py-4 text-center font-bold" id="inv-qty">12 Ton</td>
-                    <td class="py-4 text-right font-black" id="inv-total">Rp 1.800.000</td>
+                    <td class="py-4 text-right font-medium">Rp {{ number_format($q > 0 ? $h / $q : 0, 0, ',', '.') }}</td>
+                    <td class="py-4 text-center font-bold" id="inv-qty">{{ $q }} Ton</td>
+                    <td class="py-4 text-right font-black" id="inv-total">Rp {{ number_format($h, 0, ',', '.') }}</td>
                 </tr>
             </tbody>
         </table>
@@ -79,13 +82,13 @@
         <div class="grid grid-cols-2 gap-12 pt-4 border-t border-gray-100">
             <div>
                 <div class="bg-gray-50 p-6 rounded-sm">
-                    <h3 class="text-2xl font-black text-gray-800 mb-2 tracking-tighter" id="grand-total">Rp 1.800.000</h3>
+                    <h3 class="text-2xl font-black text-gray-800 mb-2 tracking-tighter" id="grand-total">Rp {{ number_format($h, 0, ',', '.') }}</h3>
                     <p class="text-[10px] uppercase font-bold text-gray-400 mb-4 tracking-widest">Total Tagihan</p>
                     
                     <div class="space-y-4">
                         <div>
                             <p class="text-[10px] uppercase font-black text-gray-800 tracking-widest">Info Pembayaran:</p>
-                            <p class="text-xs text-gray-500">Bank Mandiri: 123-456-7890<br>A/N: Firman Ardiansyah</p>
+                            <p class="text-xs text-gray-500">Bank BCA: 1234567890<br>A/N: PT Conbloc Indotama</p>
                         </div>
                     </div>
                 </div>
@@ -94,23 +97,23 @@
             <div class="space-y-3">
                 <div class="flex justify-between text-sm uppercase font-bold text-gray-400">
                     <span>Subtotal:</span>
-                    <span class="text-gray-800" id="subtotal">Rp 1.800.000</span>
+                    <span class="text-gray-800" id="subtotal">Rp {{ number_format($h, 0, ',', '.') }}</span>
                 </div>
                 <div class="flex justify-between text-sm uppercase font-bold text-gray-400">
                     <span>Pajak (0%):</span>
-                    <span class="text-gray-800">0</span>
+                    <span class="text-gray-800">Rp 0</span>
                 </div>
                 <div class="flex justify-between text-lg uppercase font-black text-gray-800 pt-4 border-t">
                     <span>Total Keseluruhan:</span>
-                    <span id="grand-total-2">Rp 1.800.000</span>
+                    <span id="grand-total-2">Rp {{ number_format($h, 0, ',', '.') }}</span>
                 </div>
             </div>
         </div>
 
         <div class="absolute bottom-12 left-12 right-12 flex justify-between items-center text-[10px] text-gray-400 uppercase tracking-widest border-t pt-4">
-            <p>Jl. Contoh No. 123, Surabaya, Jawa Timur • websiteanda.com</p>
+            <p>Conbloc Indotama Quarry • Pasuruan, Jawa Timur</p>
             <div class="flex gap-4">
-                <span>0812-3456-7890</span>
+                <span>0813-5739-8265</span>
             </div>
         </div>
     </div>

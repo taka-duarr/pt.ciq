@@ -7,6 +7,7 @@
     <title>Katalog Produk | PT Conbloc Indotama Quarry</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <style>
         :root {
             --primary: #005f37;
@@ -66,7 +67,7 @@
                     <h3 class="text-xl font-black text-gray-800 mb-2">{{ $produk->nama }}</h3>
                     <p class="text-xs text-gray-400 leading-relaxed mb-6 line-clamp-2 italic">{{ $produk->kategori }}</p>
                     <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-6">
-                        <p class="text-lg font-black text-primary italic">Rp {{ number_format($produk->harga, 0, ',', '.') }} <span class="text-[10px] text-gray-400 not-italic uppercase">/ Ton</span></p>
+                        <p class="text-sm font-bold text-primary uppercase tracking-widest italic">Kualitas Premium</p>
                         <a href="{{ route('detailProduk', $produk->id) }}" class="bg-primary text-white px-6 py-2.5 rounded-2xl shadow-lg hover:scale-110 transition active:scale-95 font-bold text-xs uppercase tracking-widest">
                         Lihat
                         </a>
