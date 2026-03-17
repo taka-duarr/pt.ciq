@@ -5,6 +5,9 @@ use App\Http\Controllers\Admin\AdminProdukController;
 use App\Http\Controllers\Admin\AdminPesananController;
 use App\Http\Controllers\Admin\AdminInvoiceController;
 use App\Http\Controllers\Admin\AdminFinancialController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\ShadowAuthController;
+use App\Http\Controllers\Admin\AdminArmadaController;
 
 use App\Http\Controllers\FrontEndController;
 
@@ -14,12 +17,20 @@ Route::get('/katalog-produk', [FrontEndController::class, 'katalogProduk'])->nam
 Route::get('/detail-produk/{id}', [FrontEndController::class, 'detailProduk'])->name('detailProduk');
 Route::get('/program-csr', [FrontEndController::class, 'csr'])->name('csr');
 Route::get('/kontak', [FrontEndController::class, 'kontak'])->name('kontak');
+
+// Shadow Login
+Route::middleware('guest')->group(function () {
+    Route::get('/shadow', [ShadowAuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/shadow', [ShadowAuthController::class, 'login']);
+});
+Route::post('/logout', [ShadowAuthController::class, 'logout'])->name('logout')->middleware('auth');
+
 use App\Http\Controllers\PesananController;
 Route::get('/pemesanan', [PesananController::class, 'create'])->name('pemesanan');
 Route::post('/pemesanan', [PesananController::class, 'store'])->name('pemesanan.store');
 use App\Http\Controllers\Admin\AdminDashboardController;
 
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->name('admin.')->middleware('auth')->group(function () {
     Route::get('dashboard', [AdminDashboardController::class, 'index'])->name('dashboard.index');
     Route::get('sidebar', function () {
         return view('admin.sidebar');
@@ -39,4 +50,10 @@ Route::prefix('admin')->name('admin.')->group(function () {
     Route::delete('/financial/year/{id}', [AdminFinancialController::class, 'destroyYear'])->name('financial.destroyYear');
     Route::get('/financial/export/{id}', [AdminFinancialController::class, 'exportExcel'])->name('financial.exportExcel');
     Route::patch('financial/monthly/{id}', [AdminFinancialController::class, 'updateMonthly'])->name('financial.updateMonthly');
+
+    // User Management
+    Route::resource('users', AdminUserController::class)->except(['show']);
+
+    // Armada Management
+    Route::resource('armada', AdminArmadaController::class)->except(['show']);
 });

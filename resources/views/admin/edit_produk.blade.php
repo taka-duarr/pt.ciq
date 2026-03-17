@@ -43,12 +43,6 @@
                    value="{{ old('ukuran', $produk->ukuran) }}" required>
         </div>
 
-        <div>
-            <label class="block text-sm font-semibold mb-1">Harga per Ton</label>
-            <input type="number" id="harga" name="harga"
-                   class="w-full border rounded px-3 py-2 focus:outline-none"
-                   value="{{ old('harga', $produk->harga) }}" required>
-        </div>
 
         <div>
             <label class="block text-sm font-semibold mb-1">Kategori</label>
@@ -74,6 +68,21 @@
             <input type="number" id="stok" name="stok"
                    class="w-full border rounded px-3 py-2 focus:outline-none"
                    value="{{ old('stok', $produk->stok) }}">
+        </div>
+
+        <div class="col-span-2">
+            <label class="block text-sm font-semibold mb-1">Deskripsi Singkat (Muncul di Detail)</label>
+            <textarea name="deskripsi_singkat" class="w-full border rounded px-3 py-2 h-20 focus:outline-none">{{ old('deskripsi_singkat', $produk->deskripsi_singkat) }}</textarea>
+        </div>
+
+        <div class="col-span-2">
+            <label class="block text-sm font-semibold mb-1">Deskripsi Lengkap (Informasi Produk)</label>
+            <textarea name="deskripsi_lengkap" class="w-full border rounded px-3 py-2 h-32 focus:outline-none" required>{{ old('deskripsi_lengkap', $produk->deskripsi_lengkap) }}</textarea>
+        </div>
+
+        <div class="col-span-2">
+            <label class="block text-sm font-semibold mb-1">Keunggulan Material (Pisahkan dengan baris baru)</label>
+            <textarea name="keunggulan" class="w-full border rounded px-3 py-2 h-32 focus:outline-none" required>{{ old('keunggulan', $produk->keunggulan) }}</textarea>
         </div>
 
     </div>

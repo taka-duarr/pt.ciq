@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <style>
       :root {
         --primary: #005f37;
@@ -121,7 +122,7 @@ function showEditToast() {
               <th class="py-3 w-40">Foto</th>
               <th class="py-3">Nama</th>
               <th class="py-3">Ukuran</th>
-              <th class="py-3">Harga / ton</th>
+              <th class="py-3">Deskripsi</th>
               <th class="py-3 text-center w-32">Aksi</th>
             </tr>
           </thead>
@@ -138,7 +139,14 @@ function showEditToast() {
 
               <td class="text-gray-800 font-medium">{{ $produk->nama }}</td>
               <td>{{ $produk->ukuran }}</td>
-              <td>Rp {{ number_format($produk->harga, 0, ',', '.') }}</td>
+              <td>
+                <button 
+                  onclick='showDetailProduk(@json($produk))'
+                  class="px-3 py-1 bg-gray-100 hover:bg-gray-200 text-gray-600 rounded-md text-sm border transition"
+                >
+                  Detail
+                </button>
+              </td>
               <td class="text-center">
                 <div class="flex items-center justify-center gap-3">
                   <!-- EDIT -->
@@ -187,6 +195,33 @@ function showEditToast() {
           </tbody>
         </table>
       </div>
+    </div>
+
+    <!-- MODAL DETAIL PRODUK -->
+    <div id="detailProdukModal" class="hidden fixed inset-0 bg-black/40 flex items-center justify-center z-[60]">
+        <div class="bg-white rounded-2xl shadow-xl w-[600px] max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="p-5 border-b flex justify-between items-center bg-gray-50">
+                <h3 id="detailTitle" class="text-xl font-bold text-gray-800">Detail Produk</h3>
+                <button onclick="closeDetailModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto space-y-6">
+                <div>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Deskripsi Singkat</label>
+                    <p id="detailSingkat" class="text-gray-700 mt-1 leading-relaxed"></p>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Deskripsi Lengkap</label>
+                    <p id="detailLengkap" class="text-gray-700 mt-1 leading-relaxed whitespace-pre-line"></p>
+                </div>
+                <div>
+                    <label class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Keunggulan Material</label>
+                    <ul id="detailKeunggulan" class="mt-2 space-y-2"></ul>
+                </div>
+            </div>
+            <div class="p-4 border-t bg-gray-50 text-right">
+                <button onclick="closeDetailModal()" class="px-6 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold rounded-lg transition">Tutup</button>
+            </div>
+        </div>
     </div>
   </body>
 <!-- MODAL DELETE -->
@@ -270,6 +305,33 @@ function confirmDelete() {
   
   // tampilkan notifikasi (tapi karena ke-reload, opsional via session flash)
   showDeleteToast();
+}
+
+function showDetailProduk(produk) {
+    document.getElementById('detailTitle').innerText = produk.nama;
+    document.getElementById('detailSingkat').innerText = produk.deskripsi_singkat || '-';
+    document.getElementById('detailLengkap').innerText = produk.deskripsi_lengkap || '-';
+    
+    const list = document.getElementById('detailKeunggulan');
+    list.innerHTML = '';
+    if (produk.keunggulan) {
+        produk.keunggulan.split('\n').forEach(item => {
+            if (item.trim()) {
+                const li = document.createElement('li');
+                li.className = 'flex items-start gap-2 text-sm text-gray-600';
+                li.innerHTML = `<span class="text-green-500">✔</span> <span>${item}</span>`;
+                list.appendChild(li);
+            }
+        });
+    } else {
+        list.innerHTML = '<li class="text-sm text-gray-400 italic">Tidak ada data keunggulan</li>';
+    }
+
+    document.getElementById('detailProdukModal').classList.remove('hidden');
+}
+
+function closeDetailModal() {
+    document.getElementById('detailProdukModal').classList.add('hidden');
 }
 </script>
 </html>

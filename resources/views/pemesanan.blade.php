@@ -112,15 +112,46 @@
 
                     <div class="mt-8 p-6 bg-primary/5 rounded-2xl border border-primary/10 flex items-center justify-between">
                         <div class="flex items-center gap-4 text-primary font-bold">
-                            <div class="bg-primary text-white p-3 rounded-xl shadow-lg"></div>
-                            <div>
-                                <p class="text-[10px] uppercase tracking-wider opacity-70">Estimasi Armada</p>
-                                <p class="text-xl">Dump Truck (8 Ton)</p>
+                            <div class="bg-primary text-white p-3 rounded-xl shadow-lg flex items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 8h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-5" />
+                                    <circle cx="5.5" cy="18.5" r="2.5" />
+                                    <circle cx="15.5" cy="18.5" r="2.5" />
+                                </svg>
+                            </div>
+                            <div class="relative">
+                                <p class="text-[10px] uppercase tracking-wider opacity-70">Pilih Armada</p>
+                                <!-- Custom Dropdown -->
+                                <div class="relative mt-1">
+                                    <button type="button" onclick="toggleArmadaDropdown()" id="armadaDropdownBtn" class="flex items-center gap-2 text-xl font-bold bg-transparent border-none outline-none cursor-pointer group">
+                                        <span id="selectedArmadaLabel">Pilih Armada</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 transition-transform group-focus:rotate-180" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                        </svg>
+                                    </button>
+                                    
+                                    <div id="armadaOptions" class="hidden absolute top-full left-0 mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden z-[60] animate-fade-in">
+                                        @forelse($armadas as $armada)
+                                            <div onclick="selectArmada({{ json_encode($armada) }})" class="p-4 hover:bg-primary/5 cursor-pointer border-b last:border-none transition py-3">
+                                                <p class="font-bold text-gray-800 text-sm">{{ $armada->nama }}</p>
+                                                <p class="text-[10px] text-gray-500 font-medium uppercase tracking-tighter">Kapasitas: {{ $armada->minimal_ton }} - {{ $armada->maksimal_ton }} Ton</p>
+                                            </div>
+                                        @empty
+                                            <div onclick="selectArmada({nama: 'Dump Truck Standard', maksimal_ton: 8})" class="p-4 hover:bg-primary/5 cursor-pointer transition">
+                                                <p class="font-bold text-gray-800 text-sm">Dump Truck Standard</p>
+                                                <p class="text-[10px] text-gray-500 font-medium uppercase tracking-tighter">Kapasitas: Up to 8 Ton</p>
+                                            </div>
+                                        @endforelse
+                                    </div>
+                                </div>
+                                <input type="hidden" id="selectedArmadaVal" value="">
+                                <input type="hidden" id="selectedArmadaNama" value="">
                             </div>
                         </div>
                         <div class="text-right">
-                            <p class="text-[10px] uppercase font-bold text-gray-400">Dibutuhkan</p>
-                            <p class="text-3xl font-black text-primary"><span id="displayTrips">0</span> <span class="text-sm font-normal">Rit</span></p>
+                            <p class="text-[10px] uppercase font-bold text-gray-400 text-right">Dibutuhkan</p>
+                            <p class="text-3xl font-black text-primary text-right"><span id="displayTrips">0</span> <span class="text-sm font-normal">Unit</span></p>
                         </div>
                     </div>
                 </section>
@@ -186,7 +217,8 @@
 
                         <div class="space-y-2 text-right pt-4 border-t border-gray-100">
                             <p class="text-xs text-gray-500">Total Berat: <span id="invTotalWeight" class="font-bold text-gray-800">0</span> Ton</p>
-                            <p class="text-xs text-gray-500">Biaya Kirim (<span id="invTrips">0</span> Rit): <span id="invShippingCost" class="font-bold text-gray-800"></span></p>
+                            <p class="text-xs text-gray-500">Biaya Kirim (<span id="invTrips">0</span> Unit): <span id="invShippingCost" class="font-bold text-gray-800"></span></p>
+                            <p class="text-xs text-gray-500">PPN (11%): <span id="invPPN" class="font-bold text-gray-800"></span></p>
                             <div class="bg-primary text-white p-4 rounded-xl inline-block mt-4 shadow-lg">
                                 <p class="text-[10px] uppercase opacity-70 mb-1">Total Tagihan Estimasi</p>
                                 <p id="invTotalCost" class="text-2xl font-black"></p>
@@ -212,6 +244,10 @@
                             <span class="opacity-70 text-[10px] uppercase">Biaya Kirim</span>
                             <span class="font-bold" id="resShipping">Rp 0</span>
                         </div>
+                        <div class="flex justify-between border-b border-white/10 pb-4">
+                            <span class="opacity-70 text-[10px] uppercase">PPN (11%)</span>
+                            <span class="font-bold" id="resPPN">Rp 0</span>
+                        </div>
                         <div class="pt-4 flex flex-col items-center">
                             <span class="opacity-70 uppercase tracking-wider text-[10px] mb-2 text-center">Total Pembayaran</span>
                             <span class="text-3xl font-black" id="resTotal">Rp 0</span>
@@ -234,7 +270,7 @@
 
     @php
         $options = $produks->map(function($p) {
-            return ['id' => $p->id, 'name' => $p->nama, 'price' => $p->harga];
+            return ['id' => $p->id, 'name' => $p->nama];
         })->values();
     @endphp
     
@@ -253,11 +289,15 @@
             const rowId = Date.now();
             const html = `
                 <div id="row-${rowId}" class="grid grid-cols-1 md:grid-cols-12 gap-4 p-4 bg-gray-50 rounded-2xl border border-gray-100 relative group animate-fade-in">
-                    <div class="md:col-span-7 space-y-2">
+                    <div class="md:col-span-4 space-y-2">
                         <label class="text-[10px] font-bold text-gray-400 uppercase">Produk</label>
                         <select onchange="calculateOrder()" class="material-select w-full px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-primary">
-                            ${materialOptions.map(m => `<option value="${m.name}" data-price="${m.price}" data-id="${m.id}">${m.name} - Rp${m.price.toLocaleString()}/ton</option>`).join('')}
+                            ${materialOptions.map(m => `<option value="${m.name}" data-id="${m.id}">${m.name}</option>`).join('')}
                         </select>
+                    </div>
+                    <div class="md:col-span-3 space-y-2">
+                        <label class="text-[10px] font-bold text-gray-400 uppercase">Harga / Ton (Rp)</label>
+                        <input type="number" oninput="calculateOrder()" class="material-price w-full px-4 py-3 bg-white border border-gray-200 rounded-xl outline-none focus:border-primary" placeholder="Masukkan harga...">
                     </div>
                     <div class="md:col-span-4 space-y-2">
                         <label class="text-[10px] font-bold text-gray-400 uppercase">Jumlah (Ton)</label>
@@ -291,32 +331,43 @@
             let totalWeight = 0;
 
             const selects = document.querySelectorAll('.material-select');
+            const prices = document.querySelectorAll('.material-price');
             const qtys = document.querySelectorAll('.material-qty');
 
             selects.forEach((select, i) => {
-                const price = parseInt(select.options[select.selectedIndex].dataset.price);
+                const price = parseInt(prices[i].value || 0);
                 const qty = parseFloat(qtys[i].value || 0);
                 totalMaterialCost += (price * qty);
                 totalWeight += qty;
             });
 
             const distance = parseInt(document.getElementById('selectKota').value);
-            const trips = Math.ceil(totalWeight / 8) || 0;
+            
+            const armadaCapacity = parseFloat(document.getElementById('selectedArmadaVal').value) || 8;
+            const armadaNama = document.getElementById('selectedArmadaNama').value || "Dump Truck";
+
+            const trips = Math.ceil(totalWeight / armadaCapacity) || 0;
             const shippingCost = distance * 5000 * trips;
-            const grandTotal = totalMaterialCost + shippingCost;
+            
+            const totalBeforePPN = totalMaterialCost + shippingCost;
+            const ppn = totalBeforePPN * 0.11;
+            const grandTotal = totalBeforePPN + ppn;
 
             // Update UI
             document.getElementById('displayTrips').innerText = trips;
             document.getElementById('resTotalWeight').innerText = totalWeight;
             document.getElementById('resShipping').innerText = formatRupiah(shippingCost);
+            document.getElementById('resPPN').innerText = formatRupiah(ppn);
             document.getElementById('resTotal').innerText = formatRupiah(grandTotal);
 
             return {
                 totalMaterialCost,
                 shippingCost,
+                ppn,
                 grandTotal,
                 totalWeight,
-                trips
+                trips,
+                armadaNama
             };
         }
 
@@ -333,6 +384,11 @@
             document.getElementById('invTotalWeight').innerText = data.totalWeight;
             document.getElementById('invTrips').innerText = data.trips;
             document.getElementById('invShippingCost').innerText = formatRupiah(data.shippingCost);
+            document.getElementById('invPPN').innerText = formatRupiah(data.ppn);
+            
+            // Tambahkan info armada di invoice (opsional, tapi bagus untuk verifikasi)
+            document.getElementById('invTrips').parentElement.innerHTML = `Biaya Kirim (${data.trips} Unit ${data.armadaNama}): <span id="invShippingCost" class="font-bold text-gray-800">${formatRupiah(data.shippingCost)}</span>`;
+
             document.getElementById('invTotalCost').innerText = formatRupiah(data.grandTotal);
             document.getElementById('invDate').innerText = new Date().toLocaleDateString('id-ID');
             document.getElementById('invId').innerText = "#CIQ-" + Math.floor(Math.random() * 90000 + 10000);
@@ -341,12 +397,13 @@
             const tbody = document.getElementById('invTableBody');
             tbody.innerHTML = '';
             const selects = document.querySelectorAll('.material-select');
+            const prices = document.querySelectorAll('.material-price');
             const qtys = document.querySelectorAll('.material-qty');
 
             selects.forEach((s, i) => {
                 const q = parseFloat(qtys[i].value || 0);
                 if (q > 0) {
-                    const p = parseInt(s.options[s.selectedIndex].dataset.price);
+                    const p = parseInt(prices[i].value || 0);
                     tbody.innerHTML += `
                         <tr>
                             <td class="p-4 font-bold text-gray-800">${s.value}</td>
@@ -374,13 +431,14 @@
             let detailProduk = "";
             let items = [];
             const selects = document.querySelectorAll('.material-select');
+            const prices = document.querySelectorAll('.material-price');
             const qtys = document.querySelectorAll('.material-qty');
 
             selects.forEach((s, i) => {
                 const q = parseFloat(qtys[i].value || 0);
                 if (q > 0) {
-                    detailProduk += `   - ${s.value}: ${q} Ton\n`;
-                    const price = parseInt(s.options[s.selectedIndex].dataset.price);
+                    const price = parseInt(prices[i].value || 0);
+                    detailProduk += `   - ${s.value}: ${q} Ton (@${formatRupiah(price)})\n`;
                     items.push({
                         produk_id: s.options[s.selectedIndex].dataset.id,
                         qty: q,
@@ -438,17 +496,19 @@
     `Perusahaan  : ${perusahaan}\n` +
     `WhatsApp    : ${nomorWA}\n\n` +
 
-    `*DETAIL PESANAN*\n` +
+    `DETAIL PESANAN\n` +
     `${detailProduk}` +
     `Total Berat : ${data.totalWeight} Ton\n` +
-    `Estimasi Rit: ${data.trips} Rit Dump Truck\n\n` +
+    `Estimasi Unit: ${data.trips} Unit (${data.armadaNama})\n\n` +
 
     `*LOKASI PENGIRIMAN*\n` +
     `Nama Proyek : ${proyek}\n` +
     `Alamat      : ${alamat}\n\n` +
 
     `*ESTIMASI TAGIHAN*\n` +
-    `Total Estimasi : ${totalHargaText}\n\n` +
+    `Total Estimasi : ${formatRupiah(data.grandTotal - data.ppn)}\n` +
+    `PPN (11%)      : ${formatRupiah(data.ppn)}\n` +
+    `Total Akhir    : ${totalHargaText}\n\n` +
 
     `────────────────────────\n` +
     `*PEMBAYARAN TRANSFER*\n\n` +
@@ -473,6 +533,38 @@
             const waUrl = `https://wa.me/6281357398265?text=${encodeURIComponent(text)}`;
             window.open(waUrl, '_blank');
         }
+
+        // Custom Dropdown Armada
+        function toggleArmadaDropdown() {
+            const options = document.getElementById('armadaOptions');
+            options.classList.toggle('hidden');
+        }
+
+        function selectArmada(armada) {
+            document.getElementById('selectedArmadaLabel').innerText = `${armada.nama} (${armada.maksimal_ton}T)`;
+            document.getElementById('selectedArmadaVal').value = armada.maksimal_ton;
+            document.getElementById('selectedArmadaNama').value = armada.nama;
+            document.getElementById('armadaOptions').classList.add('hidden');
+            calculateOrder();
+        }
+
+        // Close dropdown when click outside
+        window.addEventListener('click', function(e) {
+            const dropdown = document.getElementById('armadaOptions');
+            const btn = document.getElementById('armadaDropdownBtn');
+            if (!btn.contains(e.target) && !dropdown.contains(e.target)) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Set default armada pada load
+        document.addEventListener('DOMContentLoaded', () => {
+            @if(count($armadas) > 0)
+                selectArmada({!! json_encode($armadas[0]) !!});
+            @else
+                selectArmada({nama: 'Dump Truck Standard', maksimal_ton: 8});
+            @endif
+        });
     </script>
 
     <style>
@@ -489,7 +581,26 @@
         }
 
         .animate-fade-in {
-            animation: fadeIn 0.4s ease-out forwards;
+            animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        #armadaOptions {
+            scrollbar-width: thin;
+            scrollbar-color: #059669 #f3f4f6;
+        }
+
+        #armadaOptions::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        #armadaOptions::-webkit-scrollbar-thumb {
+            background-color: #059669;
+            border-radius: 20px;
+        }
+
+        #armadaDropdownBtn:hover {
+            color: #059669;
+            transform: translateY(-1px);
         }
     </style>
 </body>

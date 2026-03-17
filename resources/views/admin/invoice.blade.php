@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
+    <title>Struk Pembayaran - PT CIQ</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <style>
         @media print {

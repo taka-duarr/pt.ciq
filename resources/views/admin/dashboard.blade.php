@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <script src="https://cdn.tailwindcss.com"></script>
     <title>Dashboard Admin - Batu Split</title>
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
 
     <style>
         :root { --primary: #005f37; }

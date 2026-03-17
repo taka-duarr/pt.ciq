@@ -27,10 +27,12 @@ class AdminProdukController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'ukuran' => 'required|string|max:255',
-            'harga' => 'required|numeric',
             'kategori' => 'required|string|max:255',
             'stok' => 'nullable|integer',
-            'foto' => 'nullable|image|file|max:2048'
+            'foto' => 'nullable|image|file|max:2048',
+            'deskripsi_singkat' => 'nullable|string',
+            'deskripsi_lengkap' => 'required|string',
+            'keunggulan' => 'required|string',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -58,10 +60,12 @@ class AdminProdukController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'ukuran' => 'required|string|max:255',
-            'harga' => 'required|numeric',
             'kategori' => 'required|string|max:255',
             'stok' => 'nullable|integer',
-            'foto' => 'nullable|image|file|max:2048'
+            'foto' => 'nullable|image|file|max:2048',
+            'deskripsi_singkat' => 'nullable|string',
+            'deskripsi_lengkap' => 'required|string',
+            'keunggulan' => 'required|string',
         ]);
 
         $produk = \App\Models\Produk::findOrFail($id);

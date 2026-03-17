@@ -6,6 +6,7 @@
     <title>Detail Produk - {{ $produk->nama }} | CIQ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <style>
         :root { --primary: #005f37; }
         .text-primary { color: var(--primary); }
@@ -51,19 +52,18 @@
                 </div>
 
                 <div class="space-y-2">
-                    <p class="text-4xl font-black text-primary italic">Rp {{ number_format($produk->harga, 0, ',', '.') }} <span class="text-sm font-normal text-gray-400 uppercase tracking-widest not-italic">/ Ton</span></p>
                     <p class="text-xs text-green-600 font-bold flex items-center gap-1">
                         <span class="material-symbols-outlined text-xs">check_circle</span> Stok Tersedia (Ready Stock)
                     </p>
                 </div>
 
+                @if($produk->deskripsi_singkat)
                 <p class="text-gray-500 leading-relaxed text-sm md:text-base border-l-4 border-gray-100 pl-6 italic">
-                    Material jenis ini banyak dibutuhkan untuk campuran dalam proses pengaspalan dan bisa digunakan sebagai pengganti pasir, material ini adalah bahan utama dari pembuatan gorong-gorong dan batako press.
+                    {{ $produk->deskripsi_singkat }}
                 </p>
+                @endif
 
                 <div class="flex flex-wrap items-center gap-6 pt-4">
-                    
-                    
                     <a href="{{ route('pemesanan') }}" class="flex-1 md:flex-none bg-primary text-white px-12 py-4 rounded-2xl font-black uppercase tracking-widest shadow-xl shadow-green-900/20 hover:bg-[#004c2c] hover:scale-105 transition-all flex items-center justify-center gap-3">
                         Pesan Sekarang
                     </a>
@@ -88,24 +88,19 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-12 py-10">
                 <div class="md:col-span-2 space-y-6 text-gray-500 leading-relaxed">
-                    <p>{{ $produk->nama }} berukuran {{ $produk->ukuran }} merupakan hasil sampingan dari proses pemecahan batu split (stone crusher). Material ini memiliki tekstur butiran halus yang tajam, sangat ideal sebagai pengikat dalam konstruksi.</p>
+                    <p>{!! nl2br(e($produk->deskripsi_lengkap)) !!}</p>
                     <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h4 class="text-gray-800 font-black uppercase tracking-widest text-xs mb-4 flex items-center gap-2">
                             <span class="w-2 h-2 bg-primary rounded-full"></span> Keunggulan Material
                         </h4>
                         <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
-                            <li class="flex items-start gap-2">
-                                <span class="text-primary font-bold">✔</span> Gradasi butiran seragam (0-5 mm)
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-primary font-bold">✔</span> Meningkatkan kepadatan aspal/beton
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-primary font-bold">✔</span> Bebas dari kandungan lumpur berlebih
-                            </li>
-                            <li class="flex items-start gap-2">
-                                <span class="text-primary font-bold">✔</span> Ekonomis untuk proyek skala besar
-                            </li>
+                            @foreach(explode("\n", $produk->keunggulan) as $line)
+                                @if(trim($line))
+                                <li class="flex items-start gap-2">
+                                    <span class="text-primary font-bold">✔</span> {{ $line }}
+                                </li>
+                                @endif
+                            @endforeach
                         </ul>
                     </div>
                 </div>

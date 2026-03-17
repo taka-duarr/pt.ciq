@@ -6,6 +6,7 @@
     <title>Kontak Kami | PT Conbloc Indotama Quarry</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <style>
         :root { --primary: #005f37; }
         .text-primary { color: var(--primary); }

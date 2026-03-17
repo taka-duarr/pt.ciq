@@ -13,5 +13,8 @@ class Produk extends Model
         'kategori',
         'foto',
         'stok',
+        'deskripsi_singkat',
+        'deskripsi_lengkap',
+        'keunggulan',
     ];
 }

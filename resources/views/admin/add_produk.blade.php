@@ -38,10 +38,6 @@
             <input type="text" name="ukuran" class="w-full border rounded px-3 py-2 focus:outline-none" required>
         </div>
 
-        <div>
-            <label class="block text-sm font-semibold mb-1">Harga per Ton</label>
-            <input type="number" name="harga" class="w-full border rounded px-3 py-2 focus:outline-none" required>
-        </div>
 
         <div>
             <label class="block text-sm font-semibold mb-1">Kategori</label>
@@ -60,6 +56,21 @@
         <div>
             <label class="block text-sm font-semibold mb-1">Stok Awal</label>
             <input type="number" name="stok" class="w-full border rounded px-3 py-2 focus:outline-none">
+        </div>
+
+        <div class="col-span-2">
+            <label class="block text-sm font-semibold mb-1">Deskripsi Singkat (Muncul di Detail)</label>
+            <textarea name="deskripsi_singkat" class="w-full border rounded px-3 py-2 h-20 focus:outline-none" placeholder="Ringkasan singkat material..."></textarea>
+        </div>
+
+        <div class="col-span-2">
+            <label class="block text-sm font-semibold mb-1">Deskripsi Lengkap (Informasi Produk)</label>
+            <textarea name="deskripsi_lengkap" class="w-full border rounded px-3 py-2 h-32 focus:outline-none" placeholder="Penjelasan detail hasil stone crusher..." required></textarea>
+        </div>
+
+        <div class="col-span-2">
+            <label class="block text-sm font-semibold mb-1">Keunggulan Material (Pisahkan dengan baris baru)</label>
+            <textarea name="keunggulan" class="w-full border rounded px-3 py-2 h-32 focus:outline-none" placeholder="✔ Gradasi seragam&#10;✔ Bebas lumpur..." required></textarea>
         </div>
 
     </div>

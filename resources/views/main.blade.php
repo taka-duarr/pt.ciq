@@ -8,9 +8,9 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=shopping_cart" />
-    <link rel="icon" type="img/logo.png" href="img/logo.png">
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=print" />
-    <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="{{ asset('img/favicon.ico') }}" type="image/x-icon">
     <style>
         * {
             font-family: 'DM Sans', sans-serif;

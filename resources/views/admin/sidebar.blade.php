@@ -63,6 +63,30 @@
           <span class="sidebar-text">Dashboard</span>
       </a>
 
+        <!-- MANAJEMEN USER -->
+      <a href="{{ route('admin.users.index') }}" data-page="users" target="_parent"
+   class="menu-item flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--primary)] hover:text-white transition">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+          </svg>
+          <span class="sidebar-text">Manajemen User</span>
+      </a>
+
+      <!-- MANAJEMEN ARMADA -->
+      <a href="{{ route('admin.armada.index') }}" data-page="armada" target="_parent"
+   class="menu-item flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--primary)] hover:text-white transition">
+           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h8a1 1 0 001-1z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M13 8h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-5" />
+            <circle cx="5.5" cy="18.5" r="2.5" />
+            <circle cx="15.5" cy="18.5" r="2.5" />
+          </svg>
+          <span class="sidebar-text">Manajemen Armada</span>
+      </a>
+
       <!-- PRODUK BATU -->
       <a href="{{ route('admin.produk.index') }}" data-page="produk" target="_parent"
    class="menu-item flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--primary)] hover:text-white transition">
@@ -93,11 +117,16 @@
           <span class="sidebar-text">Laporan Keuangan</span>
       </a>
 
+    
+
   </nav>
 
   <!-- LOGOUT -->
   <div class="mt-auto pt-6">
-      <button
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" target="_parent" class="hidden">
+          @csrf
+      </form>
+      <button onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
         class="w-full flex items-center gap-3 px-3 py-2 rounded-xl
                bg-gray-100 hover:bg-gray-200 text-gray-600 transition">
 

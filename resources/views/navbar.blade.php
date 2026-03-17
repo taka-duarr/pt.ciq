@@ -1,6 +1,6 @@
 <nav class="flex items-center justify-between px-8 py-4 bg-white">
         <div class="flex items-center gap-1">
-            <img src="img/logo1.png" class="h-8 w-auto" alt="Logo Perusahaan">
+            <img src="{{ asset('img/logo1.png') }}" class="h-8 w-auto" alt="Logo Perusahaan">
         </div>
         <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-700">
             <a href="{{ route('home') }}"

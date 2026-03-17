@@ -21,7 +21,8 @@ class PesananController extends Controller
     public function create()
     {
         $produks = \App\Models\Produk::all();
-        return view('pemesanan', compact('produks'));
+        $armadas = \App\Models\Armada::all();
+        return view('pemesanan', compact('produks', 'armadas'));
     }
 
     /**

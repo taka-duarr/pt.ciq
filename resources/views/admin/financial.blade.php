@@ -3,8 +3,9 @@
 <head>
     <meta charset="UTF-8" />
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Laporan Keuangan - Stone Crusher</title>
+    <title>Laporan Keuangan - Batu Split</title>
     <style>
         :root { --primary: #B22222; } /* Dark Red as per image */
         .bg-primary { background-color: var(--primary); }
