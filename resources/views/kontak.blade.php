@@ -17,7 +17,7 @@
 
     @include('navbar')
 
-    <main class="max-w-7xl mx-auto px-6 mt-12">
+    <main class="max-w-7xl mx-auto px-6 mt-12  pt-24">
         
         <div class="text-center mb-16">
             <span class="px-6 py-2 border border-gray-200 rounded-full text-[10px] font-black uppercase tracking-[0.3em] text-gray-400 mb-6 inline-block">Contact Us</span>
@@ -56,7 +56,10 @@
     <div class="flex-grow">
         <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Our Office</p>
         <p class="text-gray-800 font-bold text-xs leading-relaxed break-words">
-            Dusun Karanganyar Timur, Desa Karangasem, Kecamatan Lumbang, Kabupaten Pasuruan - Jawa Timur
+            - Dusun Karanganyar Timur, Desa Karangasem, Kecamatan Lumbang, Kabupaten Pasuruan - Jawa Timur
+        </p>
+        <p class="text-gray-800 font-bold text-xs leading-relaxed break-words">
+            - Gedung Sentra Niaga Utama Citraland Surabaya
         </p>
     </div>
 </div>

@@ -27,7 +27,7 @@
 
     @include('navbar')
 
-    <header class="py-16 bg-white border-b border-gray-100">
+    <header class="py-16 bg-white border-b border-gray-100  pt-24">
         <div class="max-w-7xl mx-auto px-6 text-center">
             <div class="flex items-center justify-center gap-3 mb-4">
                 <span class="w-12 h-[2px] bg-primary"></span>
@@ -43,7 +43,7 @@
         </div>
     </header>
 
-    <main class="max-w-7xl mx-auto px-6 py-20">
+    <main class="max-w-7xl mx-auto px-6 py-20 ">
         <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
             <div class="flex gap-4">
                 <button class="bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">Semua</button>

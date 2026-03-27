@@ -54,7 +54,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
             <div class="space-y-6">
                 <h2 class="text-3xl md:text-5xl font-black text-gray-800 leading-tight">
-                    PT Conbloc Indotama <br> <span class="text-primary">Quarry (CIQ)</span>
+                    <span class="text-primary"> PT Conbloc Indotama <br> Quarry (CIQ)</span>
                 </h2>
                 <div class="w-20 h-2 bg-primary"></div>
             </div>

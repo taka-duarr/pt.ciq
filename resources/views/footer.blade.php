@@ -49,7 +49,8 @@
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                             </div>
-                            <p class="pt-1"><span class="text-white font-bold italic block mb-1">Quarry:</span> Dusun Karanganyar Timur, Desa Karangasem, Pasuruan</p>
+                            <p class="pt-1"><span class="text-white font-bold italic block mb-1">Quarry:</span>- Dusun Karanganyar Timur, Desa Karangasem, Pasuruan <br> - Gedung Sentra Niaga Utama Citraland Surabaya </p>
+                            
                         </div>
                         <div class="flex gap-4 group">
                             <div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center shrink-0 group-hover:bg-[#fdf100] group-hover:text-[#005f37] transition-all">
@@ -59,15 +60,6 @@
                             </div>
                             <p class="pt-1 break-all">quarryconbloc@gmail.com</p>
                         </div>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <h4 class="text-[#fdf100] font-bold mb-8 flex items-center gap-3 uppercase tracking-[0.2em] text-xs">
-                        <span class="w-1.5 h-6 bg-white/20 rounded-full"></span> Lokasi Quarry
-                    </h4>
-                    <div class="rounded-[1rem] overflow-hidden shadow-2xl h-48 group">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14660.219317972958!2d112.95595566897875!3d-7.756104002595984!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7cb2f696c9559%3A0xc1f427709eba01f6!2sPT.%20Conbloc%20indotama%20Quarry%20(crushing%20plant)!5e1!3m2!1sid!2sid!4v1772532723847!5m2!1sid!2sid" class="w-full h-full border-0 grayscale group-hover:grayscale-0 transition-all duration-700" allowfullscreen="" loading="lazy"></iframe>
                     </div>
                 </div>
 

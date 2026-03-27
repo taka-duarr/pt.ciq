@@ -7,7 +7,7 @@
         :root { --primary: #005f37; }
     </style>
 </head>
-<body class="bg-white p-6">
+<body class="bg-white px-6 pt-6 pb-3">
     <div class="flex justify-between items-center mb-6">
         <h2 class="text-xl font-bold text-[var(--primary)]">Tambah User Admin</h2>
         <button onclick="parent.postMessage('closeModal', '*')" class="text-gray-400 hover:text-gray-600">
@@ -17,7 +17,7 @@
         </button>
     </div>
 
-    <form id="userForm" class="space-y-4">
+    <form id="userForm" class="space-y-3">
         @csrf
         <div>
             <label class="block text-sm font-medium text-gray-700">Username</label>
@@ -31,7 +31,7 @@
             <p id="error-password" class="text-red-500 text-xs mt-1 hidden"></p>
         </div>
 
-        <div class="pt-4 flex justify-end gap-3">
+        <div class="pt-[20px] flex justify-end gap-3">
             <button type="button" onclick="parent.postMessage('closeModal', '*')" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                 Batal
             </button>

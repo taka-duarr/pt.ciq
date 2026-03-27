@@ -37,12 +37,12 @@
 
         <!-- MODAL ADD -->
         <div id="addModal" class="hidden fixed inset-0 flex justify-center items-center z-50">
-            <iframe id="addFrame" src="{{ route('admin.users.create') }}" class="bg-white rounded-xl shadow-xl w-[500px] h-[400px] border-none"></iframe>
+            <iframe id="addFrame" src="{{ route('admin.users.create') }}" class="bg-white rounded-xl shadow-xl w-[500px] h-[350px] border-none"></iframe>
         </div>
 
         <!-- MODAL EDIT -->
         <div id="editModal" class="hidden fixed inset-0 flex justify-center items-center z-50">
-            <iframe id="editFrame" src="" class="bg-white rounded-xl shadow-xl w-[500px] h-[400px] border-none"></iframe>
+            <iframe id="editFrame" src="" class="bg-white rounded-xl shadow-xl w-[500px] h-[350px] border-none"></iframe>
         </div>
 
         <!-- MODAL DELETE -->
