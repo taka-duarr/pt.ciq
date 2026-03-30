@@ -96,7 +96,6 @@
         <thead>
           <tr class="border-b text-left text-gray-500">
             <th class="pb-3 px-2">Nama Pemesan</th>
-            <th class="pb-3 px-2">Nama Proyek</th>
             <th class="pb-3 px-2">Produk</th>
             <th class="pb-3 px-2 text-center">Qty</th>
             <th class="pb-3 px-2">Harga</th>
@@ -109,7 +108,6 @@
           @forelse ($pesanans as $pesanan)
           <tr class="row-pesanan" data-id="{{ $pesanan->id }}">
             <td class="py-4 px-2 font-medium item-nama">{{ $pesanan->nama_pemesan }}</td>
-            <td class="py-4 px-2 text-gray-600 item-proyek">{{ $pesanan->proyek ?? '-' }}</td>
             <td class="py-4 px-2 text-gray-600 item-produk">{{ $pesanan->produk->nama ?? '-' }}</td>
             <td class="py-4 px-2 text-center text-gray-600 item-qty">{{ $pesanan->qty }} ton</td>
             <td class="py-4 px-2 font-semibold item-harga">Rp {{ number_format($pesanan->harga_total, 0, ',', '.') }}</td>
@@ -117,7 +115,9 @@
               <button 
                 onclick="showDetail(this)"
                 data-nama="{{ $pesanan->nama_pemesan }}"
-                data-proyek="{{ $pesanan->proyek ?? '-' }}"
+                data-tanggal="{{ $pesanan->created_at->format('d M Y') }}"
+                data-produk="{{ $pesanan->produk->nama ?? '-' }}"
+                data-qty="{{ $pesanan->qty }}"
                 data-pt="{{ $pesanan->instansi ?? '-' }}"
                 data-wilayah="{{ $pesanan->wilayah }}"
                 data-alamat="{{ $pesanan->alamat }}"
@@ -131,11 +131,13 @@
               <button 
                 onclick="printRow(this)" 
                 data-nama="{{ $pesanan->nama_pemesan }}"
+                data-tanggal="{{ $pesanan->created_at->format('d M Y') }}"
                 data-produk="{{ $pesanan->produk->nama ?? '-' }}"
                 data-qty="{{ $pesanan->qty }}"
                 data-harga="{{ $pesanan->harga_total }}"
-                data-proyek="{{ $pesanan->proyek ?? '-' }}"
                 data-telp="{{ $pesanan->telp }}"
+                data-wilayah="{{ $pesanan->wilayah }}"
+                data-alamat="{{ $pesanan->alamat }}"
                 class="px-4 py-1.5 rounded-lg bg-[var(--primary)] text-white hover:bg-[#004c2c] text-xs transition no-print"
               >
                 Print
@@ -144,7 +146,7 @@
           </tr>
           @empty
           <tr>
-            <td colspan="7" class="py-4 text-center text-gray-500">Belum ada pesanan.</td>
+            <td colspan="6" class="py-4 text-center text-gray-500">Belum ada pesanan.</td>
           </tr>
           @endforelse
         </tbody>
@@ -173,9 +175,19 @@
           <label class="text-xs text-gray-400 uppercase tracking-wider">Nama Lengkap</label>
           <p id="det-nama" class="font-semibold text-gray-800 text-lg">-</p>
         </div>
-        <div>
-          <label class="text-xs text-gray-400 uppercase tracking-wider">Nama Proyek</label>
-          <p id="det-proyek" class="font-semibold text-gray-800 text-lg">-</p>
+        <div class="col-span-12 md:col-span-6 bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <p class="text-xs text-gray-500 uppercase font-bold tracking-widest mb-1">Tanggal Pesan</p>
+          <p id="det-tanggal" class="font-semibold text-gray-800 text-lg">-</p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="text-xs text-gray-400 uppercase tracking-wider">Produk</label>
+            <p id="det-produk" class="text-gray-700">-</p>
+          </div>
+          <div>
+            <label class="text-xs text-gray-400 uppercase tracking-wider">Kuantitas</label>
+            <p id="det-qty" class="text-gray-700">-</p>
+          </div>
         </div>
         <div class="grid grid-cols-2 gap-4">
           <div>
@@ -188,7 +200,7 @@
           </div>
         </div>
         <div>
-          <label class="text-xs text-gray-400 uppercase tracking-wider">lokasi</label>
+          <label class="text-xs text-gray-400 uppercase tracking-wider">Lokasi / Wilayah</label>
           <p id="det-wilayah" class="text-gray-700 whitespace-pre-line bg-gray-50 p-2 rounded-lg text-sm">-</p>
         </div>
         <div>
@@ -254,12 +266,14 @@
    function printRow(btn) {
     // Susun parameter URL
     const params = new URLSearchParams({
+        tanggal: btn.dataset.tanggal,
         nama: btn.dataset.nama,
         produk: btn.dataset.produk,
         qty: btn.dataset.qty,
         harga: btn.dataset.harga,
-        proyek: btn.dataset.proyek,
         telp: btn.dataset.telp,
+        wilayah: btn.dataset.wilayah,
+        alamat: btn.dataset.alamat,
         mode: 'autoprint'
     });
 
@@ -274,7 +288,9 @@
 
     function showDetail(btn) {
       document.getElementById('det-nama').innerText = btn.dataset.nama;
-      document.getElementById('det-proyek').innerText = btn.dataset.proyek;
+      document.getElementById('det-tanggal').innerText = btn.dataset.tanggal;
+      document.getElementById('det-produk').innerText = btn.dataset.produk;
+      document.getElementById('det-qty').innerText = btn.dataset.qty + ' Ton';
       document.getElementById('det-pt').innerText = btn.dataset.pt;
       document.getElementById('det-wilayah').innerText = btn.dataset.wilayah;
       document.getElementById('det-alamat').innerText = btn.dataset.alamat;

@@ -12,7 +12,6 @@ class Pesanan extends Model
         'alamat',
         'wilayah',
         'telp',
-        'proyek',
         'produk_id',
         'qty',
         'harga_total',

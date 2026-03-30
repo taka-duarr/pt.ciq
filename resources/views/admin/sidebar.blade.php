@@ -53,6 +53,7 @@
   <!-- NAV -->
   <nav class="flex flex-col space-y-2">
 
+      @if(Auth::check() && Auth::user()->role === 'super admin')
       <!-- DASHBOARD -->
       <a href="{{ route('admin.dashboard.index') }}" data-page="dashboard" target="_parent"
    class="menu-item flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[var(--primary)] hover:text-white transition">
@@ -106,6 +107,7 @@
           </svg>
           <span class="sidebar-text">Pesanan</span>
       </a>
+      @endif
 
       <!-- LAPORAN KEUANGAN -->
       <a href="{{ route('admin.financial.index') }}" data-page="financial" target="_parent"

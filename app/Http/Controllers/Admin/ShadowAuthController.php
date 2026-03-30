@@ -11,6 +11,10 @@ class ShadowAuthController extends Controller
     public function showLoginForm()
     {
         if (Auth::check()) {
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->route('admin.financial.index');
+            }
             return redirect()->route('admin.dashboard.index');
         }
         return view('admin.shadow_login');
@@ -25,6 +29,10 @@ class ShadowAuthController extends Controller
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
+            $user = Auth::user();
+            if ($user->role === 'admin') {
+                return redirect()->intended(route('admin.financial.index'));
+            }
             return redirect()->intended(route('admin.dashboard.index'));
         }
 

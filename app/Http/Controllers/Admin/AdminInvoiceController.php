@@ -13,8 +13,10 @@ class AdminInvoiceController extends Controller
         return view('admin.invoice', [
             'mode' => $request->query('mode'),
             'nama' => $request->query('nama'),
-            'proyek' => $request->query('proyek'),
             'produk' => $request->query('produk'),
+            'wilayah' => $request->query('wilayah'),
+            'alamat' => $request->query('alamat'),
+            'distance' => $request->query('distance'),
             'qty' => $request->query('qty'),
             'harga' => $request->query('harga'),
             'telp' => $request->query('telp'),

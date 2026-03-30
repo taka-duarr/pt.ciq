@@ -45,15 +45,7 @@
 
     <main class="max-w-7xl mx-auto px-6 py-20 ">
         <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-            <div class="flex gap-4">
-                <button class="bg-primary text-white px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest shadow-lg">Semua</button>
-                <button class="bg-white text-gray-400 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-gray-100 hover:text-primary transition">Batu Split</button>
-                <button class="bg-white text-gray-400 px-6 py-2 rounded-full text-xs font-bold uppercase tracking-widest border border-gray-100 hover:text-primary transition">Abu Batu</button>
-            </div>
-            <div class="relative w-full md:w-80">
-                <input type="text" placeholder="Cari jenis batu..." class="w-full pl-12 pr-4 py-3 rounded-2xl bg-white border border-gray-100 focus:border-primary outline-none text-sm transition shadow-sm">
-                <span class="material-symbols-outlined absolute left-4 top-3 text-gray-300">search</span>
-            </div>
+            
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
@@ -69,7 +61,7 @@
                     <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-6">
                         <p class="text-sm font-bold text-primary uppercase tracking-widest italic">Kualitas Premium</p>
                         <a href="{{ route('detailProduk', $produk->id) }}" class="bg-primary text-white px-6 py-2.5 rounded-2xl shadow-lg hover:scale-110 transition active:scale-95 font-bold text-xs uppercase tracking-widest">
-                        Lihat
+                        Pesan
                         </a>
                     </div>
                 </div>

@@ -68,6 +68,7 @@
                 <thead>
                     <tr class="text-left border-b">
                         <th class="py-3">Username</th>
+                        <th class="py-3">Role</th>
                         <th class="py-3">Dibuat Pada</th>
                         <th class="py-3 text-center w-32">Aksi</th>
                     </tr>
@@ -76,6 +77,9 @@
                     @forelse ($users as $user)
                     <tr class="border-b">
                         <td class="py-4 text-gray-800 font-medium">{{ $user->username }}</td>
+                        <td class="py-4 text-gray-700 font-bold uppercase text-xs">
+                            <span class="px-2 py-1 rounded bg-gray-200">{{ $user->role }}</span>
+                        </td>
                         <td class="text-gray-500 text-sm">{{ $user->created_at->format('d M Y') }}</td>
                         <td class="text-center">
                             <div class="flex items-center justify-center gap-2">

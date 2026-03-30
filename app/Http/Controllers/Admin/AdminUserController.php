@@ -25,11 +25,13 @@ class AdminUserController extends Controller
         $request->validate([
             'username' => 'required|unique:users,username',
             'password' => 'required|min:6',
+            'role' => 'required|in:super admin,admin',
         ]);
 
         User::create([
             'username' => $request->username,
             'password' => Hash::make($request->password),
+            'role' => $request->role,
         ]);
 
         return response()->json(['success' => true]);
@@ -48,9 +50,11 @@ class AdminUserController extends Controller
         $request->validate([
             'username' => 'required|unique:users,username,' . $user->id,
             'password' => 'nullable|min:6',
+            'role' => 'required|in:super admin,admin',
         ]);
 
         $user->username = $request->username;
+        $user->role = $request->role;
         
         if ($request->password) {
             $user->password = Hash::make($request->password);

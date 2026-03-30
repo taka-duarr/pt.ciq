@@ -208,10 +208,6 @@
                         <span class="w-1.5 h-6 bg-primary rounded-full"></span> 3. Lokasi Pengiriman
                     </h3>
                     <div class="space-y-4 mb-6">
-                        <div class="space-y-2">
-                            <label class="text-xs font-bold text-gray-500 uppercase">Input Nama Proyek</label>
-                            <input type="text" id="inputProyek" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl" placeholder="Nama Proyek">
-                        </div>
                         
                             <label class="text-xs font-bold text-gray-500 uppercase flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                                 <div class="flex items-center gap-2">
@@ -235,7 +231,7 @@
                                     <div class="flex gap-2">
                                         <input type="text" id="mapSearchInput" 
                                                class="flex-1 px-4 py-3 bg-white/95 backdrop-blur-sm border border-gray-200 rounded-xl shadow-2xl outline-none focus:border-primary text-sm placeholder:text-gray-400" 
-                                               placeholder="Cari lokasi desa/kecamatan/jalan..."
+                                               placeholder="Cari lokasi anda"
                                                oninput="onSearchInput(this.value)"
                                                onkeypress="if(event.key === 'Enter') { event.preventDefault(); searchLocation(); }">
                                         <button type="button" onclick="searchLocation()" class="bg-primary text-white p-3 rounded-xl shadow-lg hover:bg-black transition-colors">
@@ -291,8 +287,7 @@
                                 <p id="invPerusahaan" class="text-gray-600"></p>
                             </div>
                             <div class="text-right">
-                                <p class="text-gray-400 font-bold mb-1">Tujuan Proyek:</p>
-                                <p id="invProyek" class="font-bold text-gray-800 text-sm"></p>
+                                <p class="text-gray-400 font-bold mb-1">Tujuan Pengiriman:</p>
                                 <p id="invAutoAddress" class="text-gray-600 text-[10px] leading-tight mb-1 whitespace-pre-line"></p>
                                 <p id="invAlamat" class="text-gray-600 italic"></p>
                             </div>
@@ -383,10 +378,12 @@
         // Jalankan baris material pertama saat load
         @if($selectedProduk)
         window.addEventListener('DOMContentLoaded', () => {
+            initMap();
             calculateOrder(); 
         });
         @else
         window.onload = () => {
+            initMap();
             const firstProductCard = document.querySelector('.product-card');
             if (firstProductCard) {
                 const produkData = JSON.parse(firstProductCard.dataset.produk);
@@ -466,7 +463,6 @@
 
             document.getElementById('invNama').innerText = document.getElementById('inputNama').value || "Pelanggan";
             document.getElementById('invPerusahaan').innerText = document.getElementById('inputPerusahaan').value || "Umum";
-            document.getElementById('invProyek').innerText = document.getElementById('inputProyek').value || "-";
             document.getElementById('invAutoAddress').innerText = document.getElementById('autoAddress').value || "";
             document.getElementById('invAlamat').innerText = document.getElementById('inputAlamat').value || "-";
 
@@ -509,7 +505,6 @@
             const perusahaan = document.getElementById('inputPerusahaan').value || "-";
             const nomorWA = document.getElementById('inputWA').value || "-";
             const alamat = document.getElementById('inputAlamat').value || "-";
-            const proyek = document.getElementById('inputProyek').value || "-";
             const totalHargaText = document.getElementById('resTotal').innerText;
 
             const productName = document.getElementById('selectedProductName').value;
@@ -546,7 +541,6 @@
                         alamat: alamat,
                         wilayah: document.getElementById('autoAddress').value,
                         telp: nomorWA,
-                        proyek: proyek,
                         produk_id: productId,
                         qty: qty,
                         harga_total: data.grandTotal
@@ -582,7 +576,6 @@
     `Estimasi Unit: ${data.trips} Unit (${data.armadaNama})\n\n` +
 
     `*LOKASI PENGIRIMAN*\n` +
-    `Nama Proyek : ${proyek}\n` +
     `Alamat Detail: ${alamat}\n\n` +
 
     `*ESTIMASI TAGIHAN*\n` +
@@ -604,7 +597,7 @@
         }
 
         function selectArmada(armada) {
-            document.getElementById('selectedArmadaLabel').innerText = `${armada.nama} (${armada.maksimal_ton}T)`;
+            document.getElementById('selectedArmadaLabel').innerText = armada.nama;
             document.getElementById('selectedArmadaVal').value = armada.maksimal_ton;
             document.getElementById('selectedArmadaNama').value = armada.nama;
             document.getElementById('selectedArmadaTarif').value = armada.tarif_per_km;
@@ -647,16 +640,9 @@
                 const response = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`);
                 const data = await response.json();
                 
-                if (data && data.address) {
-                    const addr = data.address;
-                    // Fallback keys for Indonesia address structure
-                    const province = addr.state || addr.region || addr.province || "";
-                    const regency = addr.city || addr.town || addr.municipality || addr.county || addr.city_district || "";
-                    const district = addr.suburb || addr.village || addr.neighbourhood || addr.city_district || addr.district || "";
-                    
-                    const formatted = `Provinsi: ${province}\nKab/Kota: ${regency}\nKecamatan: ${district}`;
-                    autoAddressField.value = formatted;
-                } else {
+                if (data && data.display_name) {
+                    autoAddressField.value = data.display_name;
+                } else if (data && data.address) {
                     autoAddressField.value = "Gagal mendeteksi wilayah.";
                 }
             } catch (error) {

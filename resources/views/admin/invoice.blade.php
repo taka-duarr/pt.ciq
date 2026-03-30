@@ -9,7 +9,7 @@
         @media print {
             body { background: white; }
             .no-print { display: none; }
-            .print-shadow-none { shadow: none !important; }
+            .print-shadow-none { box-shadow: none !important; }
         }
         @page { size: A4; margin: 0; }
         body { font-family: 'Inter', sans-serif; }
@@ -39,8 +39,8 @@
             </div>
             <div>
                 <h3 class="font-black text-xs uppercase mb-3 tracking-widest text-gray-400">Tujuan Pengiriman</h3>
-                <p class="font-bold text-gray-400 mb-1 uppercase text-[10px]">Nama Proyek</p>
-                <p class="text-sm text-gray-800 font-bold tracking-tight leading-relaxed uppercase">{{ $proyek ?? '-' }}</p>
+                <p class="text-gray-400 font-bold uppercase tracking-widest text-[10px] mb-1">Tujuan Pengiriman</p>
+                <p class="text-sm text-gray-800 font-bold tracking-tight leading-relaxed uppercase">{{ $wilayah ?? '-' }}</p>
             </div>
         </div>
 

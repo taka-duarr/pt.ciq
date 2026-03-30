@@ -32,6 +32,15 @@
             <p id="error-password" class="text-red-500 text-xs mt-1 hidden"></p>
         </div>
 
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Role</label>
+            <select name="role" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[var(--primary)] focus:border-[var(--primary)]">
+                <option value="super admin" {{ $user->role === 'super admin' ? 'selected' : '' }}>Super Admin</option>
+                <option value="admin" {{ $user->role === 'admin' ? 'selected' : '' }}>Admin</option>
+            </select>
+            <p id="error-role" class="text-red-500 text-xs mt-1 hidden"></p>
+        </div>
+
         <div class="pt-4 flex justify-end gap-3">
             <button type="button" onclick="parent.postMessage('closeModal', '*')" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
                 Batal
