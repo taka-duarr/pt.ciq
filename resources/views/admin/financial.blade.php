@@ -294,7 +294,7 @@
         </div>
 
         <!-- TOTAL REVENUE SUMMARY TABLE -->
-        <div class="flex justify-center mb-10">
+        <div class="flex justify-center mb-10 pt-8">
             <div class="bg-white shadow-xl rounded-lg overflow-hidden w-64 border-2 border-gray-200">
                 <table class="!w-full">
                     <thead>

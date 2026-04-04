@@ -35,13 +35,7 @@
                 <div class="relative rounded-[1rem] overflow-hidden border border-gray-100 h-[300px] md:h-[500px] group">
                     <img id="mainImage" src="{{ $produk->foto ? asset('storage/' . $produk->foto) : '' }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="{{ $produk->nama }}">
                 </div>
-                @if($produk->foto)
-                <div class="grid grid-cols-4 gap-4">
-                    <button onclick="changeImg(`{{ asset('storage/' . $produk->foto) }}`)" class="rounded-lg overflow-hidden border-2 border-primary h-20 md:h-24">
-                        <img src="{{ asset('storage/' . $produk->foto) }}" class="w-full h-full object-cover">
-                    </button>
-                </div>
-                @endif
+                
             </div>
 
             <div class="flex flex-col justify-center space-y-8">
@@ -91,23 +85,23 @@
                     <p>{!! nl2br(e($produk->deskripsi_lengkap)) !!}</p>
                     <div class="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm">
                         <h4 class="text-gray-800 font-black uppercase tracking-widest text-xs mb-4 flex items-center gap-2">
-                            <span class="w-2 h-2 bg-primary rounded-full"></span> Keunggulan Material
+                             Keunggulan Material
                         </h4>
                         <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
                             @foreach(explode("\n", $produk->keunggulan) as $line)
                                 @if(trim($line))
-                                <li class="flex items-start gap-2">
-                                    <span class="text-primary font-bold">✔</span> {{ $line }}
+                                <li class="flex items-center gap-2">
+                                    <span class="w-2 h-2 bg-primary rounded-full"></span> {{ $line }}
                                 </li>
                                 @endif
                             @endforeach
                         </ul>
                     </div>
                 </div>
-                <div class="bg-primary p-8 rounded-[2.5rem] text-white shadow-2xl h-fit">
+                <div class="bg-primary p-8 rounded-[1rem] text-white shadow-2xl h-fit">
                     <h4 class="font-black uppercase tracking-widest text-xs mb-6">Butuh Konsultasi?</h4>
                     <p class="text-sm opacity-80 mb-6 leading-relaxed">Hubungi admin kami untuk estimasi biaya pengiriman dan ketersediaan ritase armada hari ini.</p>
-                    <a href="https://wa.me/6281252142002" class="block w-full text-center bg-white text-primary py-4 rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition">Chat WhatsApp</a>
+                    <a href="https://wa.me/6281252142002" class="block w-full text-center bg-white text-primary py-4 rounded-md font-black uppercase tracking-widest text-xs hover:scale-105 transition">Chat WhatsApp</a>
                 </div>
             </div>
         </div>

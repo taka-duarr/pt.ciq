@@ -6,7 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Katalog Produk | PT Conbloc Indotama Quarry</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="icon" type="image/png" href="{{ asset('img/logo.png') }}">
     <style>
         :root {
@@ -45,35 +46,52 @@
 
     <main class="max-w-7xl mx-auto px-6 py-20 ">
         <div class="flex flex-col md:flex-row justify-between items-center mb-12 gap-6">
-            
+
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
-            @foreach($produks as $produk)
-            <div class="group bg-white p-4 rounded-[1rem] shadow-sm border border-gray-50 hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
-                <div class="relative rounded-[1rem] overflow-hidden h-[250px] mb-6">
-                    <img src="{{ $produk->foto ? asset('storage/' . $produk->foto) : '' }}" class="w-full h-full object-cover transition duration-700 group-hover:scale-110" alt="{{ $produk->nama }}">
-                    <div class="absolute top-4 right-4 bg-white/90 backdrop-blur px-4 py-1 rounded-full text-[10px] font-black text-primary uppercase shadow-sm">{{ $produk->ukuran }}</div>
-                </div>
-                <div class="px-4 pb-4 flex-grow">
-                    <h3 class="text-xl font-black text-gray-800 mb-2">{{ $produk->nama }}</h3>
-                    <p class="text-xs text-gray-400 leading-relaxed mb-6 line-clamp-2 italic">{{ $produk->kategori }}</p>
-                    <div class="mt-auto flex items-center justify-between border-t border-gray-50 pt-6">
-                        <p class="text-sm font-bold text-primary uppercase tracking-widest italic">Kualitas Premium</p>
-                        <a href="{{ route('detailProduk', $produk->id) }}" class="bg-primary text-white px-6 py-2.5 rounded-2xl shadow-lg hover:scale-110 transition active:scale-95 font-bold text-xs uppercase tracking-widest">
-                        Pesan
-                        </a>
+            @foreach ($produks as $produk)
+                <div
+                    class="group bg-white p-4 rounded-[1rem] shadow-sm border border-gray-50 hover:shadow-2xl transition-all duration-500 flex flex-col h-full">
+                    <div class="relative rounded-[1rem] overflow-hidden h-[250px] mb-6">
+                        <img src="{{ $produk->foto ? asset('storage/' . $produk->foto) : '' }}"
+                            class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
+                            alt="{{ $produk->nama }}">
+                        <div
+                            class="absolute top-4 right-4 bg-white/90 backdrop-blur px-4 py-1 rounded-full text-[10px] font-black text-primary uppercase shadow-sm">
+                            {{ $produk->ukuran }}</div>
+                    </div>
+                    <div class="px-4 pb-4 flex-grow">
+                        <h3 class="text-xl font-black text-gray-800 mb-2">{{ $produk->nama }}</h3>
+
+                        <p class="text-xs text-gray-400 leading-relaxed mb-4 line-clamp-2 italic">
+                            {{ $produk->kategori }}
+                        </p>
+
+                        <div class="mt-auto flex items-center justify-end border-t border-gray-50 pt-4">
+                            <a href="{{ route('detailProduk', $produk->id) }}"
+                                class="bg-primary text-white px-8 py-3 rounded-xl shadow-lg hover:scale-110 transition active:scale-95 font-bold text-xs uppercase tracking-widest">
+                                Pesan
+                            </a>
+                        </div>
+                        <!-- NOTE -->
+                        <p class="text-[10px] text-gray-500 italic mb-3 mt-6">
+                            <span class="text-red-500 ">*</span>Tekan tombol untuk melakukan pembelian
+                        </p>
                     </div>
                 </div>
-            </div>
             @endforeach
         </div>
 
-        <div class="mt-32 bg-primary rounded-[2rem] p-12 text-center text-white shadow-2xl relative overflow-hidden">
+        <div class="mt-32 bg-primary rounded-[1rem] p-12 text-center text-white shadow-2xl relative overflow-hidden">
             <div class="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32"></div>
-            <h2 class="text-3xl md:text-4xl font-black mb-6 uppercase tracking-tighter">Butuh Penawaran Khusus Proyek?</h2>
-            <p class="opacity-80 mb-10 max-w-xl mx-auto">Dapatkan harga grosir dan jadwal pengiriman ritase besar untuk kebutuhan korporasi dan tender infrastruktur.</p>
-            <a href="{{ route('pemesanan') }}" class="bg-yellow-400 text-gray-900 px-12 py-4 rounded-2xl font-black uppercase tracking-widest text-sm hover:scale-105 transition shadow-xl inline-block">Hubungi Sales Manager</a>
+            <h2 class="text-3xl md:text-4xl font-black mb-6 uppercase tracking-tighter">Butuh Penawaran Khusus Proyek?
+            </h2>
+            <p class="opacity-80 mb-10 max-w-xl mx-auto">Dapatkan harga grosir dan jadwal pengiriman ritase besar untuk
+                kebutuhan korporasi dan tender infrastruktur.</p>
+            <a href="{{ route('pemesanan') }}"
+                class="bg-yellow-400 text-gray-900 px-12 py-4 rounded-xl font-black uppercase tracking-widest text-sm hover:scale-105 transition shadow-xl inline-block">Hubungi
+                Sales Manager</a>
         </div>
     </main>
 

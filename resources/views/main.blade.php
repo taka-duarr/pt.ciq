@@ -66,6 +66,24 @@
         .animate-bounce-slow {
             animation: bounce-slow 3s infinite ease-in-out;
         }
+
+        #product-slider::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        #product-slider::-webkit-scrollbar-track {
+            background: #e5e7eb;
+            border-radius: 9999px;
+        }
+
+        #product-slider::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 9999px;
+        }
+
+        #product-slider::-webkit-scrollbar-thumb:hover {
+            background: #004c2c;
+        }
     </style>
 </head>
 
@@ -74,94 +92,65 @@
     @include('navbar')
 
     <!-- Main Content -->
-    <main class="px-4 md:px-8 pb-8  pt-24">
+    <main class="px-4 md:px-8 pb-8  pt-[35px]">
 
         <!-- Hero Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 py-8 md:py-12 px-4 md:px-0 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 py-8 md:py-12 px-4 md:px-0 items-start">
 
-            <!-- Kolom Kiri -->
-            <div class="space-y-5">
-                <div class="flex items-center gap-2">
-                    <span class="w-8 h-8 bg-[var(--primary)] rounded-full flex items-center justify-center shrink-0">
-                        <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path
-                                d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1a1 1 0 112 0v1a1 1 0 11-2 0zM13.536 15.657a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707z">
-                            </path>
-                        </svg>
-                    </span>
-                    <p class="text-[var(--primary)] font-bold tracking-wider text-xs md:text-sm uppercase">
-                        Solusi Material Konstruksi Berkualitas
-                    </p>
-                </div>
+            <!-- GRID 1 : Judul -->
+            <div class="lg:col-span-7 bg-[#f9fafb]  min-h-[280px] flex items-center">
+                <div class="space-y-5">
+                    <div class="flex items-center gap-2">
+                        <span
+                            class="w-8 h-8 bg-[var(--primary)] rounded-full flex items-center justify-center shrink-0">
+                            <svg class="w-4 h-4 text-[#f9fafb]" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.464 5.05l-.707-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1a1 1 0 112 0v1a1 1 0 11-2 0zM13.536 15.657a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414l.707.707z">
+                                </path>
+                            </svg>
+                        </span>
+                        <p class="text-[var(--primary)] font-bold tracking-wider text-xs md:text-sm uppercase">
+                            Solusi Material Konstruksi Berkualitas
+                        </p>
+                    </div>
 
-                <h1 class="text-3xl md:text-5xl font-black text-gray-800 leading-tight max-w-xl">
-                    Menjawab Kebutuhan Pembangunan dengan
-                    <span class="text-[var(--primary)]">Material Batu Berkualitas Tinggi</span>
-                </h1>
-
-                <p class="text-gray-600 text-sm md:text-base leading-relaxed max-w-xl">
-                    PT. Conbloc Indotama Quarry hadir menyediakan material batu berkualitas tinggi yang berasal dari
-                    tambang
-                    terpercaya untuk memenuhi kebutuhan pembangunan di berbagai sektor konstruksi.
-                </p>
-
-                <div class="flex flex-wrap items-center gap-4 pt-3">
-                    <button
-                        class="bg-[var(--primary)] text-white px-6 py-3 rounded-full text-sm md:text-base font-bold shadow-xl shadow-green-900/20 hover:scale-105 transition flex items-center gap-2">
-                        Eksplorasi Produk
-                        <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                    </button>
-
-                    <a href="#"
-                        class="font-semibold text-sm md:text-base text-gray-700 hover:text-[var(--primary)] underline decoration-2 underline-offset-4">
-                        Lihat Semua Layanan
-                    </a>
+                    <h1 class="text-3xl md:text-5xl font-black text-gray-800 leading-tight max-w-2xl">
+                        Menjawab Kebutuhan Pembangunan dengan
+                        <span class="text-[var(--primary)]">Material Batu Berkualitas Tinggi</span>
+                    </h1>
                 </div>
             </div>
 
-            <!-- Kolom Kanan -->
-            <div class="space-y-4 text-gray-600 text-sm md:text-[15px] leading-relaxed text-justify">
-                <p>
-                    Di era pembangunan saat ini, salah satu bahan utama untuk pekerjaan konstruksi adalah batu, dimana
-                    material
-                    ini berasal dari batu besar di area penambangan khusus yang kemudian diolah dengan cara dibelah atau
-                    dipecah.
-                </p>
+            <!-- GRID 2 : Gambar -->
+            <div class="lg:col-span-5 bg-[#f9fafb] min-h-[280px] ">
+                <img src="{{ asset('img/batu1.jpg') }}" alt="Gambar Konstruksi"
+                    class="w-full h-full object-cover min-h-[280px] rounded-xl">
+            </div>
 
-                <p>
-                    Cara menghancurkannya bisa secara manual atau menggunakan mesin penghancur (Stone Crusher). Karena
-                    itu,
-                    ukuran batu split terhitung cukup kecil dibandingkan jenis batu lainnya.
-                </p>
+            <!-- GRID 3 : Teks panjang + button -->
+            <div class="lg:col-span-12 bg-[#f9fafb] rounded-md ">
+                <div class="space-y-5 text-gray-600 text-sm md:text-[15px] leading-relaxed text-justify">
+                    <p>
+                        Di era pembangunan saat ini, salah satu bahan utama untuk pekerjaan konstruksi adalah batu,
+                        dimana material ini berasal dari batu besar di area penambangan khusus yang kemudian diolah dengan cara dibelah atau dipecah.Cara menghancurkannya bisa secara manual atau menggunakan mesin penghancur (Stone Crusher). Karena itu, ukuran batu split terhitung cukup kecil dibandingkan jenis batu lainnya.Walau berukuran kecil, bahan bangunan yang kerap disebut batu belah ini memiliki fungsi krusial dalam konstruksi bangunan. Umumnya, batu tersebut digunakan sebagai bahan utama pembuatan beton cor atau beton bertulang. Ketika membuat beton cor, material ini akan dicampur dengan bahan lain seperti semen,air,dan pasir.Selain beton cor, batu belah digunakan sebagai material jalan (lapisan pondasi atau permukaan jalan),drainase, bantalan kereta api, hingga elemen dekorasi rumah. Bahkan, batu ini bisa diaplikasikan sebagi elemen utama taman.Di pasaran, terdapat beberapa jenis batu split yang dibedakan berdasarkan ukuran, fungsi, dan harganya.Menjawab kebutuhan pasar, <span class="font-semibold text-gray-800">PT. Conbloc Indotama Quarry</span>memberikan solusi untuk kebutuhan tersebut dengan menyediakan material batu yang berkualitas tinggi yang berasal dari tambang yang berkualitas.
+                </div>
+                {{-- 
+        <!-- BUTTON DI BAWAH TEKS PANJANG -->
+        <div class="flex flex-wrap items-center gap-4 pt-8">
+            <button
+                class="bg-[var(--primary)] text-white px-6 py-3 rounded-full text-sm md:text-base font-bold shadow-xl shadow-green-900/20 hover:scale-105 transition flex items-center gap-2">
+                Eksplorasi Produk
+                <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </button>
 
-                <p>
-                    Walau berukuran kecil, bahan bangunan yang kerap disebut batu belah ini memiliki fungsi krusial
-                    dalam
-                    konstruksi bangunan. Umumnya, batu tersebut digunakan sebagai bahan utama pembuatan beton cor atau
-                    beton
-                    bertulang. Ketika membuat beton cor, material ini akan dicampur dengan bahan lain seperti semen,
-                    air,
-                    dan pasir.
-                </p>
-
-                <p>
-                    Selain beton cor, batu belah digunakan sebagai material jalan (lapisan pondasi atau permukaan
-                    jalan),
-                    drainase, bantalan kereta api, hingga elemen dekorasi rumah. Bahkan, batu ini bisa diaplikasikan
-                    sebagai elemen utama taman.
-                </p>
-
-                <p>
-                    Di pasaran, terdapat beberapa jenis batu split yang dibedakan berdasarkan ukuran, fungsi, dan
-                    harganya.
-                    Menjawab kebutuhan pasar, <span class="font-semibold text-gray-800">PT. Conbloc Indotama
-                        Quarry</span>
-                    memberikan solusi untuk kebutuhan tersebut dengan menyediakan material batu yang berkualitas tinggi
-                    yang berasal dari tambang yang berkualitas.
-                </p>
+            <a href="#"
+                class="font-semibold text-sm md:text-base text-gray-700 hover:text-[var(--primary)] underline decoration-2 underline-offset-4">
+                Lihat Semua Layanan
+            </a>
+        </div> --}}
             </div>
 
         </div>
@@ -181,13 +170,9 @@
                     </div>
 
                     <div class="relative z-10">
-                        <div class="rounded-[3.5rem] overflow-hidden shadow-2xl h-[450px] border-[2px] border-white">
+                        <div class="rounded-[1rem] overflow-hidden shadow-2xl h-[450px] ">
                             <img src="img/profilpt.jpg" class="w-full h-full object-cover"
                                 alt="PT Conbloc Indotama Quarry">
-                        </div>
-
-                        <div
-                            class="absolute -top-4 -right-4 w-20 h-20 border-t-4 border-r-4 border-[var(--primary)] rounded-tr-[2rem] opacity-30">
                         </div>
                     </div>
                 </div>
@@ -226,37 +211,66 @@
             </div>
         </section>
         <!-- Stats Row -->
-        <div class="mb-10">
-            <div class="flex items-center gap-3 mb-2">
-                <span class="w-8 h-[2px] bg-[var(--primary)]"></span>
-                <p class="text-[var(--primary)] font-bold tracking-widest text-xs uppercase">Pilihan Material</p>
-            </div>
-            <h2 class="text-3xl md:text-4xl font-black text-gray-800 leading-tight max-w-xl">
-                Beberapa Produk Unggulan Untuk <span class="text-[var(--primary)]">Konstruksi Anda</span>
-            </h2>
-        </div>
+        <div class="max-w-7xl mx-auto px-4 md:px-6 py-12">
 
-        <div id="product-slider" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto pb-8">
-            @foreach ($produks->take(3) as $produk)
-                <div class="group cursor-pointer min-w-[280px] md:min-w-[320px] snap-center shrink-0">
-                    <div class="relative rounded-[1rem] overflow-hidden shadow-sm h-[220px] border border-gray-100">
-                        <img src="{{ $produk->foto ? asset('storage/' . $produk->foto) : '' }}"
-                            class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
-                            alt="{{ $produk->nama }}">
+            <!-- HEADER -->
+            <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-10">
+                <div>
+                    <div class="flex items-center gap-3 mb-2">
+                        <span class="w-8 h-[2px] bg-[var(--primary)]"></span>
+                        <p class="text-[var(--primary)] font-bold tracking-widest text-xs uppercase">
+                            Pilihan Material
+                        </p>
                     </div>
-                    <div class="mt-4 px-2 flex justify-between items-center">
-                        <div>
-                            <h3 class="text-lg font-bold text-gray-800">{{ $produk->nama }}</h3>
-                            <p class="text-[var(--primary)] font-bold mt-1 text-sm">Rp
-                                {{ number_format($produk->harga, 0, ',', '.') }} / Ton</p>
-                        </div>
-                        <a href="{{ route('detailProduk', $produk->id) }}"
-                            class="bg-[var(--primary)] text-white px-5 py-2.5 rounded-2xl flex items-center gap-2 shadow-lg shadow-green-900/20 hover:bg-[#004c2c] transition-all transform active:scale-95">
-                            <span class="text-xs font-bold uppercase tracking-wider">Beli</span>
-                        </a>
-                    </div>
+
+                    <h2 class="text-3xl md:text-4xl font-black text-gray-800 leading-tight max-w-xl">
+                        Beberapa Produk Unggulan Untuk
+                        <span class="text-[var(--primary)]">Konstruksi Anda</span>
+                    </h2>
                 </div>
-            @endforeach
+
+                <!-- Tombol lihat selengkapnya -->
+                <div class="md:self-start">
+                    <a href="{{ route('katalogProduk') }}"
+                        class="inline-flex items-center gap-2 text-sm md:text-base font-bold text-[var(--primary)] hover:text-[#004c2c] transition underline underline-offset-4 decoration-2">
+                        Lihat Selengkapnya
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+
+            <!-- SLIDER -->
+            <div id="product-slider"
+                class="flex gap-6 overflow-x-auto scroll-smooth snap-x snap-mandatory pt-2 pb-8 scrollbar-thin scrollbar-thumb-[var(--primary)] scrollbar-track-gray-200">
+
+                @foreach ($produks as $produk)
+                    <div
+                        class="group cursor-pointer min-w-[280px] md:min-w-[320px] lg:min-w-[340px] snap-start shrink-0">
+                        <div
+                            class="relative w-full h-[220px] rounded-[1rem] overflow-hidden shadow-sm border border-gray-100 bg-white">
+                            <img src="{{ $produk->foto ? asset('storage/' . $produk->foto) : asset('img/no-image.png') }}"
+                                class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                                alt="{{ $produk->nama }}">
+                        </div>
+
+                        <div class="mt-4 px-2 flex justify-between items-center gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold text-gray-800">{{ $produk->nama }}</h3>
+
+                            </div>
+
+                            <a href="{{ route('detailProduk', $produk->id) }}"
+                                class="bg-[var(--primary)] text-white px-7 py-3 rounded-xl flex items-center gap-2 shadow-lg shadow-green-900/20 hover:bg-[#004c2c] transition-all transform active:scale-95 whitespace-nowrap">
+                                <span class="text-xs font-bold uppercase tracking-wider">Beli</span>
+                            </a>
+                        </div>
+                    </div>
+                @endforeach
+
+            </div>
         </div>
 
         <style>
@@ -351,8 +365,9 @@
                     </div>
                     <div class="w-full md:w-[45%] flex justify-center md:justify-start order-3 mt-8 md:mt-0">
                         <div
-                            class="w-48 h-48 rounded-full bg-red-500 flex items-center justify-center border-[8px] border-gray-50 shadow-xl overflow-hidden p-4">
-                            <img src="img/rock.png" class="w-20 h-20 object-contain" alt="Pilih Batu">
+                            class="w-48 h-48 rounded-full bg-red-500 flex items-center justify-center border-[8px] border-gray-50 shadow-xl overflow-hidden p-2">
+                            <img src="img/rock.png" class="w-28 h-28 object-contain brightness-0 invert contrast-200"
+                                alt="Pilih Batu">
                         </div>
                     </div>
                 </div>
@@ -360,8 +375,10 @@
                 <div class="relative z-10 flex flex-col md:flex-row items-center justify-between mb-24 group">
                     <div class="w-full md:w-[45%] flex justify-center md:justify-end order-3 md:order-1 mt-8 md:mt-0">
                         <div
-                            class="w-48 h-48 rounded-full bg-[var(--primary)] flex items-center justify-center border-[8px] border-gray-50 shadow-xl overflow-hidden p-6">
-                            <img src="img/shopping-cart.png" class="w-20 h-20 object-contain" alt="Keranjang">
+                            class="w-48 h-48 rounded-full bg-[var(--primary)] flex items-center justify-center border-[10px] border-gray-50 shadow-xl overflow-hidden p-2">
+                            <img src="img/shopping-cart.png"
+                                class="w-[90px] h-[90px] object-contain brightness-0 invert contrast-200"
+                                alt="Keranjang">
                         </div>
                     </div>
                     <div class="w-full md:w-[10%] flex flex-col items-center order-1 md:order-2">
@@ -394,7 +411,7 @@
                     <div class="w-full md:w-[45%] flex justify-center md:justify-start order-3 mt-8 md:mt-0">
                         <div
                             class="w-48 h-48 rounded-full bg-yellow-500 flex items-center justify-center border-[8px] border-gray-50 shadow-xl overflow-hidden p-8">
-                            <img src="img/printer.png" class="w-20 h-20 object-contain" alt="Cetak Faktur">
+                            <img src="img/printer.png" class="w-20 h-20 object-contain invert" alt="Cetak Faktur">
                         </div>
                     </div>
                 </div>
@@ -403,7 +420,7 @@
                     <div class="w-full md:w-[45%] flex justify-center md:justify-end order-3 md:order-1 mt-8 md:mt-0">
                         <div
                             class="w-48 h-48 rounded-full bg-green-600 flex items-center justify-center border-[8px] border-gray-50 shadow-xl overflow-hidden p-6">
-                            <img src="img/whatsapp.png" class="w-20 h-20 object-contain" alt="WhatsApp">
+                            <img src="img/whatsapp.png" class="w-20 h-20 object-contain invert" alt="WhatsApp">
                         </div>
                     </div>
                     <div class="w-full md:w-[10%] flex flex-col items-center order-1 md:order-2">

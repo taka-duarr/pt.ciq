@@ -23,6 +23,8 @@ Route::middleware('guest')->group(function () {
     Route::get('/shadow', [ShadowAuthController::class, 'showLoginForm'])->name('login');
     Route::post('/shadow', [ShadowAuthController::class, 'login']);
 });
+
+// Route::get('/shadow', [ShadowAuthController::class, 'showLoginForm'])->name('login');
 Route::post('/logout', [ShadowAuthController::class, 'logout'])->name('logout')->middleware('auth');
 
 use App\Http\Controllers\PesananController;

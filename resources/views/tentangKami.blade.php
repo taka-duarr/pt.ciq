@@ -35,16 +35,16 @@
 
 <section class="max-w-6xl mx-auto px-6 mb-24">
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm">
+        <div class="aspect-square rounded-xl overflow-hidden shadow-sm">
             <img src="img/batu.jpg" class="w-full h-full object-cover hover:scale-110 transition duration-500">
         </div>
-        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm">
+        <div class="aspect-square rounded-xl overflow-hidden shadow-sm">
             <img src="img/batu1.jpg" class="w-full h-full object-cover hover:scale-110 transition duration-500">
         </div>
-        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm">
+        <div class="aspect-square rounded-xl overflow-hidden shadow-sm">
             <img src="img/batu2.jpg" class="w-full h-full object-cover hover:scale-110 transition duration-500">
         </div>
-        <div class="aspect-square rounded-2xl overflow-hidden shadow-sm">
+        <div class="aspect-square rounded-xl overflow-hidden shadow-sm">
             <img src="img/profilpt.jpg" class="w-full h-full object-cover hover:scale-110 transition duration-500">
         </div>
     </div>
@@ -72,10 +72,10 @@
     <section class="max-w-7xl mx-auto px-6 mb-32">
         <div class="bg-white rounded-[3rem] p-8 md:p-16 shadow-sm border border-gray-100 grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
             <div class="relative">
-                <div class="rounded-[2.5rem] overflow-hidden shadow-2xl">
+                <div class="rounded-[1rem] overflow-hidden shadow-2xl">
                     <img src="img/profilpt.jpg" class="w-full h-[400px] object-cover" alt="Founder/Workplace">
                 </div>
-                <div class="absolute -bottom-6 -right-6 md:right-12 bg-white p-6 rounded-2xl shadow-xl max-w-xs border-l-4 border-primary">
+                <div class="absolute -bottom-6 -right-6 md:right-12 bg-white p-6 rounded-xl shadow-xl max-w-xs border-l-4 border-primary">
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">Visi Kami</p>
                     <p class="text-gray-800 italic font-medium">"Menjadi pilar utama penyedia material konstruksi berkualitas nasional."</p>
                 </div>
