@@ -49,7 +49,7 @@
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <p class="pt-1"><span class="text-white font-bold italic block mb-1">Quarry:</span> Dusun
+                        <p class="pt-1"><span class="text-white font-bold italic block mb-1">Lokasi Quarry:</span> Dusun
                             Karanganyar Timur, Desa Karangasem, Pasuruan </p>
                     </div>
                     <div class="flex gap-4 group">
@@ -62,7 +62,7 @@
                                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                             </svg>
                         </div>
-                        <p class="pt-1"><span class="text-white font-bold italic block mb-1">Kantor:</span> Gedung Sentra Niaga Utama Citraland
+                        <p class="pt-1"><span class="text-white font-bold italic block mb-1">Marketing Office:</span> Gedung Sentra Niaga Utama Citraland
                             Surabaya </p>
                     </div>
                     <div class="flex gap-4 group">

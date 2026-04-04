@@ -77,7 +77,7 @@
         </div>
 
         <div>
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Our Office</p>
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Lokasi Query</p>
             <p class="text-gray-800 font-bold text-xs leading-relaxed break-words">
                 Dusun Karanganyar Timur, Desa Karangasem, Kecamatan Lumbang, Kabupaten Pasuruan - Jawa Timur
             </p>
@@ -93,7 +93,7 @@
         </div>
 
         <div>
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Office Surabaya</p>
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Marketing Office</p>
             <p class="text-gray-800 font-bold text-xs leading-relaxed break-words">
                 Gedung Sentra Niaga Utama Citraland Surabaya
             </p>

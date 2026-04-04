@@ -95,10 +95,9 @@
     <main class="px-4 md:px-8 pb-8  pt-[35px]">
 
         <!-- Hero Section -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 py-8 md:py-12 px-4 md:px-0 items-start">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 py-0 md:py-12 px-4 md:px-0 items-start">
 
-            <!-- GRID 1 : Judul -->
-            <div class="lg:col-span-7 bg-[#f9fafb]  min-h-[280px] flex items-center">
+            <div class="lg:col-span-7 bg-[#f9fafb] min-h-[280px] flex items-center">
                 <div class="space-y-5">
                     <div class="flex items-center gap-2">
                         <span
@@ -121,22 +120,71 @@
                 </div>
             </div>
 
-            <!-- GRID 2 : Gambar -->
-            <div class="lg:col-span-5 bg-[#f9fafb] min-h-[280px] ">
-                <img src="{{ asset('img/batu1.jpg') }}" alt="Gambar Konstruksi"
-                    class="w-full h-full object-cover min-h-[280px] rounded-xl">
+            <div class="lg:col-span-5 grid grid-cols-2 gap-3 h-full min-h-[350px]">
+                <div class="row-span-2">
+                    <img src="{{ asset('img/batu.jpg') }}" alt="Tambang"
+                        class="w-full h-full object-cover rounded-2xl shadow-lg">
+                </div>
+                <div>
+                    <img src="{{ asset('img/batu1.jpg') }}" alt="Stone Crusher"
+                        class="w-full h-[170px] object-cover rounded-2xl shadow-lg">
+                </div>
+                <div>
+                    <img src="{{ asset('img/batu2.jpg') }}" alt="Batu Split"
+                        class="w-full h-[170px] object-cover rounded-2xl shadow-lg">
+                </div>
             </div>
 
-            <!-- GRID 3 : Teks panjang + button -->
-            <div class="lg:col-span-12 bg-[#f9fafb] rounded-md ">
-                <div class="space-y-5 text-gray-600 text-sm md:text-[15px] leading-relaxed text-justify">
-                    <p>
-                        Di era pembangunan saat ini, salah satu bahan utama untuk pekerjaan konstruksi adalah batu,
-                        dimana material ini berasal dari batu besar di area penambangan khusus yang kemudian diolah dengan cara dibelah atau dipecah.Cara menghancurkannya bisa secara manual atau menggunakan mesin penghancur (Stone Crusher). Karena itu, ukuran batu split terhitung cukup kecil dibandingkan jenis batu lainnya.Walau berukuran kecil, bahan bangunan yang kerap disebut batu belah ini memiliki fungsi krusial dalam konstruksi bangunan. Umumnya, batu tersebut digunakan sebagai bahan utama pembuatan beton cor atau beton bertulang. Ketika membuat beton cor, material ini akan dicampur dengan bahan lain seperti semen,air,dan pasir.Selain beton cor, batu belah digunakan sebagai material jalan (lapisan pondasi atau permukaan jalan),drainase, bantalan kereta api, hingga elemen dekorasi rumah. Bahkan, batu ini bisa diaplikasikan sebagi elemen utama taman.Di pasaran, terdapat beberapa jenis batu split yang dibedakan berdasarkan ukuran, fungsi, dan harganya.Menjawab kebutuhan pasar, <span class="font-semibold text-gray-800">PT. Conbloc Indotama Quarry</span>memberikan solusi untuk kebutuhan tersebut dengan menyediakan material batu yang berkualitas tinggi yang berasal dari tambang yang berkualitas.
+            <div class="lg:col-span-12 bg-[#f9fafb] rounded-md relative">
+                <div id="text-container" class="relative overflow-hidden transition-all duration-500 max-h-24">
+                    <div class="space-y-5 text-gray-600 text-sm md:text-[15px] leading-relaxed text-justify">
+                        <p>
+                            Di era pembangunan saat ini, salah satu bahan utama untuk pekerjaan konstruksi adalah batu,
+                            dimana material ini berasal dari batu besar di area penambangan khusus yang kemudian diolah
+                            dengan cara dibelah atau dipecah. Cara menghancurkannya bisa secara manual atau menggunakan
+                            mesin penghancur (Stone Crusher). Karena itu, ukuran batu split terhitung cukup kecil
+                            dibandingkan jenis batu lainnya.
+                        </p>
+                        <p>
+                            Walau berukuran kecil, bahan bangunan yang kerap disebut batu belah ini memiliki fungsi
+                            krusial dalam konstruksi bangunan.
+                            Umumnya, batu tersebut digunakan sebagai bahan utama pembuatan beton cor atau beton
+                            bertulang. Ketika membuat beton cor,
+                            material ini akan dicampur dengan bahan lain seperti semen, air, dan pasir. Selain beton
+                            cor, batu belah digunakan sebagai
+                            material jalan (lapisan pondasi atau permukaan jalan), drainase, bantalan kereta api, hingga
+                            elemen dekorasi rumah.
+                            Bahkan, batu ini bisa diaplikasikan sebagai elemen utama taman.
+                        </p>
+                        <p>
+                            Di pasaran, terdapat beberapa jenis batu split yang dibedakan berdasarkan ukuran, fungsi,
+                            dan harganya.
+                            Menjawab kebutuhan pasar, <span class="font-semibold text-gray-800">PT. Conbloc Indotama
+                                Quarry</span>
+                            memberikan solusi untuk kebutuhan tersebut dengan menyediakan material batu yang berkualitas
+                            tinggi
+                            yang berasal dari tambang yang berkualitas.
+                        </p>
+                    </div>
+
+                    <div id="text-overlay"
+                        class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-[#f9fafb] to-transparent">
+                    </div>
                 </div>
-                {{-- 
+
+                <button onclick="toggleReadMore()" id="read-more-btn"
+                    class="mt-4 text-[var(--primary)]  font-bold flex items-center gap-1 hover:underline">
+                    Read More
+                    <svg id="arrow-icon" class="w-4 h-4 transition-transform" fill="none" stroke="currentColor"
+                        viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
         <!-- BUTTON DI BAWAH TEKS PANJANG -->
-        <div class="flex flex-wrap items-center gap-4 pt-8">
+        <div class="flex flex-wrap items-center gap-4 pt-0">
             <button
                 class="bg-[var(--primary)] text-white px-6 py-3 rounded-full text-sm md:text-base font-bold shadow-xl shadow-green-900/20 hover:scale-105 transition flex items-center gap-2">
                 Eksplorasi Produk
@@ -146,12 +194,8 @@
                 </svg>
             </button>
 
-            <a href="#"
-                class="font-semibold text-sm md:text-base text-gray-700 hover:text-[var(--primary)] underline decoration-2 underline-offset-4">
-                Lihat Semua Layanan
-            </a>
-        </div> --}}
-            </div>
+        </div>
+        </div>
 
         </div>
         <!-- About -->
@@ -443,5 +487,29 @@
     <!-- FOOTER -->
     @include('footer')
 </body>
+<script>
+    function toggleReadMore() {
+        const container = document.getElementById('text-container');
+        const overlay = document.getElementById('text-overlay');
+        const btn = document.getElementById('read-more-btn');
+        const arrow = document.getElementById('arrow-icon');
+
+        if (container.classList.contains('max-h-24')) {
+            // Buka teks
+            container.classList.remove('max-h-24');
+            container.classList.add('max-h-[1000px]'); // Berikan max-height yang cukup besar
+            overlay.classList.add('hidden');
+            btn.childNodes[0].textContent = 'Read Less ';
+            arrow.classList.add('rotate-180');
+        } else {
+            // Tutup teks
+            container.classList.add('max-h-24');
+            container.classList.remove('max-h-[1000px]');
+            overlay.classList.remove('hidden');
+            btn.childNodes[0].textContent = 'Read More ';
+            arrow.classList.remove('rotate-180');
+        }
+    }
+</script>
 
 </html>
