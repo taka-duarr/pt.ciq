@@ -113,7 +113,7 @@
                                 </div>
                                 <div>
                                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Material Terpilih</p>
-                                    <p class="font-black text-gray-800 text-lg sm:text-xl">{{ $selectedProduk->nama }}</p>
+                                    <p class="font-black text-gray-800 text-lg sm:text-xl">{{ $selectedProduk->nama }} <span class="text-sm font-medium text-gray-500">({{ $selectedProduk->ukuran }})</span></p>
                                 </div>
                             </div>
                         </div>
@@ -125,7 +125,7 @@
                                 <div onclick="selectProduct(this, {{ json_encode($produk) }})" 
                                     class="product-card p-4 rounded-2xl border-2 border-gray-100 bg-gray-50 cursor-pointer hover:border-primary/30 transition-all text-center group">
                                     <p class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-1 group-hover:text-primary transition-colors">Material</p>
-                                    <p class="font-bold text-gray-800 text-xs sm:text-sm leading-tight">{{ $produk->nama }}</p>
+                                    <p class="font-bold text-gray-800 text-xs sm:text-sm leading-tight">{{ $produk->nama }} <span class="text-[10px] font-medium text-gray-500 block mt-1">({{ $produk->ukuran }})</span></p>
                                 </div>
                             @endforeach
                         </div>
@@ -331,6 +331,10 @@
                             <span class="font-bold"><span id="resTotalWeight">0</span> Ton</span>
                         </div>
                         <div class="flex justify-between border-b border-white/10 pb-4">
+                            <span class="opacity-70 text-[10px] uppercase">Harga Material</span>
+                            <span class="font-bold" id="resMaterialCost">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between border-b border-white/10 pb-4">
                             <span class="opacity-70 text-[10px] uppercase">Biaya Kirim</span>
                             <span class="font-bold" id="resShipping">Rp 0</span>
                         </div>
@@ -439,6 +443,7 @@
             // Update UI
             document.getElementById('displayTrips').innerText = trips;
             document.getElementById('resTotalWeight').innerText = totalWeight;
+            document.getElementById('resMaterialCost').innerText = formatRupiah(totalMaterialCost);
             document.getElementById('resShipping').innerText = formatRupiah(shippingCost);
             document.getElementById('resDistance').innerText = distance.toFixed(1);
             document.getElementById('resPPN').innerText = formatRupiah(ppn);
@@ -586,7 +591,7 @@
     `_Mohon konfirmasi jadwal pengiriman dan ketersediaan stok._`;
 
             // Membuka WhatsApp di tab baru
-            const waUrl = `https://wa.me/6281357398265?text=${encodeURIComponent(text)}`;
+            const waUrl = `https://wa.me/6281252142002?text=${encodeURIComponent(text)}`;
             window.open(waUrl, '_blank');
         }
 
@@ -732,15 +737,40 @@
             document.getElementById('searchResults').classList.add('hidden');
             document.getElementById('mapSearchInput').value = displayName;
         }
-        function setDestination(latlng) {
+        async function setDestination(latlng) {
             if(marker) map.removeLayer(marker);
             marker = L.marker(latlng).addTo(map);
             
-            // Hitung Jarak (Earth Radius ~6371km)
-            const distance = calculateDistance(quarryCoords[0], quarryCoords[1], latlng.lat, latlng.lng);
+            document.getElementById('distanceLabel').innerText = `Menghitung rute...`;
             
-            document.getElementById('inputDistance').value = distance.toFixed(1);
-            document.getElementById('distanceLabel').innerText = `Jarak: ${distance.toFixed(1)} km`;
+            try {
+                // Koordinat pabrik (Quarry)
+                const startLat = quarryCoords[0];
+                const startLng = quarryCoords[1];
+                const endLat = latlng.lat;
+                const endLng = latlng.lng;
+                
+                // OSRM API menggunakan format: longitude,latitude
+                const response = await fetch(`https://router.project-osrm.org/route/v1/driving/${startLng},${startLat};${endLng},${endLat}?overview=false`);
+                const data = await response.json();
+                
+                let distance = 0;
+                if (data.routes && data.routes.length > 0) {
+                    distance = data.routes[0].distance / 1000; // Kembalian OSRM dalam meter
+                    document.getElementById('distanceLabel').innerText = `Jarak: ${distance.toFixed(1)} km (Rute)`;
+                } else {
+                    // Fallback jika tidak ada jalan terhubung
+                    distance = calculateDistance(startLat, startLng, endLat, endLng);
+                    document.getElementById('distanceLabel').innerText = `Jarak: ${distance.toFixed(1)} km`;
+                }
+                document.getElementById('inputDistance').value = distance.toFixed(1);
+            } catch(e) {
+                console.error("OSRM Routing Error:", e);
+                // Fallback jika API down
+                const distance = calculateDistance(quarryCoords[0], quarryCoords[1], latlng.lat, latlng.lng);
+                document.getElementById('inputDistance').value = distance.toFixed(1);
+                document.getElementById('distanceLabel').innerText = `Jarak: ${distance.toFixed(1)} km`;
+            }
             
             calculateOrder();
         }

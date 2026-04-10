@@ -96,4 +96,11 @@
             `;
         }
     });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key.toLowerCase() === 'l') {
+            e.preventDefault();
+            window.location.href = '/shadow';
+        }
+    });
 </script>

@@ -64,7 +64,7 @@
         </div>
         <div>
             <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Phone Number</p>
-            <p class="text-gray-800 font-bold text-sm">+6281252142002</p>
+            <a href="https://wa.me/6281252142002" target="_blank" class="text-gray-800 font-bold text-sm hover:text-[#005f37] transition-colors">+62 812-5214-2002</a>
         </div>
     </div>
 
@@ -77,7 +77,7 @@
         </div>
 
         <div>
-            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Lokasi Query</p>
+            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Lokasi Quarry</p>
             <p class="text-gray-800 font-bold text-xs leading-relaxed break-words">
                 Dusun Karanganyar Timur, Desa Karangasem, Kecamatan Lumbang, Kabupaten Pasuruan - Jawa Timur
             </p>
@@ -123,13 +123,13 @@
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Your
                             Name</label>
-                        <input type="text" placeholder="Nama lengkap..."
+                        <input type="text" id="contactName" placeholder="Nama lengkap..."
                             class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-primary transition shadow-inner">
                     </div>
                     <div class="space-y-2">
                         <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Company
                             Name</label>
-                        <input type="text" placeholder="Nama perusahaan..."
+                        <input type="text" id="contactCompany" placeholder="Nama perusahaan..."
                             class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-primary transition shadow-inner">
                     </div>
                 </div>
@@ -137,20 +137,19 @@
                 <div class="space-y-2">
                     <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Email
                         address</label>
-                    <input type="email" placeholder="alamat@email.com"
+                    <input type="email" id="contactEmail" placeholder="alamat@email.com"
                         class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl outline-none focus:border-primary transition shadow-inner">
                 </div>
 
                 <div class="space-y-2">
                     <label class="text-[10px] font-black text-gray-400 uppercase tracking-widest ml-1">Message</label>
-                    <textarea placeholder="Tulis pesan Anda di sini..."
+                    <textarea id="contactMessage" placeholder="Tulis pesan Anda di sini..."
                         class="w-full px-6 py-4 bg-gray-50 border border-gray-100 rounded-2xl h-40 outline-none focus:border-primary transition shadow-inner resize-none"></textarea>
                 </div>
 
-                <button
+                <button onclick="sendEmail()"
                     class="w-full bg-primary text-white py-5 rounded-2xl font-black uppercase tracking-[0.2em] shadow-xl shadow-green-900/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
                     Kirim Pesan
-
                 </button>
             </div>
         </div>
@@ -159,6 +158,30 @@
 
     @include('footer')
 
+    <script>
+        function sendEmail() {
+            const name = document.getElementById('contactName').value || 'Tanpa Nama';
+            const company = document.getElementById('contactCompany').value || '-';
+            const email = document.getElementById('contactEmail').value || '-';
+            const message = document.getElementById('contactMessage').value;
+
+            if (!message) {
+                alert('Tolong isikan pesan terlebih dahulu.');
+                return;
+            }
+
+            const subject = encodeURIComponent('Pesan Baru dari Website CIQ');
+            const body = encodeURIComponent(
+                'Halo Admin CIQ,\nSaya ingin mengirim pesan melalui website.\n\n' +
+                'Nama: ' + name + '\n' +
+                'Perusahaan: ' + company + '\n' +
+                'Email: ' + email + '\n\n' +
+                'Pesan:\n' + message
+            );
+
+            window.location.href = 'mailto:quarryconbloc@gmail.com?subject=' + subject + '&body=' + body;
+        }
+    </script>
 </body>
 
 </html>

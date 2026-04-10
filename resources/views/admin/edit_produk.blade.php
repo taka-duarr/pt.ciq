@@ -44,30 +44,13 @@
         </div>
 
 
-        <div>
-            <label class="block text-sm font-semibold mb-1">Kategori</label>
-            <select id="kategori" name="kategori"
-                    class="w-full border rounded px-3 py-2 focus:outline-none">
-                <option value="Abu Batu" {{ $produk->kategori == 'Abu Batu' ? 'selected' : '' }}>Abu Batu</option>
-                <option value="Batu Pecah 5–10 mm" {{ $produk->kategori == 'Batu Pecah 5–10 mm' ? 'selected' : '' }}>Batu Pecah 5–10 mm</option>
-                <option value="Batu Pecah 10–25 mm" {{ $produk->kategori == 'Batu Pecah 10–25 mm' ? 'selected' : '' }}>Batu Pecah 10–25 mm</option>
-            </select>
-        </div>
-
-        <div>
+        <div class="col-span-2">
             <label class="block text-sm font-semibold mb-1">Ganti Foto</label>
             <input type="file" id="foto" name="foto"
                    class="w-full border rounded px-3 py-2" accept="image/*">
             @if($produk->foto)
             <img src="{{ asset('storage/' . $produk->foto) }}" class="mt-2 w-20 h-auto rounded">
             @endif
-        </div>
-
-        <div>
-            <label class="block text-sm font-semibold mb-1">Stok</label>
-            <input type="number" id="stok" name="stok"
-                   class="w-full border rounded px-3 py-2 focus:outline-none"
-                   value="{{ old('stok', $produk->stok) }}">
         </div>
 
         <div class="col-span-2">

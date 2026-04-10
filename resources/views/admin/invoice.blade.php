@@ -113,7 +113,7 @@
         <div class="absolute bottom-12 left-12 right-12 flex justify-between items-center text-[10px] text-gray-400 uppercase tracking-widest border-t pt-4">
             <p>Conbloc Indotama Quarry • Pasuruan, Jawa Timur</p>
             <div class="flex gap-4">
-                <span>0813-5739-8265</span>
+                <span>+62 812-5214-2002</span>
             </div>
         </div>
     </div>

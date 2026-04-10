@@ -15,10 +15,7 @@
 <body class="bg-gray-50 min-h-screen text-gray-700">
 
     <!-- SIDEBAR (HARUS ADA ID) -->
-    <iframe id="sidebarFrame" 
-            src="{{ route('admin.sidebar') }}"
-            class="fixed left-0 top-0 w-64 min-h-screen border-none z-10">
-    </iframe>
+    @include('admin.sidebar')
 
     <!-- MAIN CONTENT (HARUS ADA ID) -->
     <div id="mainContent" class="ml-64 p-8 flex-1 transition-all duration-300">
@@ -80,7 +77,7 @@
                 <p class="text-sm text-gray-500">Benefit Crusher</p>
                 <h3 class="text-2xl font-semibold mt-1">Rp {{ number_format($benefitCrusher, 0, ',', '.') }}</h3>
                 <p class="text-sm text-gray-400 mt-1">
-                    {{ $totalPendapatan > 0 ? number_format(($benefitCrusher/$totalPendapatan)*100, 1) : 0 }}% dari total
+                    {{ $totalPendapatan > 0 ? number_format(($benefitCrusher/$totalPendapatan)*100, 1) : 0 }}% dari total Pendapatan
                 </p>
             </div>
 
@@ -88,7 +85,7 @@
                 <p class="text-sm text-gray-500">Benefit Sewa</p>
                 <h3 class="text-2xl font-semibold mt-1">Rp {{ number_format($benefitSewa, 0, ',', '.') }}</h3>
                 <p class="text-sm text-gray-400 mt-1">
-                    {{ $totalPendapatan > 0 ? number_format(($benefitSewa/$totalPendapatan)*100, 1) : 0 }}% dari total
+                    {{ $totalPendapatan > 0 ? number_format(($benefitSewa/$totalPendapatan)*100, 1) : 0 }}% dari total Pendapatan
                 </p>
             </div>
 

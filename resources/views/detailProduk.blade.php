@@ -65,12 +65,8 @@
 
                 <div class="pt-8 border-t border-gray-100 grid grid-cols-2 gap-4">
                     <div>
-                        <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Kategori</p>
-                        <p class="text-xs text-gray-800 font-bold uppercase">{{ $produk->kategori }}</p>
-                    </div>
-                    <div>
                         <p class="text-[10px] text-gray-400 uppercase tracking-widest mb-1">Pengiriman</p>
-                        <p class="text-xs text-gray-800 font-bold uppercase">Seluruh Jawa Timur</p>
+                        <p class="text-xs text-gray-800 font-bold uppercase">Seluruh Indonesia
                     </div>
                 </div>
             </div>

@@ -79,7 +79,7 @@
 </head>
 <body class="bg-gray-50 min-h-screen text-gray-700">
 
-    <iframe id="sidebarFrame" src="{{ route('admin.sidebar') }}" class="fixed left-0 top-0 w-64 min-h-screen border-none"></iframe>
+    @include('admin.sidebar')
 
     <div id="mainContent" class="ml-64 p-8 flex-1 transition-all duration-300">
         

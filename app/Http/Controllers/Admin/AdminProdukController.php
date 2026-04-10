@@ -27,8 +27,6 @@ class AdminProdukController extends Controller
         $validatedData = $request->validate([
             'nama' => 'required|string|max:255',
             'ukuran' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
-            'stok' => 'nullable|integer',
             'foto' => 'nullable|image|file|max:2048',
             'deskripsi_singkat' => 'nullable|string',
             'deskripsi_lengkap' => 'required|string',
@@ -60,8 +58,6 @@ class AdminProdukController extends Controller
         $request->validate([
             'nama' => 'required|string|max:255',
             'ukuran' => 'required|string|max:255',
-            'kategori' => 'required|string|max:255',
-            'stok' => 'nullable|integer',
             'foto' => 'nullable|image|file|max:2048',
             'deskripsi_singkat' => 'nullable|string',
             'deskripsi_lengkap' => 'required|string',

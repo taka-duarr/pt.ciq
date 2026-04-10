@@ -36,8 +36,7 @@
     </div>
 
     <!-- Sidebar Frame -->
-    <iframe id="sidebarFrame" src="{{ route('admin.sidebar') }}"
-        class="fixed left-0 top-0 w-64 min-h-screen border-none"></iframe>
+    @include('admin.sidebar')
 
     <!-- Main Content -->
     <div id="mainContent" class="ml-64 flex-1 p-6 transition-all duration-300">

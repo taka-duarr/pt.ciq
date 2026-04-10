@@ -64,9 +64,7 @@
                     <div class="px-4 pb-4 flex-grow">
                         <h3 class="text-xl font-black text-gray-800 mb-2">{{ $produk->nama }}</h3>
 
-                        <p class="text-xs text-gray-400 leading-relaxed mb-4 line-clamp-2 italic">
-                            {{ $produk->kategori }}
-                        </p>
+
 
                         <div class="mt-auto flex items-center justify-end border-t border-gray-50 pt-4">
                             <a href="{{ route('detailProduk', $produk->id) }}"
@@ -89,9 +87,9 @@
             </h2>
             <p class="opacity-80 mb-10 max-w-xl mx-auto">Dapatkan harga grosir dan jadwal pengiriman ritase besar untuk
                 kebutuhan korporasi dan tender infrastruktur.</p>
-            <a href="{{ route('pemesanan') }}"
+            <a href="https://wa.me/6281252142002" target="_blank"
                 class="bg-yellow-400 text-gray-900 px-12 py-4 rounded-xl font-black uppercase tracking-widest text-sm hover:scale-105 transition shadow-xl inline-block">Hubungi
-                Sales Manager</a>
+                Customer Information </a>
         </div>
     </main>
 

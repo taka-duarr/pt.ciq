@@ -86,7 +86,7 @@
 
 <body class="bg-gray-100 min-h-screen">
 
-  <iframe id="sidebarFrame" src="{{ route('admin.sidebar') }}" class="fixed left-0 top-0 w-64 h-full border-none z-50"></iframe>
+  @include('admin.sidebar')
 
   <div id="mainContent" class="ml-64 p-8">
     <h1 class="text-2xl font-bold text-[var(--primary)] mb-6">Manajemen Pesanan</h1>

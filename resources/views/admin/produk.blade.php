@@ -69,8 +69,7 @@
 
 <body class="bg-gray-100">
     <!-- SIDEBAR FIX -->
-    <iframe id="sidebarFrame" src="{{ route('admin.sidebar') }}"
-        class="fixed left-0 top-0 w-64 min-h-screen border-none"></iframe>
+    @include('admin.sidebar')
 
     <!-- MAIN CONTENT FIX -->
     <div id="mainContent" class="ml-64 flex-1 p-6 transition-all duration-300">

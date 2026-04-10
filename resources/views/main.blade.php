@@ -122,15 +122,15 @@
 
             <div class="lg:col-span-5 grid grid-cols-2 gap-3 h-full min-h-[350px]">
                 <div class="row-span-2">
-                    <img src="{{ asset('img/batu.jpg') }}" alt="Tambang"
+                    <img src="{{ asset('img/dashboard1.png') }}" alt="Tambang"
                         class="w-full h-full object-cover rounded-2xl shadow-lg">
                 </div>
                 <div>
-                    <img src="{{ asset('img/batu1.jpg') }}" alt="Stone Crusher"
+                    <img src="{{ asset('img/dashboard2.png') }}" alt="Stone Crusher"
                         class="w-full h-[170px] object-cover rounded-2xl shadow-lg">
                 </div>
                 <div>
-                    <img src="{{ asset('img/batu2.jpg') }}" alt="Batu Split"
+                    <img src="{{ asset('img/dashboard3.png') }}" alt="Batu Split"
                         class="w-full h-[170px] object-cover rounded-2xl shadow-lg">
                 </div>
             </div>
@@ -185,14 +185,14 @@
 
         <!-- BUTTON DI BAWAH TEKS PANJANG -->
         <div class="flex flex-wrap items-center gap-4 pt-0">
-            <button
+            <!-- <button
                 class="bg-[var(--primary)] text-white px-6 py-3 rounded-full text-sm md:text-base font-bold shadow-xl shadow-green-900/20 hover:scale-105 transition flex items-center gap-2">
                 Eksplorasi Produk
                 <svg class="w-4 h-4 md:w-5 md:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
-            </button>
+            </button> -->
 
         </div>
         </div>
@@ -240,7 +240,7 @@
                     </div>
 
                     <div class="pt-6">
-                        <button
+                        <button onclick="window.location.href='{{ route('tentangKami') }}'"
                             class="bg-[var(--primary)] text-white px-10 py-4 rounded-full font-bold shadow-lg shadow-green-900/20 hover:bg-[#004c2c] transition-all flex items-center gap-3 group">
                             Pelajari Selengkapnya
                             <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none"
@@ -292,11 +292,11 @@
 
                 @foreach ($produks as $produk)
                     <div
-                        class="group cursor-pointer min-w-[280px] md:min-w-[320px] lg:min-w-[340px] snap-start shrink-0">
+                        class="group cursor-pointer w-[280px] md:w-[320px] lg:w-[340px] snap-start shrink-0">
                         <div
                             class="relative w-full h-[220px] rounded-[1rem] overflow-hidden shadow-sm border border-gray-100 bg-white">
                             <img src="{{ $produk->foto ? asset('storage/' . $produk->foto) : asset('img/no-image.png') }}"
-                                class="w-full h-full object-cover transition duration-500 group-hover:scale-110"
+                                class="w-full h-full object-cover transition duration-700 group-hover:scale-110"
                                 alt="{{ $produk->nama }}">
                         </div>
 

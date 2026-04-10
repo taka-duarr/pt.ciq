@@ -39,23 +39,9 @@
         </div>
 
 
-        <div>
-            <label class="block text-sm font-semibold mb-1">Kategori</label>
-            <select name="kategori" class="w-full border rounded px-3 py-2 focus:outline-none">
-                <option value="Abu Batu">Abu Batu</option>
-                <option value="Batu Pecah 5–10 mm">Batu Pecah 5–10 mm</option>
-                <option value="Batu Pecah 10–25 mm">Batu Pecah 10–25 mm</option>
-            </select>
-        </div>
-
-        <div>
+        <div class="col-span-2">
             <label class="block text-sm font-semibold mb-1">Upload Foto</label>
             <input type="file" name="foto" class="w-full border rounded px-3 py-2" accept="image/*" required>
-        </div>
-
-        <div>
-            <label class="block text-sm font-semibold mb-1">Stok Awal</label>
-            <input type="number" name="stok" class="w-full border rounded px-3 py-2 focus:outline-none">
         </div>
 
         <div class="col-span-2">
