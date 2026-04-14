@@ -40,7 +40,11 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => is_dir(base_path('public_html')) ? base_path('public_html/storage') : public_path('storage'),
+            'root' => (function() {
+                if (is_dir(base_path('public_html/storage'))) return base_path('public_html/storage');
+                if (is_dir(base_path('../public_html/storage'))) return base_path('../public_html/storage');
+                return public_path('storage');
+            })(),
             'url' => rtrim(env('APP_URL', 'http://localhost'), '/').'/storage',
             'visibility' => 'public',
             'throw' => false,
