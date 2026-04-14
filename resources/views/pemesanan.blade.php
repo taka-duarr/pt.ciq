@@ -44,22 +44,22 @@
 <body class="bg-gray-50 text-gray-800 antialiased pb-20">
 
     <header class="bg-white border-b sticky top-0 z-40 no-print opacity-80">
-    <div class="max-w-7xl mx-auto px-6 h-20 grid grid-cols-3 items-center ">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex justify-between items-center gap-2">
         
-        <div class="flex items-center">
+        <div class="flex-shrink-0">
             <div class="p-2 rounded-lg">
-                <img src="img/logo1.png" class="h-8 w-auto" alt="Logo">
+                <img src="img/logo1.png" class="h-8 w-auto object-contain" alt="Logo">
             </div>
         </div>
 
-        <div class="text-center">
-            <h1 class="text-lg md:text-xl font-extrabold tracking-tight text-gray-900 uppercase">
+        <div class="flex-grow text-center">
+            <h1 class="text-[10px] md:text-xl font-extrabold tracking-tight text-gray-900 uppercase leading-tight">
                 Simulasi Harga Loco / Franco
             </h1>
         </div>
 
-        <div class="flex justify-end">
-            <a href="{{ route('home') }}" class="flex items-center gap-2 px-4 py-2 bg-gray-50 text-gray-700 hover:text-primary hover:bg-primary/5 border border-gray-200 rounded-xl font-bold text-xs transition-all group">
+        <div class="flex-shrink-0 hidden sm:block">
+            <a href="{{ route('home') }}" class="flex items-center gap-2 px-3 py-2 bg-gray-50 text-gray-700 hover:text-primary hover:bg-primary/5 border border-gray-200 rounded-xl font-bold text-xs transition-all group">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 transition-transform group-hover:-translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
