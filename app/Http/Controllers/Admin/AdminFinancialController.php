@@ -129,12 +129,8 @@ class AdminFinancialController extends Controller
         $year = FinancialYear::with('monthlySales')->findOrFail($id);
         $monthlySales = $year->monthlySales->sortBy('month');
 
-        $filename = "Laporan_Keuangan_" . $year->year . ".xls";
+        $filename = "Laporan_Keuangan_" . $year->year . ".xlsx";
 
-        header("Content-Type: application/vnd.ms-excel");
-        header("Content-Disposition: attachment; filename=\"$filename\"");
-        header("Cache-Control: max-age=0");
-
-        return view('admin.exports.financial_excel', compact('year', 'monthlySales'));
+        return \Maatwebsite\Excel\Facades\Excel::download(new \App\Exports\FinancialExport($year, $monthlySales), $filename);
     }
 }
