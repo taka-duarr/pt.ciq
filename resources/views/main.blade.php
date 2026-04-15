@@ -303,7 +303,9 @@
                         <div class="mt-4 px-2 flex justify-between items-center gap-4">
                             <div>
                                 <h3 class="text-lg font-bold text-gray-800">{{ $produk->nama }}</h3>
-
+                                @if($produk->ukuran)
+                                <p class="text-[var(--primary)] text-sm font-semibold mt-0.5">{{ $produk->ukuran }}</p>
+                                @endif
                             </div>
 
                             <a href="{{ route('detailProduk', $produk->id) }}"
