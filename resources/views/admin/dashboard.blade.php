@@ -53,9 +53,9 @@
         <!-- STATS -->
         <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
 
-            <div class="bg-white p-6 rounded-xl shadow">
-                <p class="text-sm text-gray-500">Total Pendapatan</p>
-                <h3 class="text-2xl font-semibold mt-1">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</h3>
+            <div class="bg-white p-6 rounded-xl shadow overflow-hidden">
+                <p class="text-sm text-gray-500 whitespace-nowrap">Total Pendapatan</p>
+                <h3 class="text-lg xl:text-xl 2xl:text-2xl font-semibold mt-1 tracking-tight whitespace-nowrap truncate" title="Rp {{ number_format($totalPendapatan, 3, ',', '.') }}">Rp {{ number_format($totalPendapatan, 3, ',', '.') }}</h3>
                 @if($selectedYearParam !== 'all')
                 <p class="{{ $growthRev >= 0 ? 'text-green-600' : 'text-red-600' }} text-sm mt-1 font-medium">
                     {{ $growthRev > 0 ? '+' : '' }}{{ number_format($growthRev, 1) }}% vs tahun lalu
@@ -63,9 +63,9 @@
                 @endif
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow">
-                <p class="text-sm text-gray-500">Produksi Crusher</p>
-                <h3 class="text-2xl font-semibold mt-1">{{ number_format($produksiCrusher, 0, ',', '.') }} ton</h3>
+            <div class="bg-white p-6 rounded-xl shadow overflow-hidden">
+                <p class="text-sm text-gray-500 whitespace-nowrap">Produksi Crusher</p>
+                <h3 class="text-lg xl:text-xl 2xl:text-2xl font-semibold mt-1 tracking-tight whitespace-nowrap truncate" title="{{ number_format($produksiCrusher, 3, ',', '.') }} ton">{{ number_format($produksiCrusher, 3, ',', '.') }} ton</h3>
                 @if($selectedYearParam !== 'all')
                 <p class="{{ $growthProd >= 0 ? 'text-green-600' : 'text-red-600' }} text-sm mt-1 font-medium">
                     {{ $growthProd > 0 ? '+' : '' }}{{ number_format($growthProd, 1) }}% vs tahun lalu
@@ -73,18 +73,18 @@
                 @endif
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow">
-                <p class="text-sm text-gray-500">Benefit Crusher</p>
-                <h3 class="text-2xl font-semibold mt-1">Rp {{ number_format($benefitCrusher, 0, ',', '.') }}</h3>
-                <p class="text-sm text-gray-400 mt-1">
+            <div class="bg-white p-6 rounded-xl shadow overflow-hidden">
+                <p class="text-sm text-gray-500 whitespace-nowrap">Benefit Crusher</p>
+                <h3 class="text-lg xl:text-xl 2xl:text-2xl font-semibold mt-1 tracking-tight whitespace-nowrap truncate" title="Rp {{ number_format($benefitCrusher, 3, ',', '.') }}">Rp {{ number_format($benefitCrusher, 3, ',', '.') }}</h3>
+                <p class="text-sm text-gray-400 mt-1 whitespace-nowrap">
                     {{ $totalPendapatan > 0 ? number_format(($benefitCrusher/$totalPendapatan)*100, 1) : 0 }}% dari total Pendapatan
                 </p>
             </div>
 
-            <div class="bg-white p-6 rounded-xl shadow">
-                <p class="text-sm text-gray-500">Benefit Sewa</p>
-                <h3 class="text-2xl font-semibold mt-1">Rp {{ number_format($benefitSewa, 0, ',', '.') }}</h3>
-                <p class="text-sm text-gray-400 mt-1">
+            <div class="bg-white p-6 rounded-xl shadow overflow-hidden">
+                <p class="text-sm text-gray-500 whitespace-nowrap">Benefit Sewa</p>
+                <h3 class="text-lg xl:text-xl 2xl:text-2xl font-semibold mt-1 tracking-tight whitespace-nowrap truncate" title="Rp {{ number_format($benefitSewa, 3, ',', '.') }}">Rp {{ number_format($benefitSewa, 3, ',', '.') }}</h3>
+                <p class="text-sm text-gray-400 mt-1 whitespace-nowrap">
                     {{ $totalPendapatan > 0 ? number_format(($benefitSewa/$totalPendapatan)*100, 1) : 0 }}% dari total Pendapatan
                 </p>
             </div>
@@ -134,14 +134,14 @@
                     @forelse ($tableData as $row)
                     <tr class="border-b">
                         <td class="py-2">{{ $row->label }}</td>
-                        <td class="text-right">{{ number_format($row->crusher_production, 0, ',', '.') }}</td>
+                        <td class="text-right">{{ number_format($row->crusher_production, 3, ',', '.') }}</td>
                         <td class="text-right">
-                            <span class="text-green-700">Rp {{ number_format($row->benefit_crusher, 0, ',', '.') }}</span>
+                            <span class="text-green-700">Rp {{ number_format($row->benefit_crusher, 3, ',', '.') }}</span>
                         </td>
                         <td class="text-right">
-                            <span class="text-blue-700">Rp {{ number_format($row->benefit_sewa, 0, ',', '.') }}</span>
+                            <span class="text-blue-700">Rp {{ number_format($row->benefit_sewa, 3, ',', '.') }}</span>
                         </td>
-                        <td class="text-right font-semibold">Rp {{ number_format($row->total_revenue, 0, ',', '.') }}</td>
+                        <td class="text-right font-semibold">Rp {{ number_format($row->total_revenue, 3, ',', '.') }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -152,10 +152,10 @@
                 <tfoot>
                     <tr class="bg-gray-50 font-semibold border-t-2 border-gray-200">
                         <td class="py-3 px-2 rounded-bl-lg">TOTAL</td>
-                        <td class="text-right">{{ number_format($produksiCrusher, 0, ',', '.') }}</td>
-                        <td class="text-right text-green-700">Rp {{ number_format($benefitCrusher, 0, ',', '.') }}</td>
-                        <td class="text-right text-blue-700">Rp {{ number_format($benefitSewa, 0, ',', '.') }}</td>
-                        <td class="text-right text-[var(--primary)] text-base rounded-br-lg">Rp {{ number_format($totalPendapatan, 0, ',', '.') }}</td>
+                        <td class="text-right">{{ number_format($produksiCrusher, 3, ',', '.') }}</td>
+                        <td class="text-right text-green-700">Rp {{ number_format($benefitCrusher, 3, ',', '.') }}</td>
+                        <td class="text-right text-blue-700">Rp {{ number_format($benefitSewa, 3, ',', '.') }}</td>
+                        <td class="text-right text-[var(--primary)] text-base rounded-br-lg">Rp {{ number_format($totalPendapatan, 3, ',', '.') }}</td>
                     </tr>
                 </tfoot>
             </table>
