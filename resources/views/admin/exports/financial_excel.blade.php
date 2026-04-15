@@ -62,15 +62,15 @@
             @foreach($monthlySales as $sale)
             <tr>
                 <td class="td-center">{{ $sale->month_name }}-{{ substr($year->year, 2) }}</td>
-                <td class="td-data">{{ number_format($sale->crusher_price, 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->crusher_price, 3, ',', '.') }}</td>
                 <td class="td-data">{{ number_format($sale->crusher_production, 3, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->pendapatan_sewa, 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->pendapatan_sewa, 3, ',', '.') }}</td>
                 <td class="td-data">{{ number_format($sale->produksi_ppn, 3, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->total_crusher_ppn, 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->ppn_11, 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->pph_2, 2, ',', '.') }}</td>
-                <td class="td-data bg-highlight">{{ number_format($sale->total_crusher_akhir, 2, ',', '.') }}</td>
-                <td class="td-data" style="font-weight: bold;">{{ number_format($sale->benefit_crusher, 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->total_crusher_ppn, 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->ppn_11, 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->pph_2, 3, ',', '.') }}</td>
+                <td class="td-data bg-highlight">{{ number_format($sale->total_crusher_akhir, 3, ',', '.') }}</td>
+                <td class="td-data" style="font-weight: bold;">{{ number_format($sale->benefit_crusher, 3, ',', '.') }}</td>
             </tr>
             @php
                 $totals['prod'] += $sale->crusher_production;
@@ -88,13 +88,13 @@
             <tr class="summary-row">
                 <td colspan="2" class="td-center">TOTAL</td>
                 <td class="td-data">{{ number_format($totals['prod'], 3, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($totals['sewa'], 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($totals['sewa'], 3, ',', '.') }}</td>
                 <td class="td-data">{{ number_format($totals['prod_ppn'], 3, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($totals['t_ppn'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($totals['ppn'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($totals['pph'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($totals['t_akhir'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($totals['benefit'], 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($totals['t_ppn'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($totals['ppn'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($totals['pph'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($totals['t_akhir'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($totals['benefit'], 3, ',', '.') }}</td>
             </tr>
         </tfoot>
     </table>
@@ -125,13 +125,13 @@
             @foreach($monthlySales as $sale)
             <tr>
                 <td class="td-center">{{ $sale->month_name }}-{{ substr($year->year, 2) }}</td>
-                <td class="td-data">{{ number_format($sale->sewa_loader, 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->sewa_dump_truck, 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->sewa_sany, 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->sewa_hyundai_220, 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->sewa_hyundai_330, 2, ',', '.') }}</td>
-                <td class="td-data" style="color: #e53e3e;">{{ number_format($sale->spare_part, 2, ',', '.') }}</td>
-                <td class="td-data bg-highlight" style="font-weight: bold;">{{ number_format($sale->benefit_sewa, 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->sewa_loader, 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->sewa_dump_truck, 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->sewa_sany, 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->sewa_hyundai_220, 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->sewa_hyundai_330, 3, ',', '.') }}</td>
+                <td class="td-data" style="color: #e53e3e;">{{ number_format($sale->spare_part, 3, ',', '.') }}</td>
+                <td class="td-data bg-highlight" style="font-weight: bold;">{{ number_format($sale->benefit_sewa, 3, ',', '.') }}</td>
             </tr>
             @php
                 $sTotals['l'] += $sale->sewa_loader;
@@ -147,13 +147,13 @@
         <tfoot>
             <tr class="summary-row">
                 <td class="td-center">TOTAL</td>
-                <td class="td-data">{{ number_format($sTotals['l'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sTotals['dt'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sTotals['s'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sTotals['h2'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sTotals['h3'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sTotals['sp'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sTotals['b'], 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['l'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['dt'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['s'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['h2'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['h3'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['sp'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['b'], 3, ',', '.') }}</td>
             </tr>
         </tfoot>
     </table>
@@ -178,9 +178,9 @@
             @foreach($monthlySales as $sale)
             <tr>
                 <td class="td-center">{{ $sale->month_name }}-{{ substr($year->year, 2) }}</td>
-                <td class="td-data">{{ number_format($sale->benefit_crusher, 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sale->benefit_sewa, 2, ',', '.') }}</td>
-                <td class="td-data bg-highlight" style="font-weight: bold;">{{ number_format($sale->total_revenue, 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->benefit_crusher, 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sale->benefit_sewa, 3, ',', '.') }}</td>
+                <td class="td-data bg-highlight" style="font-weight: bold;">{{ number_format($sale->total_revenue, 3, ',', '.') }}</td>
             </tr>
             @php $gTotal += $sale->total_revenue; @endphp
             @endforeach
@@ -188,9 +188,9 @@
         <tfoot>
             <tr class="grand-total">
                 <td class="td-center">GRAND TOTAL</td>
-                <td class="td-data">{{ number_format($totals['benefit'], 2, ',', '.') }}</td>
-                <td class="td-data">{{ number_format($sTotals['b'], 2, ',', '.') }}</td>
-                <td class="td-data" style="text-align: right;">{{ number_format($gTotal, 2, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($totals['benefit'], 3, ',', '.') }}</td>
+                <td class="td-data">{{ number_format($sTotals['b'], 3, ',', '.') }}</td>
+                <td class="td-data" style="text-align: right;">{{ number_format($gTotal, 3, ',', '.') }}</td>
             </tr>
         </tfoot>
     </table>

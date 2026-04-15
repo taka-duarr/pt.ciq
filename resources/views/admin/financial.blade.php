@@ -146,15 +146,15 @@
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-blue-500">
                 <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Total Benefit Crusher</p>
-                <h3 class="text-2xl font-black text-gray-800 mt-1" id="card-crusher">Rp {{ number_format($totals['crusher_revenue'], 0, ',', '.') }}</h3>
+                <h3 class="text-2xl font-black text-gray-800 mt-1" id="card-crusher">Rp {{ number_format($totals['crusher_revenue'], 3, ',', '.') }}</h3>
             </div>
             <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-purple-500">
                 <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Total Benefit Sewa</p>
-                <h3 class="text-2xl font-black text-gray-800 mt-1" id="card-sewa">Rp {{ number_format($totals['sewa_revenue'], 0, ',', '.') }}</h3>
+                <h3 class="text-2xl font-black text-gray-800 mt-1" id="card-sewa">Rp {{ number_format($totals['sewa_revenue'], 3, ',', '.') }}</h3>
             </div>
             <div class="bg-white p-6 rounded-2xl shadow-sm border-l-4 border-green-500">
                 <p class="text-xs text-gray-500 font-medium uppercase tracking-wider">Grand Total Pendapatan</p>
-                <h3 class="text-2xl font-black text-green-600 mt-1" id="card-total">Rp {{ number_format($totals['total_revenue'], 0, ',', '.') }}</h3>
+                <h3 class="text-2xl font-black text-green-600 mt-1" id="card-total">Rp {{ number_format($totals['total_revenue'], 3, ',', '.') }}</h3>
             </div>
         </div>
         <!-- STONE CRUSHER TABLE -->
@@ -192,13 +192,13 @@
                         <td class="text-center bg-red-700 text-white font-bold text-[10px]">{{ $sale->month_name }}-{{ substr($selectedYear->year, 2) }}</td>
                         <td class="bg-editable"><input type="number" step="any" value="{{ $sale->crusher_price + 0 }}" class="edit-input font-medium" name="crusher_price"></td>
                         <td class="bg-editable"><input type="number" step="any" value="{{ $sale->crusher_production + 0 }}" class="edit-input font-medium" name="crusher_production"></td>
-                        <td class="text-right font-bold bg-calculated" id="sewa-{{ $sale->id }}">{{ number_format($sale->pendapatan_sewa, 0, ',', '.') }}</td>
+                        <td class="text-right font-bold bg-calculated" id="sewa-{{ $sale->id }}">{{ number_format($sale->pendapatan_sewa, 3, ',', '.') }}</td>
                         <td class="bg-editable"><input type="number" step="any" value="{{ $sale->produksi_ppn + 0 }}" class="edit-input font-medium" name="produksi_ppn"></td>
-                        <td class="text-right bg-calculated" id="totalppn-{{ $sale->id }}">{{ number_format($sale->total_crusher_ppn, 0, ',', '.') }}</td>
-                        <td class="text-right bg-calculated" id="ppn-{{ $sale->id }}">{{ number_format($sale->ppn_11, 0, ',', '.') }}</td>
-                        <td class="text-right bg-calculated" id="pph-{{ $sale->id }}">{{ number_format($sale->pph_2, 0, ',', '.') }}</td>
-                        <td class="text-right bg-green-highlight" id="totalakhir-{{ $sale->id }}">{{ number_format($sale->total_crusher_akhir, 0, ',', '.') }}</td>
-                        <td class="text-right font-bold bg-calculated" id="benefit-{{ $sale->id }}">{{ number_format($sale->benefit_crusher, 0, ',', '.') }}</td>
+                        <td class="text-right bg-calculated" id="totalppn-{{ $sale->id }}">{{ number_format($sale->total_crusher_ppn, 3, ',', '.') }}</td>
+                        <td class="text-right bg-calculated" id="ppn-{{ $sale->id }}">{{ number_format($sale->ppn_11, 3, ',', '.') }}</td>
+                        <td class="text-right bg-calculated" id="pph-{{ $sale->id }}">{{ number_format($sale->pph_2, 3, ',', '.') }}</td>
+                        <td class="text-right bg-green-highlight" id="totalakhir-{{ $sale->id }}">{{ number_format($sale->total_crusher_akhir, 3, ',', '.') }}</td>
+                        <td class="text-right font-bold bg-calculated" id="benefit-{{ $sale->id }}">{{ number_format($sale->benefit_crusher, 3, ',', '.') }}</td>
                     </tr>
                     @php
                         $grandTotalCrusher['produksi'] += $sale->crusher_production;
@@ -216,14 +216,14 @@
                     <tr class="text-right font-bold">
                         <td class="text-center bg-yellow-summary">TOTAL</td>
                         <td></td>
-                        <td id="foot-crusher-prod">{{ number_format($grandTotalCrusher['produksi'], 0, ',', '.') }}</td>
-                        <td id="foot-crusher-sewa">{{ number_format($grandTotalCrusher['sewa'], 0, ',', '.') }}</td>
-                        <td id="foot-crusher-prodppn">{{ number_format($grandTotalCrusher['prod_ppn'], 0, ',', '.') }}</td>
-                        <td id="foot-crusher-totalppn">{{ number_format($grandTotalCrusher['total_ppn'], 0, ',', '.') }}</td>
-                        <td id="foot-crusher-ppn">{{ number_format($grandTotalCrusher['ppn'], 0, ',', '.') }}</td>
-                        <td id="foot-crusher-pph">{{ number_format($grandTotalCrusher['pph'], 0, ',', '.') }}</td>
-                        <td id="foot-crusher-totalakhir" class="bg-green-700/80 text-white">{{ number_format($grandTotalCrusher['total_akhir'], 0, ',', '.') }}</td>
-                        <td id="foot-crusher-benefit">{{ number_format($grandTotalCrusher['benefit'], 0, ',', '.') }}</td>
+                        <td id="foot-crusher-prod">{{ number_format($grandTotalCrusher['produksi'], 3, ',', '.') }}</td>
+                        <td id="foot-crusher-sewa">{{ number_format($grandTotalCrusher['sewa'], 3, ',', '.') }}</td>
+                        <td id="foot-crusher-prodppn">{{ number_format($grandTotalCrusher['prod_ppn'], 3, ',', '.') }}</td>
+                        <td id="foot-crusher-totalppn">{{ number_format($grandTotalCrusher['total_ppn'], 3, ',', '.') }}</td>
+                        <td id="foot-crusher-ppn">{{ number_format($grandTotalCrusher['ppn'], 3, ',', '.') }}</td>
+                        <td id="foot-crusher-pph">{{ number_format($grandTotalCrusher['pph'], 3, ',', '.') }}</td>
+                        <td id="foot-crusher-totalakhir" class="bg-green-700/80 text-white">{{ number_format($grandTotalCrusher['total_akhir'], 3, ',', '.') }}</td>
+                        <td id="foot-crusher-benefit">{{ number_format($grandTotalCrusher['benefit'], 3, ',', '.') }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -265,7 +265,7 @@
                         <td class="bg-editable"><input type="number" step="any" value="{{ $sale->sewa_hyundai_220 + 0 }}" class="edit-input font-medium" name="sewa_hyundai_220"></td>
                         <td class="bg-editable"><input type="number" step="any" value="{{ $sale->sewa_hyundai_330 + 0 }}" class="edit-input font-medium" name="sewa_hyundai_330"></td>
                         <td class="bg-editable"><input type="number" step="any" value="{{ $sale->spare_part + 0 }}" class="edit-input font-medium shadow-inner" name="spare_part"></td>
-                        <td class="text-right font-bold bg-green-highlight" id="sewa-benefit-{{ $sale->id }}">{{ number_format($sale->benefit_sewa, 0, ',', '.') }}</td>
+                        <td class="text-right font-bold bg-green-highlight" id="sewa-benefit-{{ $sale->id }}">{{ number_format($sale->benefit_sewa, 3, ',', '.') }}</td>
                     </tr>
                     @php
                         $grandTotalSewa['loader'] += $sale->sewa_loader;
@@ -281,13 +281,13 @@
                 <tfoot class="bg-yellow-summary">
                     <tr class="text-right font-bold">
                         <td class="text-center bg-yellow-summary">TOTAL</td>
-                        <td id="foot-sewa-loader">{{ number_format($grandTotalSewa['loader'], 0, ',', '.') }}</td>
-                        <td id="foot-sewa-dt">{{ number_format($grandTotalSewa['truck'], 0, ',', '.') }}</td>
-                        <td id="foot-sewa-sany">{{ number_format($grandTotalSewa['sany'], 0, ',', '.') }}</td>
-                        <td id="foot-sewa-h220">{{ number_format($grandTotalSewa['h220'], 0, ',', '.') }}</td>
-                        <td id="foot-sewa-h330">{{ number_format($grandTotalSewa['h330'], 0, ',', '.') }}</td>
-                        <td id="foot-sewa-spare">{{ number_format($grandTotalSewa['spare'], 0, ',', '.') }}</td>
-                        <td id="foot-sewa-benefit" class="bg-green-700/80 text-white">{{ number_format($grandTotalSewa['benefit'], 0, ',', '.') }}</td>
+                        <td id="foot-sewa-loader">{{ number_format($grandTotalSewa['loader'], 3, ',', '.') }}</td>
+                        <td id="foot-sewa-dt">{{ number_format($grandTotalSewa['truck'], 3, ',', '.') }}</td>
+                        <td id="foot-sewa-sany">{{ number_format($grandTotalSewa['sany'], 3, ',', '.') }}</td>
+                        <td id="foot-sewa-h220">{{ number_format($grandTotalSewa['h220'], 3, ',', '.') }}</td>
+                        <td id="foot-sewa-h330">{{ number_format($grandTotalSewa['h330'], 3, ',', '.') }}</td>
+                        <td id="foot-sewa-spare">{{ number_format($grandTotalSewa['spare'], 3, ',', '.') }}</td>
+                        <td id="foot-sewa-benefit" class="bg-green-700/80 text-white">{{ number_format($grandTotalSewa['benefit'], 3, ',', '.') }}</td>
                     </tr>
                 </tfoot>
             </table>
@@ -311,7 +311,7 @@
                                 {{ $sale->month_name }}
                             </td>
                             <td class="text-right px-4 py-2 font-black text-gray-800 italic" id="summary-total-{{ $sale->id }}">
-                                {{ number_format($sale->total_revenue, 0, ',', '.') }}
+                                {{ number_format($sale->total_revenue, 3, ',', '.') }}
                             </td>
                         </tr>
                         @endforeach
@@ -319,7 +319,7 @@
                     <tfoot>
                         <tr>
                             <th colspan="2" class="!bg-[#002060] text-white text-right px-6 py-3 text-lg font-black border-none" id="foot-summary-total">
-                                {{ number_format($totals['total_revenue'], 0, ',', '.') }}
+                                {{ number_format($totals['total_revenue'], 3, ',', '.') }}
                             </th>
                         </tr>
                     </tfoot>
@@ -543,15 +543,15 @@
             }
         }
 
-        // JS Format Helpers - Rounded to 0 decimal places to match Excel
+        // JS Format Helpers - Updated to show 3 decimal places
         function formatIDR(num) {
-            return new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(Math.round(num));
+            return new Intl.NumberFormat('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 }).format(num);
         }
         function parseIDR(str) {
             return parseFloat(str.replace(/\./g, '').replace(',', '.').replace('Rp ', '')) || 0;
         }
-        function formatNum(num, dec) {
-            return new Intl.NumberFormat('id-ID', { maximumFractionDigits: 0 }).format(Math.round(num));
+        function formatNum(num, dec = 3) {
+            return new Intl.NumberFormat('id-ID', { minimumFractionDigits: dec, maximumFractionDigits: dec }).format(num);
         }
 
         // Initial calc

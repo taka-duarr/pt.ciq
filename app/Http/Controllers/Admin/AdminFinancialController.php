@@ -91,10 +91,10 @@ class AdminFinancialController extends Controller
 
         return response()->json([
             'success' => true,
-            'mining_revenue' => number_format($sale->mining_revenue, 0, ',', '.'),
-            'crusher_revenue' => number_format($sale->benefit_crusher, 0, ',', '.'),
-            'sewa_benefit' => number_format($sale->benefit_sewa, 0, ',', '.'),
-            'total_revenue' => number_format($sale->total_revenue, 0, ',', '.'),
+            'mining_revenue' => number_format($sale->mining_revenue, 3, ',', '.'),
+            'crusher_revenue' => number_format($sale->benefit_crusher, 3, ',', '.'),
+            'sewa_benefit' => number_format($sale->benefit_sewa, 3, ',', '.'),
+            'total_revenue' => number_format($sale->total_revenue, 3, ',', '.'),
         ]);
     }
 
