@@ -19,10 +19,8 @@ Route::get('/program-csr', [FrontEndController::class, 'csr'])->name('csr');
 Route::get('/kontak', [FrontEndController::class, 'kontak'])->name('kontak');
 
 // Shadow Login
-Route::middleware('guest')->group(function () {
-    Route::get('/shadow', [ShadowAuthController::class, 'showLoginForm'])->name('login');
-    Route::post('/shadow', [ShadowAuthController::class, 'login']);
-});
+Route::get('/shadow', [ShadowAuthController::class, 'showLoginForm'])->name('login');
+Route::post('/shadow', [ShadowAuthController::class, 'login']);
 
 // Route::get('/shadow', [ShadowAuthController::class, 'showLoginForm'])->name('login');
 Route::post('/logout', [ShadowAuthController::class, 'logout'])->name('logout')->middleware('auth');
